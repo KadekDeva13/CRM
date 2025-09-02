@@ -71,7 +71,7 @@ export default function Dashboard() {
      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         <div className="rounded-xl bg-white/10 ring-1 ring-white/10 p-4">
           <h2 className="text-sm font-medium text-white/80 mb-3">Sales vs Target</h2>
-          <SalesLineChart height={300} />
+          <SalesLineChart height={400} />
         </div>
       </div>
     </div>

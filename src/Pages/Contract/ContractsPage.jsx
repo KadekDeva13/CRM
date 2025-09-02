@@ -128,7 +128,7 @@ export default function ContractsPage() {
         <table className="min-w-full text-sm text-white/90">
           <thead className="bg-white/5 text-white/70">
             <tr>
-              <th className="px-4 py-2 text-left">Number</th>
+              <th className="px-4 py-2 text-left">Contract Number</th>
               <th className="px-4 py-2 text-left">Title</th>
               <th className="px-4 py-2 text-left">Counterparty</th>
               <th className="px-4 py-2 text-left">Value</th>

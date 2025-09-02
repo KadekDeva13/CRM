@@ -66,7 +66,14 @@ export default function ContractsReportPDF({ data = [], filters = {} }) {
   const statusStr =
     filters.status && filters.status !== "" ? filters.status : "All Statuses";
 
-  const totalRevenue = data.reduce((sum, r) => sum + (r.value || 0), 0);
+  const EXCLUDE = new Set(["Declined", "Expired"]);
+  const validData = data.filter((r) => !EXCLUDE.has(r.status));
+
+  const totalRevenue = validData.reduce(
+    (sum, r) => sum + (r.value || 0),
+    0
+  );
+
   const currency = data[0]?.currency || "IDR";
   const W =
     (styles.cNum.width || 0) +
@@ -89,7 +96,7 @@ export default function ContractsReportPDF({ data = [], filters = {} }) {
         <View style={styles.table}>
           <View style={[styles.row, styles.headRow]}>
             <Text style={[styles.cell, styles.center, styles.cNum]} wrap={false}>
-              Number
+              Contract Number
             </Text>
             <Text style={[styles.cell, styles.center, styles.cTitle]}>
               Title
@@ -109,21 +116,24 @@ export default function ContractsReportPDF({ data = [], filters = {} }) {
             </Text>
           </View>
 
-          {data.length === 0 ? (
+          {validData.length === 0 ? (
             <View style={styles.row} wrap={false}>
               <Text style={[styles.cell, { width: 786 }]}>No data</Text>
             </View>
           ) : (
             <>
-              {data.map((r) => (
+              {validData.map((r) => (
                 <View key={r.id} style={styles.row} wrap={false}>
-                  <Text style={[styles.cell, styles.cNum, styles.center]} wrap={false}>
+                  <Text
+                    style={[styles.cell, styles.cNum, styles.center]}
+                    wrap={false}
+                  >
                     {r.number}
                   </Text>
                   <Text style={[styles.cell, styles.cTitle]}>{r.title}</Text>
-                  <Text
-                    style={[styles.cell, styles.center, styles.cParty]}
-                  >{r.counterparty || "-"}</Text>
+                  <Text style={[styles.cell, styles.center, styles.cParty]}>
+                    {r.counterparty || "-"}
+                  </Text>
                   <Text
                     style={[styles.cell, styles.cVal, styles.right]}
                     wrap={false}
@@ -157,7 +167,7 @@ export default function ContractsReportPDF({ data = [], filters = {} }) {
                   ]}
                   wrap={false}
                 >
-                  Total Revenue
+                  Total Revenue ({currency})
                 </Text>
 
                 <Text

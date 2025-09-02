@@ -7,11 +7,11 @@ export default function AdminLayout(){
             <div className="hidden lg:block bg-gradient-to-br from-indigo-600 to-blue-600">
                 <div className="bg-[color:var(--bg,#0b1220)]">
                 </div>
-                
+
 
             </div>
 
         </div>
-
+<AppFooter variant="app" />
     </div>
 }

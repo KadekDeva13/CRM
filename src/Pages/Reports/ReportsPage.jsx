@@ -57,11 +57,16 @@ function ReportsInner() {
     });
   }, [raw, status, startDate, endDate]);
 
-  const totals = useMemo(() => {
-    const totalValue = filtered.reduce((acc, r) => acc + (Number(r.value) || 0), 0);
-    const byStatus = filtered.reduce((acc, r) => ((acc[r.status] = (acc[r.status] || 0) + 1), acc), {});
-    return { count: filtered.length, totalValue, byStatus };
-  }, [filtered]);
+const totals = useMemo(() => {
+  const EXCLUDE = new Set(["Declined", "Expired"]);
+  const totalValue = filtered.reduce((acc, r) => {
+    if (EXCLUDE.has(r.status)) return acc;
+    return acc + (Number(r.value) || 0);
+  }, 0);
+  const byStatus = filtered.reduce((acc, r) => ((acc[r.status] = (acc[r.status] || 0) + 1), acc), {});
+  return { count: filtered.length, totalValue, byStatus };
+}, [filtered]);
+
 
   const filename = `contracts-report-${format(new Date(), "yyyyMMdd-HHmm")}.pdf`;
 
@@ -138,7 +143,7 @@ function ReportsInner() {
         <table className="min-w-full text-sm text-white/90">
           <thead className="bg-white/5 text-white/70">
             <tr>
-              <th className="px-4 py-2 text-center">Number</th>
+              <th className="px-4 py-2 text-center">Contract Number</th>
               <th className="px-4 py-2 text-center">Title</th>
               <th className="px-4 py-2 text-center">Counterparty</th>
               <th className="px-4 py-2 text-center">Value</th>
