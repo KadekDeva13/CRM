@@ -5,9 +5,10 @@ import MainLayout from "../Layouts/Main Layouts/MainLayout.jsx";
 import Login from "../Pages/Auth/Login.jsx";
 import Dashboard from "../Pages/Dashboard/dashboardPage.jsx";
 import ContactsPage from "../Pages/Contact/contactPage.jsx";
+import ContractsPage from "../Pages/Contract/ContractsPage.jsx";
+import ReportsPage from "../Pages/Reports/ReportsPage.jsx";
 
-const Contracts = () => <div className="text-white">Contracts content</div>;
-const Reports   = () => <div className="text-white">Reports content</div>;
+
 
 export default function AppRouter() {
   return (
@@ -22,8 +23,8 @@ export default function AppRouter() {
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/contacts"  element={<ContactsPage />} />
-          <Route path="/contracts" element={<Contracts />} />
-          <Route path="/reports"   element={<Reports />} />
+          <Route path="/contracts" element={<ContractsPage />} />
+          <Route path="/reports"   element={<ReportsPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
