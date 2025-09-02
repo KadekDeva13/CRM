@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Button from "../../components/UI/button";
-import { Field, inputCls } from "../../components/UI/field";
+import { Field } from "../../components/UI/field";
 import PasswordField from "../../components/UI/passwordField";
+import EmailField from "../../components/UI/emailField";
 
 const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 const isValidPassword = (v) => typeof v === "string" && v.length >= 6;
@@ -57,34 +58,9 @@ export default function Login() {
             Use company email for login to CRM.
           </p>
 
-          <Field label="Email" htmlFor="email">
-            <input
-              id="email"
-              name="email"                 
-              type="email"
-              placeholder="you@company.com"
-              autoComplete="email"
-              className={inputCls}
-              disabled={loading}
-              required
-            />
-          </Field>
+          <EmailField name="email" disabled={loading} required />
 
           <PasswordField name="password" disabled={loading} required />
-
-          <div className="flex items-center justify-between">
-            <label className="inline-flex items-center gap-3 select-none">
-              <input
-                type="checkbox"
-                defaultChecked
-                className="h-4 w-4 rounded border-neutral-300 text-blue-600 focus:ring-blue-500 dark:border-neutral-600 dark:bg-neutral-900"
-                disabled={loading}
-              />
-              <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                Remember Me
-              </span>
-            </label>
-          </div>
 
           <Button type="submit" className="w-full" disabled={loading} aria-busy={loading}>
             {loading ? (
@@ -101,7 +77,7 @@ export default function Login() {
           </Button>
 
           <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">
-            By login, you agree{" "}
+            By login, you are agree{" "}
             <a className="underline hover:text-neutral-700" href="#">Terms &amp; Condition</a> and{" "}
             <a className="underline hover:text-neutral-700" href="#">Privacy Policy</a>.
           </p>

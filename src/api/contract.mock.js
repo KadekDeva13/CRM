@@ -22,14 +22,14 @@ function save(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
 
 function makeSeed() {
   const base = [
-    { title: "Maintenance Service Agreement", counterparty: "PT Nusantara Teknik", value: 120_000_000, currency: "IDR", status: "Signed",       effective_date: "2025-07-01", end_date: "2026-06-30", owner_name: "Ayu",   tags: ["priority"], description: "Kontrak perawatan tahunan." },
+    { title: "Maintenance Service Agreement", counterparty: "PT Nusantara Teknik", value: 12_000_000, currency: "IDR", status: "Signed",       effective_date: "2025-07-01", end_date: "2026-06-30", owner_name: "Ayu",   tags: ["priority"], description: "Kontrak perawatan tahunan." },
     { title: "Software License Renewal",      counterparty: "Acme Software Ltd",    value: 8_500,       currency: "USD", status: "Under Review", effective_date: "2025-09-10", end_date: "2026-09-09", owner_name: "Budi",  tags: ["renewal"],  description: "Renewal 100 seats." },
-    { title: "Distribution Agreement",        counterparty: "PT Sinar Jaya",        value: 350_000_000, currency: "IDR", status: "Draft",        effective_date: "2025-10-01", end_date: "2026-09-30", owner_name: "Citra", tags: [],           description: "Perjanjian distribusi wilayah Jawa." },
+    { title: "Distribution Agreement",        counterparty: "PT Sinar Jaya",        value: 35_000_000, currency: "IDR", status: "Draft",        effective_date: "2025-10-01", end_date: "2026-09-30", owner_name: "Citra", tags: [],           description: "Perjanjian distribusi wilayah Jawa." },
     { title: "NDA with Beta Corp",            counterparty: "Beta Corp",            value: 0,           currency: "USD", status: "Signed",       effective_date: "2025-08-01", end_date: "2027-07-31", owner_name: "Dedi",  tags: ["legal"],    description: "Mutual NDA." },
     { title: "Marketing Services",            counterparty: "Gamma IO",             value: 55_000_000,  currency: "IDR", status: "Sent",          effective_date: "2025-09-05", end_date: "2026-03-04", owner_name: "Eka",   tags: ["campaign"], description: "Jasa campaign Q4." },
-    { title: "Cloud Hosting",                 counterparty: "Cloudy Pte Ltd",       value: 18_200,      currency: "USD", status: "Declined",      effective_date: "2025-06-01", end_date: "2026-05-31", owner_name: "Fajar", tags: [],           description: "Hosting 12 bulan." },
-    { title: "Equipment Lease",               counterparty: "PT Mitra Alat",        value: 210_000_000, currency: "IDR", status: "Expired",       effective_date: "2024-07-01", end_date: "2025-06-30", owner_name: "Gina",  tags: ["ops"],      description: "Sewa alat produksi." },
-    { title: "Support Retainer",              counterparty: "Delta IO",             value: 95_000_000,  currency: "IDR", status: "Prospect",      effective_date: "2025-09-15", end_date: "2026-09-14", owner_name: "Hadi",  tags: ["support"],  description: "Retainer bulanan." },
+    { title: "Cloud Hosting",                 counterparty: "Cloudy Pte Ltd",       value: 1_800_000,      currency: "USD", status: "Declined",      effective_date: "2025-06-01", end_date: "2026-05-31", owner_name: "Fajar", tags: [],           description: "Hosting 12 bulan." },
+    { title: "Equipment Lease",               counterparty: "PT Mitra Alat",        value: 10_000_000, currency: "IDR", status: "Expired",       effective_date: "2024-07-01", end_date: "2025-06-30", owner_name: "Gina",  tags: ["ops"],      description: "Sewa alat produksi." },
+    { title: "Support Retainer",              counterparty: "Delta IO",             value: 5_000_000,  currency: "IDR", status: "Prospect",      effective_date: "2025-09-15", end_date: "2026-09-14", owner_name: "Hadi",  tags: ["support"],  description: "Retainer bulanan." },
   ];
   return base.map((b, i) => ({
     id: uid(),

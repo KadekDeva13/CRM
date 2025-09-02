@@ -28,7 +28,6 @@ export async function getContacts({ search = "", page = 1, perPage = 10, sort = 
   await sleep();
   let rows = load();
 
-  // filter search sederhana
   if (search) {
     const q = search.toLowerCase();
     rows = rows.filter(r =>
@@ -38,11 +37,9 @@ export async function getContacts({ search = "", page = 1, perPage = 10, sort = 
     );
   }
 
-  // filter status & tags (opsional)
   if (status) rows = rows.filter(r => r.status === status);
   if (tags.length) rows = rows.filter(r => (r.tags || []).some(t => tags.includes(t)));
 
-  // sort "field:dir"
   const [field = "updated_at", dir = "desc"] = String(sort).split(":");
   rows.sort((a, b) => {
     const va = a[field], vb = b[field];
@@ -54,7 +51,6 @@ export async function getContacts({ search = "", page = 1, perPage = 10, sort = 
     return 0;
   });
 
-  // pagination
   const total = rows.length;
   const start = (page - 1) * perPage;
   const data = rows.slice(start, start + perPage);

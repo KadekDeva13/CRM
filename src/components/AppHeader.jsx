@@ -1,3 +1,5 @@
+import DropdownProfile from "./Dropdown/DropdownProfile";
+
 export default function AppHeader({ onMenu, collapsed, setCollapsed }) {
   return (
     <header className="sticky top-0 z-40 h-16 w-full bg-black/40 backdrop-blur ring-1 ring-white/10">
@@ -28,10 +30,14 @@ export default function AppHeader({ onMenu, collapsed, setCollapsed }) {
             {collapsed ? "»" : "«"} Menu
           </button>
 
-          <button className="inline-flex h-9 items-center gap-2 rounded-lg bg-white/10 px-3 text-sm ring-1 ring-white/10">
-            <span className="inline-block h-6 w-6 rounded-full bg-white/20" />
-            <span className="hidden sm:inline">Account</span>
-          </button>
+          {/* Ganti button Account + Dropdown jadikan satu komponen */}
+          <DropdownProfile
+            onLogout={async () => {
+              // kalau kamu sudah punya flow logout global (toast, API, dll), taruh di sini
+              // contoh singkat:
+              // await api.post('/logout');
+            }}
+          />
         </div>
       </div>
     </header>

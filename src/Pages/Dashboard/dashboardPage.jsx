@@ -13,19 +13,19 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl bg-blue-600/20 ring-1 ring-blue-500/40">
           <h3 className="text-sm text-white/70">Total Contacts</h3>
-          <p className="text-2xl font-bold text-white">120</p>
+          <p className="text-2xl font-bold text-white">8</p>
         </div>
         <div className="p-4 rounded-xl bg-green-600/20 ring-1 ring-green-500/40">
           <h3 className="text-sm text-white/70">Active Contracts</h3>
-          <p className="text-2xl font-bold text-white">34</p>
+          <p className="text-2xl font-bold text-white">7</p>
         </div>
         <div className="p-4 rounded-xl bg-yellow-600/20 ring-1 ring-yellow-500/40">
           <h3 className="text-sm text-white/70">Tasks Today</h3>
-          <p className="text-2xl font-bold text-white">7</p>
+          <p className="text-2xl font-bold text-white">5</p>
         </div>
         <div className="p-4 rounded-xl bg-purple-600/20 ring-1 ring-purple-500/40">
           <h3 className="text-sm text-white/70">Revenue (This Month)</h3>
-          <p className="text-2xl font-bold text-white">$12,400</p>
+          <p className="text-2xl font-bold text-white">Rp 830.026.700</p>
         </div>
       </div>
 
