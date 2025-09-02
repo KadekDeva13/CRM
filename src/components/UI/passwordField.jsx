@@ -1,12 +1,32 @@
 import { useState } from "react";
 import { Field, inputCls } from "./field";
 
-export default function PasswordField({ id="password", label="Password", placeholder="••••••••" }) {
+export default function PasswordField({
+  id = "password",
+  name = "password",         
+  label = "Password",
+  placeholder = "••••••••",
+  autoComplete = "current-password",
+  disabled = false,
+  required = true,
+  ...rest
+}) {
   const [show, setShow] = useState(false);
+
   return (
     <Field label={label} htmlFor={id}>
       <div className="relative">
-        <input id={id} type={show ? "text" : "password"} placeholder={placeholder} autoComplete="current-password" className={inputCls + " pr-11"} />
+        <input
+          id={id}
+          name={name}                      
+          type={show ? "text" : "password"}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          className={inputCls + " pr-11"}
+          disabled={disabled}
+          required={required}
+          {...rest}                       
+        />
         <button
           type="button"
           onClick={() => setShow(!show)}

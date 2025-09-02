@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: "M4 6h16M4 12h10M4 18h7" },
@@ -41,28 +42,43 @@ const iconBtn =
 export default function AppSidebar({ collapsed, openMobile, onCloseMobile }) {
   const navigate = useNavigate();
   const [loggingOut, setLoggingOut] = useState(false);
+  const [openSettings, setOpenSettings] = useState(false);
 
-  const handleLogout = () => {
-    if (loggingOut) return; 
-    setLoggingOut(true);
+const handleLogout = () => {
+  if (loggingOut) return;
 
-    setTimeout(() => {
-      localStorage.removeItem("token");
-      navigate("/login", { replace: true });
-    }, 800);
-  };
+  setOpenSettings(false);
+  setLoggingOut(true);
+
+  const t = toast.loading("Signing you out…");
+
+  setTimeout(() => {
+    localStorage.removeItem("token");
+
+    toast.dismiss(t);               
+    toast.success("Logout berhasil 👋");
+
+    setLoggingOut(false);
+    onCloseMobile?.(); 
+    navigate("/login", { replace: true });
+  }, 700);
+};
+
 
   const widthCls = collapsed ? "lg:w-[72px]" : "lg:w-64";
 
   return (
     <>
       {openMobile && (
-        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={onCloseMobile} />
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={() => { setOpenSettings(false); onCloseMobile?.(); }}
+        />
       )}
 
       <aside
         className={[
-          "fixed z-50 top-16 left-0 h-[calc(100svh-64px)]",
+          "z-50 top-16 left-0 h-[calc(100svh-64px)] relative",
           "w-72 bg-black/50 backdrop-blur ring-1 ring-white/10",
           "transition-transform",
           widthCls,
@@ -73,7 +89,12 @@ export default function AppSidebar({ collapsed, openMobile, onCloseMobile }) {
         <div className="flex h-full flex-col gap-4 p-3">
           <nav className="space-y-1">
             {navItems.map((it) => (
-              <Item key={it.to} {...it} collapsed={collapsed} onClick={onCloseMobile} />
+              <Item
+                key={it.to}
+                {...it}
+                collapsed={collapsed}
+                onClick={() => { setOpenSettings(false); onCloseMobile?.(); }}
+              />
             ))}
           </nav>
 
@@ -81,6 +102,7 @@ export default function AppSidebar({ collapsed, openMobile, onCloseMobile }) {
             <div className="hidden lg:block space-y-2">
               <button
                 type="button"
+                onClick={() => setOpenSettings((v) => !v)}
                 className={collapsed ? iconBtn : fullBtn}
                 title={collapsed ? "Settings" : undefined}
                 aria-label="Settings"
@@ -132,9 +154,22 @@ export default function AppSidebar({ collapsed, openMobile, onCloseMobile }) {
             </div>
 
             <div className="lg:hidden space-y-2">
-              <button type="button" className={fullBtn} disabled={loggingOut}>
+              <button
+                type="button"
+                className={fullBtn}
+                onClick={() => setOpenSettings((v) => !v)}
+                disabled={loggingOut}
+              >
                 Settings
               </button>
+
+              {openSettings && (
+                <div className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2">
+                  <div className="flex items-center justify-between">
+                  </div>
+                </div>
+              )}
+
               <button
                 type="button"
                 onClick={handleLogout}
@@ -155,6 +190,15 @@ export default function AppSidebar({ collapsed, openMobile, onCloseMobile }) {
             </div>
           </div>
         </div>
+
+        {openSettings && (
+          <div className="hidden lg:block absolute left-3 right-3 bottom-24 z-50">
+            <div className="rounded-xl bg-[color:var(--bg,#0b1220)]/95 ring-1 ring-white/10 px-4 py-3 shadow-2xl">
+              <div className="flex items-center justify-between">
+              </div>
+            </div>
+          </div>
+        )}
       </aside>
 
       {loggingOut && (

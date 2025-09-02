@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import Button from "../../components/UI/button";
 import { Field, inputCls } from "../../components/UI/field";
 import PasswordField from "../../components/UI/passwordField";
+
+const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const isValidPassword = (v) => typeof v === "string" && v.length >= 6;
 
 export default function Login() {
   const navigate = useNavigate();
@@ -12,11 +16,24 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
 
-    // TODO: nanti ganti dengan call API, validasi credential, dst.
-    setTimeout(() => {
+    const form = new FormData(e.currentTarget);
+    const email = String(form.get("email") || "").trim();
+    const password = String(form.get("password") || "");
+
+    if (!isValidEmail(email)) {
       setLoading(false);
-      navigate("/dashboard");
-    }, 900);
+      toast.error("Format email tidak valid");
+      return;
+    }
+    if (!isValidPassword(password)) {
+      setLoading(false);
+      toast.error("Password minimal 6 karakter");
+      return;
+    }
+
+    toast.success("Login berhasil! 👋");
+    setLoading(false);
+    navigate("/dashboard");
   };
 
   return (
@@ -43,15 +60,17 @@ export default function Login() {
           <Field label="Email" htmlFor="email">
             <input
               id="email"
+              name="email"                 
               type="email"
               placeholder="you@company.com"
               autoComplete="email"
               className={inputCls}
               disabled={loading}
+              required
             />
           </Field>
 
-          <PasswordField disabled={loading} />
+          <PasswordField name="password" disabled={loading} required />
 
           <div className="flex items-center justify-between">
             <label className="inline-flex items-center gap-3 select-none">
@@ -83,7 +102,7 @@ export default function Login() {
 
           <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">
             By login, you agree{" "}
-            <a className="underline hover:text-neutral-700" href="#">Terms & Condition</a> and{" "}
+            <a className="underline hover:text-neutral-700" href="#">Terms &amp; Condition</a> and{" "}
             <a className="underline hover:text-neutral-700" href="#">Privacy Policy</a>.
           </p>
         </form>
