@@ -12,7 +12,7 @@ const dummyData = [
   { name: "Jun", sales: 520, target: 480 },
   { name: "Jul", sales: 610, target: 500 },
   { name: "Aug", sales: 650, target: 630 },
-  { name: "Sep", sales: 700, target: 680 },
+  { name: "Sep", sales: 710, target: 680 },
 ];
 
 export default function SalesLineChart({ data = dummyData, height = 280, className = "" }) {
