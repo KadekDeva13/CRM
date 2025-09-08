@@ -8,6 +8,8 @@ type Filters = {
   startDate?: string; 
   endDate?: string;   
   status?: string;
+  year?: number;
+  month?: number;     
 };
 
 type Props = {
@@ -34,12 +36,13 @@ const styles = StyleSheet.create({
   center: { textAlign: "center" as const },
   right: { textAlign: "right" as const },
 
-  cNum: { width: 110 },
+  cNum: { width: 96 },
   cTitle: { width: 200 },
-  cParty: { width: 170 },
-  cVal: { width: 110 },
-  cStat: { width: 100 },
-  cEnd: { width: 96 },
+  cParty: { width: 160 },
+  cVal: { width: 100 },
+  cStat: { width: 90 },
+  cEff: { width: 70 },
+  cEnd: { width: 70 },
 
   footer: {
     position: "absolute" as const,
@@ -76,15 +79,23 @@ export default function ContractsReportPDF({
 }: Props): React.ReactElement {
   const nowStr = format(new Date(), "dd MMM yyyy HH:mm", { locale: id });
 
-  const rangeStr =
-    filters.startDate || filters.endDate
-      ? `${filters.startDate ? format(new Date(filters.startDate), "dd MMM yyyy", { locale: id }) : "—"}  →  ${
-          filters.endDate ? format(new Date(filters.endDate), "dd MMM yyyy", { locale: id }) : "—"
-        }`
-      : "All Dates";
-
   const statusStr =
     filters.status && filters.status !== "" ? filters.status : "All Status";
+  let periodStr = "All Dates";
+  if (filters.year && filters.month) {
+    const d = new Date(filters.year, (filters.month ?? 1) - 1, 1);
+    periodStr = format(d, "MMMM yyyy", { locale: id });
+  } else if (filters.year) {
+    periodStr = `Year ${filters.year}`;
+  } else if (filters.startDate || filters.endDate) {
+    const s = filters.startDate
+      ? format(new Date(filters.startDate), "dd MMM yyyy", { locale: id })
+      : "—";
+    const e = filters.endDate
+      ? format(new Date(filters.endDate), "dd MMM yyyy", { locale: id })
+      : "—";
+    periodStr = `${s}  →  ${e}`;
+  }
 
   const EXCLUDE = new Set<string>(["Declined", "Expired"]);
   const validData = data.filter((r) => !EXCLUDE.has(String(r.status)));
@@ -95,14 +106,14 @@ export default function ContractsReportPDF({
   );
 
   const currency = data[0]?.currency || "IDR";
-
   const W =
     getWidth(styles.cNum) +
     getWidth(styles.cTitle) +
     getWidth(styles.cParty) +
     getWidth(styles.cVal);
-  const WRight = getWidth(styles.cStat) + getWidth(styles.cEnd);
-  const TABLE_WIDTH = W + WRight;
+  const WRight =
+    getWidth(styles.cStat) + getWidth(styles.cEff) + getWidth(styles.cEnd);
+  const TABLE_WIDTH = W + WRight; 
 
   return (
     <Document>
@@ -111,7 +122,7 @@ export default function ContractsReportPDF({
           <Text style={styles.title}>Contracts Report</Text>
           <Text style={styles.sub}>Generated: {nowStr}</Text>
           <Text style={styles.sub}>
-            Range: {rangeStr} • Status: {statusStr}
+            Period: {periodStr} • Status: {statusStr}
           </Text>
         </View>
 
@@ -129,6 +140,9 @@ export default function ContractsReportPDF({
             <Text style={[styles.cell, styles.center, styles.cVal]}>Value</Text>
             <Text style={[styles.cell, styles.center, styles.cStat]}>
               Status
+            </Text>
+            <Text style={[styles.cell, styles.center, styles.cEff]} wrap={false}>
+              Effective Date
             </Text>
             <Text style={[styles.cell, styles.center, styles.cEnd]} wrap={false}>
               End Date
@@ -155,6 +169,9 @@ export default function ContractsReportPDF({
                   </Text>
                   <Text style={[styles.cell, styles.center, styles.cStat]}>
                     {String(r.status)}
+                  </Text>
+                  <Text style={[styles.cell, styles.cEff, styles.center]} wrap={false}>
+                    {fmtDate(r.effective_date)}
                   </Text>
                   <Text style={[styles.cell, styles.cEnd, styles.center]} wrap={false}>
                     {fmtDate(r.end_date)}
@@ -183,7 +200,7 @@ export default function ContractsReportPDF({
                     {
                       width: WRight,
                       fontWeight: "bold",
-                      textAlign: "right",
+                      textAlign: "center",
                     },
                   ]}
                   wrap={false}

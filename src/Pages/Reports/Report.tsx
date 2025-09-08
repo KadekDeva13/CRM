@@ -49,8 +49,10 @@ function ReportsInner(): React.ReactElement {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [status, setStatus] = useState<StatusFilter>("");
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>(""); 
+  const [endDate, setEndDate] = useState<string>("");    
+  const [year, setYear] = useState<number | "">("");
+  const [month, setMonth] = useState<number | "">("");
 
   const [gen, setGen] = useState<boolean>(false);
 
@@ -70,9 +72,49 @@ function ReportsInner(): React.ReactElement {
     fetchData();
   }, []);
 
+  const yearOptions = useMemo<number[]>(() => {
+    const years = new Set<number>();
+    raw.forEach((r) => {
+      if (r.effective_date) years.add(new Date(r.effective_date).getFullYear());
+      if (r.end_date) years.add(new Date(r.end_date).getFullYear());
+    });
+    if (years.size === 0) {
+      const nowY = new Date().getFullYear();
+      return Array.from({ length: 5 }, (_, i) => nowY - i).reverse();
+    }
+    return Array.from(years).sort((a, b) => a - b);
+  }, [raw]);
+
+  function overlapsRange(r: Contract, rangeStart: Date, rangeEnd: Date): boolean {
+    const eff = r.effective_date ? new Date(r.effective_date) : null;
+    const ed = r.end_date ? new Date(r.end_date) : null;
+    if (!eff || !ed) return false;
+    return eff <= rangeEnd && ed >= rangeStart;
+  }
+
+  const yearMonthRange = useMemo<null | { start: Date; end: Date }>(() => {
+    if (!year) return null;
+    const m = month && month >= 1 && month <= 12 ? month : 1;
+    const start = new Date(Number(year), Number(m) - 1, 1);
+    const end = new Date(Number(year), Number(m) - 1 + 1, 0);
+    if (!month) {
+      return {
+        start: new Date(Number(year), 0, 1),
+        end: new Date(Number(year), 11, 31),
+      };
+    }
+    return { start, end };
+  }, [year, month]);
+
   const filtered = useMemo<Contract[]>(() => {
     return raw.filter((r) => {
       if (status && r.status !== status) return false;
+
+      if (yearMonthRange) {
+        if (!overlapsRange(r, yearMonthRange.start, yearMonthRange.end)) return false;
+        return true;
+      }
+
       if (startDate) {
         const eff = r.effective_date ? new Date(r.effective_date) : null;
         if (!eff || eff < new Date(startDate)) return false;
@@ -83,7 +125,7 @@ function ReportsInner(): React.ReactElement {
       }
       return true;
     });
-  }, [raw, status, startDate, endDate]);
+  }, [raw, status, startDate, endDate, yearMonthRange]);
 
   const totals = useMemo(() => {
     const EXCLUDE = new Set<string>(["Declined", "Expired"]);
@@ -110,7 +152,13 @@ function ReportsInner(): React.ReactElement {
       const doc = (
         <ContractsReportPDF
           data={filtered}
-          filters={{ status, startDate, endDate }}
+          filters={{
+            status,
+            startDate,
+            endDate,
+            year: year || undefined,
+            month: month || undefined,
+          }}
         />
       );
       const blob = await pdf(doc).toBlob();
@@ -124,12 +172,19 @@ function ReportsInner(): React.ReactElement {
       a.remove();
       URL.revokeObjectURL(url);
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error("PDF generate error:", err);
       toast.error("Gagal generate PDF");
     } finally {
       setGen(false);
     }
+  };
+
+  const resetAll = () => {
+    setStatus("");
+    setStartDate("");
+    setEndDate("");
+    setYear("");
+    setMonth("");
   };
 
   return (
@@ -143,7 +198,7 @@ function ReportsInner(): React.ReactElement {
         </Button>
       </div>
 
-      <div className="rounded-xl bg-white/10 ring-1 ring-white/10 p-4 grid grid-cols-1 sm:grid-cols-4 gap-3">
+      <div className="rounded-xl bg-white/10 ring-1 ring-white/10 p-4 grid grid-cols-1 sm:grid-cols-6 gap-3">
         <Field label="Status">
           <select
             className={inputCls}
@@ -157,12 +212,43 @@ function ReportsInner(): React.ReactElement {
             ))}
           </select>
         </Field>
+
+        <Field label="Year">
+          <select
+            className={inputCls}
+            value={year === "" ? "" : String(year)}
+            onChange={(e) => setYear(e.target.value ? Number(e.target.value) : "")}
+          >
+            <option value="">All</option>
+            {yearOptions.map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+        </Field>
+
+        <Field label="Month">
+          <select
+            className={inputCls}
+            value={month === "" ? "" : String(month)}
+            onChange={(e) => setMonth(e.target.value ? Number(e.target.value) : "")}
+            disabled={year === ""} 
+          >
+            <option value="">All</option>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+              <option key={m} value={m}>
+                {new Date(2000, m - 1, 1).toLocaleString("en-US", { month: "long" })}
+              </option>
+            ))}
+          </select>
+        </Field>
+
         <Field label="Effective From">
           <input
             type="date"
             className={inputCls}
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            disabled={!!year}
           />
         </Field>
         <Field label="End Until">
@@ -171,18 +257,12 @@ function ReportsInner(): React.ReactElement {
             className={inputCls}
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
+            disabled={!!year}
           />
         </Field>
+
         <div className="flex items-end">
-          <Button
-            variant="ghost"
-            onClick={() => {
-              setStatus("");
-              setStartDate("");
-              setEndDate("");
-            }}
-            disabled={loading}
-          >
+          <Button variant="ghost" onClick={resetAll} disabled={loading}>
             Reset
           </Button>
         </div>
@@ -241,13 +321,13 @@ function ReportsInner(): React.ReactElement {
             ) : (
               filtered.map((r) => (
                 <tr key={r.id} className="border-t border-white/10">
-                  <td className="px-4 py-2 whitespace-nowrap">{r.number}</td>
+                  <td className="px-4 py-2 whitespace-nowrap text-center">{r.number}</td>
                   <td className="px-4 py-2">{r.title}</td>
                   <td className="px-4 py-2">{r.counterparty || "-"}</td>
-                  <td className="px-4 py-2">{fmtMoney(r.value, r.currency)}</td>
-                  <td className="px-4 py-2">{String(r.status)}</td>
-                  <td className="px-4 py-2">{r.effective_date || "-"}</td>
-                  <td className="px-4 py-2">{r.end_date || "-"}</td>
+                  <td className="px-4 py-2 text-right">{fmtMoney(r.value, r.currency)}</td>
+                  <td className="px-4 py-2 text-center">{String(r.status)}</td>
+                  <td className="px-4 py-2 text-center">{r.effective_date || "-"}</td>
+                  <td className="px-4 py-2 text-center">{r.end_date || "-"}</td>
                 </tr>
               ))
             )}

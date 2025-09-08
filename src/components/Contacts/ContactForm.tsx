@@ -42,43 +42,43 @@ export default function ContactForm({
     <form onSubmit={submit} className="space-y-3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <input
-          className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2 text-white"
+          className="rounded-lg bg-gray-900 ring-1 ring-white/10 px-3 py-2 text-white"
           placeholder="First name"
           value={form.first_name ?? ""}
           onChange={(e) => set("first_name", e.target.value)}
         />
         <input
-          className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2 text-white"
+          className="rounded-lg bg-gray-900 ring-1 ring-white/10 px-3 py-2 text-white"
           placeholder="Last name"
           value={form.last_name ?? ""}
           onChange={(e) => set("last_name", e.target.value)}
         />
         <input
-          className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2 text-white"
+          className="rounded-lg bg-gray-900 ring-1 ring-white/10 px-3 py-2 text-white"
           placeholder="Email"
           value={form.email ?? ""}
           onChange={(e) => set("email", e.target.value)}
         />
         <input
-          className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2 text-white"
+          className="rounded-lg bg-gray-900 ring-1 ring-white/10 px-3 py-2 text-white"
           placeholder="Phone"
           value={form.phone ?? ""}
           onChange={(e) => set("phone", e.target.value)}
         />
         <input
-          className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2 text-white"
+          className="rounded-lg bg-gray-900 ring-1 ring-white/10 px-3 py-2 text-white"
           placeholder="Company"
           value={form.company ?? ""}
           onChange={(e) => set("company", e.target.value)}
         />
         <input
-          className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2 text-white"
+          className="rounded-lg bg-gray-900 ring-1 ring-white/10 px-3 py-2 text-white"
           placeholder="Job title"
           value={form.job_title ?? ""}
           onChange={(e) => set("job_title", e.target.value)}
         />
         <select
-          className="rounded-lg bg-white/10 ring-1 ring-white/10 px-3 py-2 text-white"
+          className="rounded-lg bg-gray-900 ring-1 ring-white/10 px-3 py-2 text-white/50"
           value={form.status ?? "Lead"}
           onChange={(e) => set("status", e.target.value)}
         >

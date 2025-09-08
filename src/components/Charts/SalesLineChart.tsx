@@ -30,8 +30,8 @@ const dummyData: SalesData[] = [
   { name: "May", sales: 470, target: 470 },
   { name: "Jun", sales: 520, target: 480 },
   { name: "Jul", sales: 610, target: 500 },
-  { name: "Aug", sales: 650, target: 630 },
-  { name: "Sep", sales: 710, target: 680 },
+  { name: "Aug", sales: 600, target: 630 },
+  { name: "Sep", sales: 670, target: 650 },
 ];
 
 export default function SalesLineChart({

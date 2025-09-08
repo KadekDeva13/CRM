@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { NavLink } from "react-router-dom";
+import { useLogout } from "../hooks/useLogout";
 
 type NavItem = {
   to: string;
@@ -29,14 +29,12 @@ type SidebarContentProps = {
   isDesktop: boolean;
 };
 
-
 const navItems: NavItem[] = [
   { to: "/dashboard", label: "Dashboard", icon: "M4 6h16M4 12h10M4 18h7" },
   { to: "/contacts",  label: "Contacts",  icon: "M5 7a7 7 0 1114 0v10H5V7z" },
   { to: "/contracts", label: "Contracts", icon: "M6 4h9l5 5v11H6V4z" },
   { to: "/reports",   label: "Reports",   icon: "M4 19V5h6v14M14 19V9h6v10" },
 ] as const;
-
 
 function SpinnerSm(): React.ReactElement {
   return (
@@ -80,8 +78,6 @@ export default function AppSidebar({
   openMobile,
   onCloseMobile,
 }: AppSidebarProps): React.ReactElement  {
-  const navigate = useNavigate();
-  const [loggingOut, setLoggingOut] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
 
   useEffect(() => {
@@ -89,25 +85,20 @@ export default function AppSidebar({
     return () => document.body.classList.remove("overflow-hidden");
   }, [openMobile]);
 
-  const handleLogout = () => {
-    if (loggingOut) return;
+  // Pakai hook logout (konsisten dengan Dropdown)
+  const { loggingOut, logout } = useLogout();
+
+  const handleLogout = async () => {
     setOpenSettings(false);
-    setLoggingOut(true);
-    const t = toast.loading("Signing you out…");
-    setTimeout(() => {
-      localStorage.removeItem("token");
-      toast.dismiss(t);
-      toast.success("Logout berhasil 👋");
-      setLoggingOut(false);
-      onCloseMobile?.();
-      navigate("/login", { replace: true });
-    }, 700);
+    onCloseMobile?.(); // tutup drawer mobile bila terbuka
+    await logout();    // akan hapus token, tampilkan toast, lalu navigate("/login")
   };
 
   const widthDesktop = collapsed ? "lg:w-[72px]" : "lg:w-64";
 
   return (
     <>
+      {/* Overlay untuk mobile */}
       <div
         className={`fixed inset-0 z-40 bg-black/50 lg:hidden transition-opacity ${
           openMobile ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
@@ -119,6 +110,7 @@ export default function AppSidebar({
         aria-hidden={!openMobile}
       />
 
+      {/* Sidebar Mobile */}
       <aside
         className={[
           "fixed inset-y-0 left-0 z-50 w-72 bg-black/50 backdrop-blur ring-1 ring-white/10",
@@ -143,6 +135,7 @@ export default function AppSidebar({
         />
       </aside>
 
+      {/* Sidebar Desktop */}
       <aside
         className={[
           "hidden lg:flex lg:flex-col",

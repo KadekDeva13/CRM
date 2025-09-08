@@ -18,7 +18,7 @@ export interface Contact {
   job_title: string;
   status: "Lead" | "Prospect" | "Customer" | "Inactive" | string;
   tags: string[];
-  created_at: string;
+  created_at: string; 
   updated_at: string;
 }
 

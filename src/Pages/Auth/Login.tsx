@@ -15,7 +15,7 @@ export default function Login(): React.ReactElement  {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -35,6 +35,7 @@ export default function Login(): React.ReactElement  {
     }
 
     toast.success("Login berhasil! 👋");
+    await new Promise((res) => setTimeout(res, 1000));
     setLoading(false);
     navigate("/dashboard");
   };

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLogout } from "../../hooks/useLogout";
 
 type DropdownProfileProps = {
   onLogout?: () => Promise<void> | void;
@@ -9,6 +10,8 @@ export default function DropdownProfile({ onLogout }: DropdownProfileProps): Rea
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  const { loggingOut, logout } = useLogout(onLogout);
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -31,25 +34,21 @@ export default function DropdownProfile({ onLogout }: DropdownProfileProps): Rea
     navigate(to);
   };
 
-  const handleLogout = async () => {
+  const handleLogoutClick = async () => {
     setOpen(false);
-    try {
-      localStorage.removeItem("token");
-      await onLogout?.();
-    } finally {
-      navigate("/login", { replace: true });
-    }
+    await logout();
   };
 
   return (
     <div ref={ref} className="relative">
-      {/* Trigger */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="inline-flex h-9 items-center gap-2 rounded-lg bg-white/10 px-3 text-sm ring-1 ring-white/10 hover:bg-white/15"
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-busy={loggingOut}
+        disabled={loggingOut}
       >
         <span className="inline-block h-6 w-6 rounded-full bg-white/20" />
         <span className="hidden sm:inline">Account</span>
@@ -67,7 +66,6 @@ export default function DropdownProfile({ onLogout }: DropdownProfileProps): Rea
         </svg>
       </button>
 
-      {/* Menu */}
       {open && (
         <div
           role="menu"
@@ -82,12 +80,15 @@ export default function DropdownProfile({ onLogout }: DropdownProfileProps): Rea
           </button>
 
           <div className="h-px bg-gray-100" />
+
           <button
-            onClick={handleLogout}
-            className="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+            onClick={handleLogoutClick}
+            className="block w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 disabled:opacity-60"
             role="menuitem"
+            aria-busy={loggingOut}
+            disabled={loggingOut}
           >
-            Logout
+            {loggingOut ? "Logging out…" : "Logout"}
           </button>
         </div>
       )}
