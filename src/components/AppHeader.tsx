@@ -46,9 +46,8 @@ export default function AppHeader({
 
           <DropdownProfile
             onLogout={async () => {
-              // taruh flow logout-mu di sini jika ada
-              // contoh:
-              // await api.post('/logout');
+              await new Promise((res) => setTimeout(res, 1000));
+              localStorage.removeItem("token");
             }}
           />
         </div>

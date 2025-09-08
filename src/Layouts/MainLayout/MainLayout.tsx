@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import AppHeader from "../../components/AppHeader";
 import AppSidebar from "../../components/AppSidebar";
-import AppFooter from "../../components/AppFooter";
 
 export default function MainLayout(): React.ReactElement {
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -34,8 +33,6 @@ export default function MainLayout(): React.ReactElement {
           </div>
         </main>
       </div>
-
-      <AppFooter variant="app" />
     </div>
   );
 }
