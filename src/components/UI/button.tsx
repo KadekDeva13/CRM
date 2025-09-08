@@ -39,8 +39,8 @@ export default function Button<T extends React.ElementType = "button">({
       ? "bg-white/10 text-white ring-1 ring-white/10 hover:bg-white/20"
       : variant === "danger"
       ? "bg-red-600 text-white ring-1 ring-red-600/20 hover:bg-red-700"
-      : // primary (default)
-        "bg-blue-600 text-white ring-1 ring-blue-600/20 hover:bg-blue-700";
+      : 
+        "bg-#112D30 text-white ring-1 ring-blue-600/20 hover:bg-#112D30";
 
   return (
     <Component
