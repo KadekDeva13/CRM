@@ -1,331 +1,360 @@
 import React from "react";
 import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
+    ResponsiveContainer,
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    BarChart,
+    Bar,
+    PieChart,
+    Pie,
+    Cell,
 } from "recharts";
 
 type BaseProps = {
-  title: string;
-  className?: string;
-  headerRight?: React.ReactNode;
-  children?: React.ReactNode;
+    title: string;
+    className?: string;
+    headerRight?: React.ReactNode;
+    children?: React.ReactNode;
 };
 
 export function ChartCard({ title, className, headerRight, children }: BaseProps) {
-  return (
-    <div
-      className={[
-        "rounded-2xl border border-white/5 bg-[#1a1a1a]/80 p-4 md:p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset]",
-        "backdrop-blur",
-        className || "",
-      ].join(" ")}
-    >
-      <div className="mb-3 flex items-center justify-between">
-        <div className="text-sm font-semibold text-white">{title}</div>
-        <div className="flex items-center gap-3 text-xs text-white/70">{headerRight}</div>
-      </div>
+    return (
+        <div
+            className={[
+                "rounded-2xl border border-white/5 bg-[#1a1a1a]/80 p-4 md:p-5 shadow-[0_0_0_1px_rgba(255,255,255,0.03)_inset]",
+                "backdrop-blur",
+                className || "",
+            ].join(" ")}
+        >
+            <div className="mb-3 flex items-center justify-between">
+                <div className="text-sm font-semibold text-white">{title}</div>
+                <div className="flex items-center gap-3 text-xs text-white/70">{headerRight}</div>
+            </div>
 
-      <div className="h-[260px] md:h-[300px]">{children}</div>
-    </div>
-  );
+            <div className="h-[260px] md:h-[300px]">{children}</div>
+        </div>
+    );
 }
-
 
 export type LineSeries = { dataKey: string; name?: string };
 
 export type LineChartCardProps = {
-  title: string;
-  data: Array<Record<string, number | string>>;
-  xKey: string;
-  series: LineSeries[];
-  headerRight?: React.ReactNode;
-  className?: string;
+    title: string;
+    data: Array<Record<string, number | string>>;
+    xKey: string;
+    series: LineSeries[];
+    headerRight?: React.ReactNode;
+    className?: string;
 };
 
 export function LineChartCard({
-  title,
-  data,
-  xKey,
-  series,
-  headerRight,
-  className,
+    title,
+    data,
+    xKey,
+    series,
+    headerRight,
+    className,
 }: LineChartCardProps) {
-  return (
-    <ChartCard title={title} headerRight={headerRight} className={className}>
-      <ResponsiveContainer>
-        <LineChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
-          <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
-          <XAxis
-            dataKey={xKey}
-            tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-          />
-          <YAxis
-            tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-          />
-          <Tooltip
-            contentStyle={{
-              background: "#1f1f1f",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 10,
-              color: "#fff",
-            }}
-          />
-          {series.map((s, i) => (
-            <Line
-              key={s.dataKey}
-              type="monotone"
-              dataKey={s.dataKey}
-              name={s.name}
-              stroke={LINE_COLORS[i % LINE_COLORS.length]}
-              strokeWidth={2}
-              dot={{ r: 3, strokeWidth: 2 }}
-              activeDot={{ r: 5 }}
-            />
-          ))}
-          <Legend wrapperStyle={{ color: "#fff", fontSize: 12 }} />
-        </LineChart>
-      </ResponsiveContainer>
-    </ChartCard>
-  );
+    return (
+        <ChartCard title={title} headerRight={headerRight} className={className}>
+            <ResponsiveContainer>
+                <LineChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+                    <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
+                    <XAxis
+                        dataKey={xKey}
+                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                    />
+                    <YAxis
+                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                    />
+                    <Tooltip
+                        contentStyle={{
+                            background: "#1f1f1f",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            borderRadius: 10,
+                            color: "#fff",
+                        }}
+
+                    />
+                    {series.map((s, i) => (
+                        <Line
+                            key={s.dataKey}
+                            type="monotone"
+                            dataKey={s.dataKey}
+                            name={s.name}
+                            stroke={LINE_COLORS[i % LINE_COLORS.length]}
+                            strokeWidth={2}
+                            dot={{ r: 3, strokeWidth: 2 }}
+                            activeDot={{ r: 5 }}
+                        />
+                    ))}
+                </LineChart>
+            </ResponsiveContainer>
+        </ChartCard>
+    );
 }
 
 export type BarChartCardProps = {
-  title: string;
-  data: Array<Record<string, number | string>>;
-  xKey: string;
-  bars: { dataKey: string; name?: string }[];
-  headerRight?: React.ReactNode;
-  className?: string;
+    title: string;
+    data: Array<Record<string, number | string>>;
+    xKey: string;
+    bars: { dataKey: string; name?: string }[];
+    headerRight?: React.ReactNode;
+    className?: string;
 };
 
 export function BarChartCard({
-  title,
-  data,
-  xKey,
-  bars,
-  headerRight,
-  className,
+    title,
+    data,
+    xKey,
+    bars,
+    headerRight,
+    className,
 }: BarChartCardProps) {
-  return (
-    <ChartCard title={title} headerRight={headerRight} className={className}>
-      <ResponsiveContainer>
-        <BarChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
-          <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
+    return (
+        <ChartCard title={title} headerRight={headerRight} className={className}>
+            <ResponsiveContainer>
+                <BarChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+                    <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
 
-          <XAxis
-            dataKey={xKey}
-            tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-          />
+                    <XAxis
+                        dataKey={xKey}
+                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                    />
 
-          <YAxis
-            tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)}K` : `${v}`)}
-            tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-          />
+                    <YAxis
+                        tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)}K` : `${v}`)}
+                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                    />
 
-          <Tooltip
-            contentStyle={{
-              background: "#ffffff",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 10,
-              color: "#fff",
-            }}
-          />
-          <Legend wrapperStyle={{ color: "#fff", fontSize: 12 }} />
+                    <Tooltip
+                        cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                        contentStyle={{
+                            background: "#1f1f1f",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            borderRadius: 10,
+                            color: "#fff",
+                        }}
+                        labelStyle={{ color: "#fff" }}
+                        itemStyle={{ color: "#fff" }}
+                    />
 
-          {bars.map((b, i) => (
-            <Bar
-              key={b.dataKey}
-              dataKey={b.dataKey}
-              name={b.name}
-              radius={[8, 8, 0, 0]}
-              fill={BAR_COLORS[i % BAR_COLORS.length]}
-            />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
-    </ChartCard>
-  );
+                    {bars.map((b, i) => (
+                        <Bar
+                            key={b.dataKey}
+                            dataKey={b.dataKey}
+                            name={b.name}
+                            radius={[8, 8, 0, 0]}
+                            fill={BAR_COLORS[i % BAR_COLORS.length]}
+                        />
+                    ))}
+                </BarChart>
+            </ResponsiveContainer>
+        </ChartCard>
+    );
 }
 
-
-
 export type DonutChartCardProps = {
-  title: string;
-  data: { name: string; value: number }[];
-  headerRight?: React.ReactNode;
-  className?: string;
+    title: string;
+    data: { name: string; value: number }[];
+    headerRight?: React.ReactNode;
+    className?: string;
 };
 
 export function DonutChartCard({
-  title,
-  data,
-  headerRight,
-  className,
+    title,
+    data,
+    headerRight,
+    className,
 }: DonutChartCardProps) {
-  return (
-    <ChartCard title={title} headerRight={headerRight} className={className}>
-      <ResponsiveContainer>
-        <PieChart>
-          <Tooltip
-            contentStyle={{
-              background: "#ffffff",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 10,
-              color: "#fff",
-            }}
-          />
-          <Legend wrapperStyle={{ color: "#fff", fontSize: 12 }} />
-          <Pie
-            data={data}
-            dataKey="value"
-            nameKey="name"
-            innerRadius="55%"
-            outerRadius="80%"
-            paddingAngle={2}
-          >
-            {data.map((_, i) => (
-              <Cell key={i} fill={DONUT_COLORS[i % DONUT_COLORS.length]} />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-    </ChartCard>
-  );
+    const total = data.reduce((acc, d) => acc + d.value, 0);
+
+    return (
+        <ChartCard title={title} headerRight={headerRight} className={className}>
+            <div className="h-full flex items-center gap-6 md:gap-10">
+                <div className="h-[220px] md:h-[260px] w-1/2">
+                    <ResponsiveContainer>
+                        <PieChart>
+                            <Tooltip
+                                cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                                contentStyle={{
+                                    background: "#1f1f1f",
+                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    borderRadius: 10,
+                                    color: "#fff",
+                                }}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                formatter={(value: number, _name: string, entry: any) => [
+                                    `${value}%`,
+                                    entry?.name ?? ""
+                                ]}
+                                labelStyle={{ color: "#fff" }}
+                                itemStyle={{ color: "#fff" }}
+                            />
+                            <Pie
+                                data={data}
+                                dataKey="value"
+                                nameKey="name"
+                                startAngle={90}
+                                endAngle={-270}
+                                innerRadius="55%"
+                                outerRadius="80%"
+                                paddingAngle={3}
+                                cornerRadius={8}
+                                stroke="#1a1a1a"
+                                strokeWidth={6}
+                                isAnimationActive={false}
+                            >
+                                {data.map((_, i) => (
+                                    <Cell key={i} fill={DONUT_COLORS[i % DONUT_COLORS.length]} />
+                                ))}
+                            </Pie>
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+                <ul className="flex-1 space-y-3">
+                    {data.map((d, i) => {
+                        const pct = total ? (d.value / total) * 100 : 0;
+                        return (
+                            <li key={d.name} className="flex items-center justify-between text-sm">
+                                <span className="flex items-center gap-2">
+                                    <span
+                                        className="inline-block h-2.5 w-2.5 rounded-full"
+                                        style={{ background: DONUT_COLORS[i % DONUT_COLORS.length] }}
+                                    />
+                                    <span className="text-white/90">{d.name}</span>
+                                </span>
+                                <span className="tabular-nums text-white/80">{pct.toFixed(1)}%</span>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        </ChartCard>
+    );
 }
 
 
 export type ListMeterRow = {
-  label: string;
-  series: number[];
+    label: string;
+    series: number[];
 };
 
 export type ListMeterCardProps = {
-  title: string;
-  rows: ListMeterRow[];
-  headerRight?: React.ReactNode;
-  className?: string;
-  maxSegments?: number;
+    title: string;
+    rows: ListMeterRow[];
+    headerRight?: React.ReactNode;
+    className?: string;
+    maxSegments?: number;
 };
 
 export function ListMeterCard({
-  title,
-  rows,
-  headerRight,
-  className,
-  maxSegments = 4,
+    title,
+    rows,
+    headerRight,
+    className,
+    maxSegments = 4,
 }: ListMeterCardProps) {
-  return (
-    <ChartCard title={title} headerRight={headerRight} className={className}>
-      <div className="h-full">
-        <ul className="space-y-5">
-          {rows.map((row) => (
-            <li key={row.label} className="flex items-center justify-between">
-              <span className="text-sm text-white/90">{row.label}</span>
-              <div className="flex items-center gap-1">
-                {Array.from({ length: Math.max(maxSegments, row.series.length) }).map(
-                  (_, i) => {
-                    const v = row.series[i] ?? 0;
-                    return (
-                      <span
-                        key={i}
-                        className="block h-1.5 w-6 rounded-full"
-                        style={{ background: `rgba(255,255,255,${0.2 + v * 0.35})` }}
-                      />
-                    );
-                  },
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </ChartCard>
-  );
+    return (
+        <ChartCard title={title} headerRight={headerRight} className={className}>
+            <div className="h-full">
+                <ul className="space-y-5">
+                    {rows.map((row) => (
+                        <li key={row.label} className="flex items-center justify-between">
+                            <span className="text-sm text-white/90">{row.label}</span>
+                            <div className="flex items-center gap-1">
+                                {Array.from({ length: Math.max(maxSegments, row.series.length) }).map((_, i) => {
+                                    const v = row.series[i] ?? 0;
+                                    return (
+                                        <span
+                                            key={i}
+                                            className="block h-1.5 w-6 rounded-full"
+                                            style={{ background: `rgba(255,255,255,${0.2 + v * 0.35})` }}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </ChartCard>
+    );
 }
 
-
 export type DeviceBarChartCardProps = {
-  title: string;
-  data: { name: string; value: number }[];
-  className?: string;
+    title: string;
+    data: { name: string; value: number }[];
+    className?: string;
 };
 
 export function DeviceBarChartCard({
-  title,
-  data,
-  className,
+    title,
+    data,
+    className,
 }: DeviceBarChartCardProps) {
-  return (
-    <ChartCard title={title} className={className}>
-      <ResponsiveContainer>
-        <BarChart
-          data={data}
-          margin={{ top: 8, right: 12, left: -10, bottom: 0 }}
-          barCategoryGap="30%"
-        >
-          <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
-          <XAxis
-            dataKey="name"
-            tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-          />
-          <YAxis
-            tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-            tickFormatter={(v: number) =>
-              v >= 1000 ? `${Math.round(v / 1000)}K` : `${v}`
-            }
-          />
-          <Tooltip
-            cursor={{ fill: "rgba(255,255,255,0.04)" }}
-            contentStyle={{
-              background: "#ffffff",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 10,
-              color: "#000000",
-            }}
-            formatter={(v: number) =>
-              [v.toLocaleString(), "Users"] as [React.ReactNode, React.ReactNode]
-            }
-          />
-          <Bar dataKey="value" radius={[10, 10, 0, 0]} barSize={28}>
-            {data.map((_, i) => (
-              <Cell key={i} fill={DEVICE_COLORS[i % DEVICE_COLORS.length]} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    </ChartCard>
-  );
+    return (
+        <ChartCard title={title} className={className}>
+            <ResponsiveContainer>
+                <BarChart
+                    data={data}
+                    margin={{ top: 8, right: 12, left: -10, bottom: 0 }}
+                    barCategoryGap="30%"
+                >
+                    <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
+                    <XAxis
+                        dataKey="name"
+                        tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
+                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                    />
+                    <YAxis
+                        tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
+                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)}K` : `${v}`)}
+                    />
+                    <Tooltip
+                        cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                        contentStyle={{
+                            background: "#1f1f1f",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            borderRadius: 10,
+                            color: "#fff",
+                        }}
+                        labelStyle={{ color: "#fff" }}
+                        itemStyle={{ color: "#fff" }}
+                        formatter={(v: number) => [v.toLocaleString(), "Users"] as [React.ReactNode, React.ReactNode]}
+                    />
+                    <Bar dataKey="value" radius={[10, 10, 0, 0]} barSize={28}>
+                        {data.map((_, i) => (
+                            <Cell key={i} fill={DEVICE_COLORS[i % DEVICE_COLORS.length]} />
+                        ))}
+                    </Bar>
+                </BarChart>
+            </ResponsiveContainer>
+        </ChartCard>
+    );
 }
 
 
 const LINE_COLORS = ["#7AA2FF", "#B59AFF", "#7CF7C7", "#FFD580"];
 const BAR_COLORS = [
-  "rgba(122,162,255,0.9)",
-  "rgba(183,151,255,0.9)",
-  "rgba(124,247,199,0.9)",
+    "rgba(122,162,255,0.9)",
+    "rgba(183,151,255,0.9)",
+    "rgba(124,247,199,0.9)",
 ];
 const DONUT_COLORS = ["#7AA2FF", "#7CF7C7", "#B59AFF", "#FFD580"];
 const DEVICE_COLORS = ["#8FB6FF", "#78F0CF", "#C3A5FF", "#8CE07F", "#8FB6FF", "#78F0CF"];
