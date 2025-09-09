@@ -16,6 +16,11 @@ export default function Dashboard(): React.ReactElement {
     { month: "May", thisYear: 17000, lastYear: 14000 },
     { month: "Jun", thisYear: 16000, lastYear: 20000 },
     { month: "Jul", thisYear: 18500, lastYear: 23000 },
+    { month: "Aug", thisYear: 19000, lastYear: 25000 },
+    { month: "Sep", thisYear: 18000, lastYear: 27000 },
+    { month: "Oct", thisYear: 20000, lastYear: 29000 },
+    { month: "Nov", thisYear: 25000, lastYear: 30000 },
+    { month: "Dec", thisYear: 28000, lastYear: 32000 },
   ];
 
   const deviceBars = [
@@ -51,7 +56,7 @@ export default function Dashboard(): React.ReactElement {
     { name: "May", value: 11000 },
     { name: "Jun", value: 26000 },
     { name: "Jul", value: 15000 },
-    { name: "Aug", value: 36000 },
+    { name: "Aug", value: 37000 },
     { name: "Sep", value: 20000 },
     { name: "Oct", value: 38000 },
     { name: "Nov", value: 12000 },
@@ -60,17 +65,17 @@ export default function Dashboard(): React.ReactElement {
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 text-helectiva">
         <Card title="Views"       value="7,265" delta="11.01%" positive variant="primary" />
         <Card title="Visits"      value="3,671" delta="-0.03%" positive={false} />
-        <Card title="New Users"   value="256"  delta="15.03%" positive variant="primary" />
+        <Card title="New Users "   value="256"  delta="15.03%" positive variant="primary" />
         <Card title="Active Users" value="2,318" delta="6.08%" positive />
       </div>
 
-      <div className="grid gap-4 md:gap-6 xl:grid-cols-3">
+      <div className="grid gap-4 md:gap-2 xl:grid-cols-3 text-helectiva">
         <LineChartCard
           className="xl:col-span-2"
-          title="Total Users"
+          title="Total Users text-helectiva"
           data={lineData}
           xKey="month"
           series={[
@@ -93,9 +98,9 @@ export default function Dashboard(): React.ReactElement {
         <ListMeterCard title="Traffic by Website" rows={websiteRows} />
       </div>
 
-      <div className="grid gap-4 md:gap-6 xl:grid-cols-3">
+      <div className="grid gap-4 md:gap-2 xl:grid-cols-2 text-helectiva">
         <DeviceBarChartCard
-          className="xl:col-span-2"
+          className="xl:col-span-1"
           title="Traffic by Device"
           data={deviceBars}
         />
@@ -103,8 +108,8 @@ export default function Dashboard(): React.ReactElement {
         <DonutChartCard title="Traffic by Location" data={locationData} />
 
         <DeviceBarChartCard
-          className="xl:col-span-3"
-          title="Marketing & SEO"
+          className="xl:col-span-3 text-helectiva"
+          title="Marketing & SEO "
           data={marketingBars}
         />
       </div>

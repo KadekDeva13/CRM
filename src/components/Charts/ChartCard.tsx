@@ -71,10 +71,14 @@ export function LineChartCard({
                         tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
                     />
                     <YAxis
-                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+                        tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
                         axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickFormatter={(v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`)}
+                        domain={[0, 40000]}
+                        ticks={[0, 10000, 20000, 30000, 40000]} 
                     />
+
                     <Tooltip
                         contentStyle={{
                             background: "#1f1f1f",
@@ -101,7 +105,6 @@ export function LineChartCard({
         </ChartCard>
     );
 }
-
 export type BarChartCardProps = {
     title: string;
     data: Array<Record<string, number | string>>;
@@ -122,21 +125,26 @@ export function BarChartCard({
     return (
         <ChartCard title={title} headerRight={headerRight} className={className}>
             <ResponsiveContainer>
-                <BarChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+                <BarChart
+                    data={data}
+                    margin={{ top: 8, right: 12, left: -10, bottom: 0 }}
+                    barCategoryGap="26%"
+                    barGap={8}
+                >
                     <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
-
                     <XAxis
                         dataKey={xKey}
-                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+                        tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
                         axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
                     />
-
                     <YAxis
-                        tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)}K` : `${v}`)}
-                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+                        tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
                         axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+                        tickFormatter={(v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`)}
+                        domain={[0, 40000]}
+                        ticks={[0, 10000, 20000, 30000, 40000]}
                     />
 
                     <Tooltip
@@ -149,6 +157,7 @@ export function BarChartCard({
                         }}
                         labelStyle={{ color: "#fff" }}
                         itemStyle={{ color: "#fff" }}
+                        formatter={(v: number) => v.toLocaleString()}
                     />
 
                     {bars.map((b, i) => (
@@ -156,8 +165,10 @@ export function BarChartCard({
                             key={b.dataKey}
                             dataKey={b.dataKey}
                             name={b.name}
-                            radius={[8, 8, 0, 0]}
+                            radius={[10, 10, 0, 0]}
+                            barSize={20}
                             fill={BAR_COLORS[i % BAR_COLORS.length]}
+                            isAnimationActive={false}
                         />
                     ))}
                 </BarChart>
@@ -165,6 +176,7 @@ export function BarChartCard({
         </ChartCard>
     );
 }
+
 
 export type DonutChartCardProps = {
     title: string;
@@ -184,7 +196,7 @@ export function DonutChartCard({
     return (
         <ChartCard title={title} headerRight={headerRight} className={className}>
             <div className="h-full flex items-center gap-6 md:gap-10">
-                <div className="h-[220px] md:h-[260px] w-1/2">
+                <div className="h-[150px] w-[150px] md:h-[170px] md:w-[170px]">
                     <ResponsiveContainer>
                         <PieChart>
                             <Tooltip
@@ -196,10 +208,7 @@ export function DonutChartCard({
                                     color: "#fff",
                                 }}
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                formatter={(value: number, _name: string, entry: any) => [
-                                    `${value}%`,
-                                    entry?.name ?? ""
-                                ]}
+                                formatter={(v: number, _n: string, e: any) => [`${v}%`, e?.name ?? ""]}
                                 labelStyle={{ color: "#fff" }}
                                 itemStyle={{ color: "#fff" }}
                             />
@@ -209,12 +218,12 @@ export function DonutChartCard({
                                 nameKey="name"
                                 startAngle={90}
                                 endAngle={-270}
-                                innerRadius="55%"
-                                outerRadius="80%"
-                                paddingAngle={3}
-                                cornerRadius={8}
+                                innerRadius="58%"
+                                outerRadius="100%"
+                                paddingAngle={2}
+                                cornerRadius={7}
                                 stroke="#1a1a1a"
-                                strokeWidth={6}
+                                strokeWidth={5}
                                 isAnimationActive={false}
                             >
                                 {data.map((_, i) => (
@@ -224,11 +233,12 @@ export function DonutChartCard({
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
+
                 <ul className="flex-1 space-y-3">
                     {data.map((d, i) => {
                         const pct = total ? (d.value / total) * 100 : 0;
                         return (
-                            <li key={d.name} className="flex items-center justify-between text-sm">
+                            <li key={d.name} className="flex items-center justify-between text-xl">
                                 <span className="flex items-center gap-2">
                                     <span
                                         className="inline-block h-2.5 w-2.5 rounded-full"
@@ -245,6 +255,7 @@ export function DonutChartCard({
         </ChartCard>
     );
 }
+
 
 
 export type ListMeterRow = {
@@ -324,8 +335,11 @@ export function DeviceBarChartCard({
                         tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
                         axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-                        tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)}K` : `${v}`)}
+                        tickFormatter={(v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`)}
+                        domain={[0, 40000]}
+                        ticks={[0, 10000, 20000, 30000, 40000]}
                     />
+
                     <Tooltip
                         cursor={{ fill: "rgba(255,255,255,0.04)" }}
                         contentStyle={{
@@ -348,7 +362,6 @@ export function DeviceBarChartCard({
         </ChartCard>
     );
 }
-
 
 const LINE_COLORS = ["#7AA2FF", "#B59AFF", "#7CF7C7", "#FFD580"];
 const BAR_COLORS = [

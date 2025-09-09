@@ -28,7 +28,7 @@ export default function AppSidebarKanan(): React.ReactElement {
     { id: "c5", name: "Kate Morrison", avatar: "https://i.pravatar.cc/40?img=15" },
     { id: "c6", name: "Melody Macy", avatar: "https://i.pravatar.cc/40?img=19" },
   ];
-  
+
   return (
     <aside
       className={[
@@ -79,22 +79,6 @@ export default function AppSidebarKanan(): React.ReactElement {
                   className="h-8 w-8 rounded-full border border-white/10 object-cover"
                 />
                 <div className="truncate">{c.name}</div>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        <Section title="Notifications" className="mt-6">
-          <ul className="space-y-3">
-            {notifications.map((n) => (
-              <li key={`dup-${n.id}`} className="flex items-start gap-3 rounded-lg p-2 hover:bg-white/5">
-                <Badge className="mt-0.5">
-                  <BellIcon className="h-3.5 w-3.5" />
-                </Badge>
-                <div className="min-w-0">
-                  <div className="truncate">{n.title}</div>
-                  <div className="text-[11px] text-white/40">{n.time}</div>
-                </div>
               </li>
             ))}
           </ul>
