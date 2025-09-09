@@ -1,87 +1,112 @@
 import React from "react";
-import SalesLineChart from "../../components/Charts/SalesLineChart";
+import Card from "../../components/UI/card";
+import {
+  LineChartCard,
+  DonutChartCard,
+  ListMeterCard,
+} from "../../components/Charts/ChartCard";
+import { DeviceBarChartCard } from "../../components/Charts/ChartCard";
 
 export default function Dashboard(): React.ReactElement {
+  const lineData = [
+    { month: "Jan", thisYear: 12000, lastYear: 8000 },
+    { month: "Feb", thisYear: 11000, lastYear: 9000 },
+    { month: "Mar", thisYear: 15000, lastYear: 12000 },
+    { month: "Apr", thisYear: 9000,  lastYear: 13000 },
+    { month: "May", thisYear: 17000, lastYear: 14000 },
+    { month: "Jun", thisYear: 16000, lastYear: 20000 },
+    { month: "Jul", thisYear: 18500, lastYear: 23000 },
+  ];
+
+  const deviceBars = [
+    { name: "Linux",   value: 14000 },
+    { name: "Mac",     value: 30000 },
+    { name: "iOS",     value: 21000 },
+    { name: "Windows", value: 34000 },
+    { name: "Android", value: 12000 },
+    { name: "Other",   value: 25000 },
+  ];
+
+  const locationData = [
+    { name: "United States", value: 52.1 },
+    { name: "Canada",        value: 22.8 },
+    { name: "Mexico",        value: 13.9 },
+    { name: "Other",         value: 11.2 },
+  ];
+
+  const websiteRows = [
+    { label: "Google",    series: [0.25, 0.28, 0.30, 0.32] },
+    { label: "YouTube",   series: [0.85, 0.62, 0.48, 0.42] },
+    { label: "Instagram", series: [0.30, 0.35, 0.33, 0.36] },
+    { label: "Pinterest", series: [0.88, 0.70, 0.56, 0.50] },
+    { label: "Facebook",  series: [0.24, 0.28, 0.30, 0.32] },
+    { label: "Twitter",   series: [0.80, 0.55, 0.40, 0.38] },
+  ];
+
+  const marketingBars = [
+    { name: "Jan", value: 12000 },
+    { name: "Feb", value: 30000 },
+    { name: "Mar", value: 21000 },
+    { name: "Apr", value: 36000 },
+    { name: "May", value: 11000 },
+    { name: "Jun", value: 26000 },
+    { name: "Jul", value: 15000 },
+    { name: "Aug", value: 36000 },
+    { name: "Sep", value: 20000 },
+    { name: "Oct", value: 38000 },
+    { name: "Nov", value: 12000 },
+    { name: "Dec", value: 27000 },
+  ];
+
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-white">Welcome back,👋</h1>
-        <p className="mt-1 text-sm text-white/70">
-          Here's a quick overview of your CRM performance.
-        </p>
+    <div className="space-y-6">
+      <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+        <Card title="Views"       value="7,265" delta="11.01%" positive variant="primary" />
+        <Card title="Visits"      value="3,671" delta="-0.03%" positive={false} />
+        <Card title="New Users"   value="256"  delta="15.03%" positive variant="primary" />
+        <Card title="Active Users" value="2,318" delta="6.08%" positive />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl bg-blue-600/20 ring-1 ring-blue-500/40">
-          <h3 className="text-sm text-white/70">Total Contacts</h3>
-          <p className="text-2xl font-bold text-white">8</p>
-        </div>
-        <div className="p-4 rounded-xl bg-green-600/20 ring-1 ring-green-500/40">
-          <h3 className="text-sm text-white/70">Active Contracts</h3>
-          <p className="text-2xl font-bold text-white">7</p>
-        </div>
-        <div className="p-4 rounded-xl bg-yellow-600/20 ring-1 ring-yellow-500/40">
-          <h3 className="text-sm text-white/70">Tasks Today</h3>
-          <p className="text-2xl font-bold text-white">5</p>
-        </div>
-        <div className="p-4 rounded-xl bg-purple-600/20 ring-1 ring-purple-500/40">
-          <h3 className="text-sm text-white/70">Revenue (This Month)</h3>
-          <p className="text-2xl font-bold text-white">Rp 830.026.700</p>
-        </div>
+      <div className="grid gap-4 md:gap-6 xl:grid-cols-3">
+        <LineChartCard
+          className="xl:col-span-2"
+          title="Total Users"
+          data={lineData}
+          xKey="month"
+          series={[
+            { dataKey: "thisYear", name: "This year" },
+            { dataKey: "lastYear", name: "Last year" },
+          ]}
+          headerRight={
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="inline-block h-2 w-2 rounded-full" style={{ background: "#7AA2FF" }} />
+                <span className="text-white/70">This year</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block h-2 w-2 rounded-full" style={{ background: "#B59AFF" }} />
+                <span className="text-white/70">Last year</span>
+              </div>
+            </div>
+          }
+        />
+        <ListMeterCard title="Traffic by Website" rows={websiteRows} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="rounded-xl bg-white/10 ring-1 ring-white/10 p-4">
-          <h2 className="text-lg font-semibold text-white mb-3">Recent Activity</h2>
-          <ul className="space-y-3 text-sm">
-            <li className="flex items-center justify-between">
-              <span className="text-white/80">Added new contact: John Doe</span>
-              <span className="text-xs text-white/50">2h ago</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-white/80">Contract signed with ACME Corp</span>
-              <span className="text-xs text-white/50">5h ago</span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-white/80">Meeting scheduled with Jane</span>
-              <span className="text-xs text-white/50">1d ago</span>
-            </li>
-          </ul>
-        </div>
+      <div className="grid gap-4 md:gap-6 xl:grid-cols-3">
+        <DeviceBarChartCard
+          className="xl:col-span-2"
+          title="Traffic by Device"
+          data={deviceBars}
+        />
 
-        <div className="rounded-xl bg-white/10 ring-1 ring-white/10 p-4">
-          <h2 className="text-lg font-semibold text-white mb-3">Today's Tasks</h2>
-          <ul className="space-y-3 text-sm">
-            <li className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600"
-              />
-              <span className="text-white/80">Follow up with Client A</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600"
-              />
-              <span className="text-white/80">Send proposal to Company B</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600"
-              />
-              <span className="text-white/80">Prepare report for weekly meeting</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+        <DonutChartCard title="Traffic by Location" data={locationData} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-        <div className="rounded-xl bg-white/10 ring-1 ring-white/10 p-4">
-          <h2 className="text-sm font-medium text-white/80 mb-3">Sales vs Target</h2>
-          <SalesLineChart height={400} />
-        </div>
+        <DeviceBarChartCard
+          className="xl:col-span-3"
+          title="Marketing & SEO"
+          data={marketingBars}
+        />
       </div>
     </div>
   );

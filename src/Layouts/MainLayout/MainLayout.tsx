@@ -3,34 +3,34 @@ import { Outlet } from "react-router-dom";
 import AppHeader from "../../components/AppHeader";
 import AppSidebar from "../../components/AppSidebar";
 
+const SIDEBAR_W = { open: 256, collapsed: 72 };
+// const HEADER_H = 64;
+
 export default function MainLayout(): React.ReactElement {
-  const [collapsed, setCollapsed] = useState<boolean>(false);
-  const [openMobile, setOpenMobile] = useState<boolean>(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [openMobile, setOpenMobile] = useState(false);
 
   return (
-    <div className="min-h-svh bg-[color:var(--bg,#0b1220)] text-white">
+    <div className="min-h-svh bg-[#2A2A2A] text-white">
       <AppHeader
         onMenu={() => setOpenMobile(true)}
         collapsed={collapsed}
         setCollapsed={setCollapsed}
       />
 
-      <div className="relative flex">
-        <AppSidebar
-          collapsed={collapsed}
-          openMobile={openMobile}
-          onCloseMobile={() => setOpenMobile(false)}
-        />
-
-        <main
-          className={[
-            "min-h-[calc(100svh-64px-56px)] w-full p-4 md:p-6",
-            collapsed ? "lg:ml-[72px]" : "lg:ml-64",
-          ].join(" ")}
-        >
-          <div className="rounded-xl bg-white/5 ring-1 ring-white/10 p-4 md:p-6">
-            <Outlet />
-          </div>
+      <AppSidebar
+        collapsed={collapsed}
+        openMobile={openMobile}
+        onCloseMobile={() => setOpenMobile(false)}
+      />
+      <div
+        className="pt-16 transition-all"
+        style={{
+          paddingLeft: collapsed ? SIDEBAR_W.collapsed : SIDEBAR_W.open,
+        }}
+      >
+        <main className="min-h-[calc(100svh-64px)] p-4 md:p-6">
+          <Outlet />
         </main>
       </div>
     </div>
