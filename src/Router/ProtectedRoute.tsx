@@ -14,10 +14,6 @@ import Login from "../Pages/Auth/Login";
 // Main
 import MainLayout from "../Layouts/MainLayout/MainLayout";
 import Dashboard from "../Pages/Dashboard/Dashboard";
-import ContactsPage from "../Pages/Contacts/Contact";
-import ContractsPage from "../Pages/Contracts/Contract";
-import ReportsPage from "../Pages/Reports/Report";
-import ProfilePage from "../Pages/Profile/Profile";
 
 export default function AppRouter(): React.ReactElement {
   return (
@@ -36,11 +32,7 @@ export default function AppRouter(): React.ReactElement {
         </Route>
 
         <Route element={<MainLayout />}>
-          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/contacts" element={<ContactsPage />} />
-          <Route path="/contracts" element={<ContractsPage />} />
-          <Route path="/reports" element={<ReportsPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" />} />

@@ -20,7 +20,7 @@ export default function AuthLayout(): React.ReactElement {
             }}
           />
         </div>
-        
+
         <div className="relative bg-black overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             {images.map((src, i) => (
@@ -28,18 +28,18 @@ export default function AuthLayout(): React.ReactElement {
                 key={i}
                 src={src}
                 alt=""
-                className={`absolute right-0 top-0 h-full w-full object-contain select-none transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0"
+                className={`absolute right-0 top-0 h-full w-full object-cover select-none transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0"
                   }`}
                 draggable={false}
               />
+
             ))}
           </div>
 
           <div className="absolute top-10 left-10 text-white z-10 font-helvetica">
             <h1 className="text-xl font-semibold">"Stay Connected, Serve Better."</h1>
-            <p className="underline cursor-pointer">Learn More</p>
+            <a className="underline cursor-pointer">Learn More</a>
           </div>
-
 
           <div className="absolute bottom-6 right-6 flex flex-col items-center gap-3 text-white z-20">
             <div className="relative h-[3px] w-32 bg-white/20 rounded-full overflow-hidden">
@@ -103,5 +103,5 @@ export default function AuthLayout(): React.ReactElement {
     </div>
   );
 }
-//
+
 

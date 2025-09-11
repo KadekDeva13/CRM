@@ -38,30 +38,30 @@ export default function Card({
   return (
     <div className={[base, surface, className].filter(Boolean).join(" ")}>
       <div className="mb-3 flex items-start justify-between">
-        <div className="text-[13px] leading-none text-white/80">{title}</div>
+        <div className="text-[13px] leading-none text-white/80 font-helectiva">{title}</div>
 
         <div className={iconWrap}>
           {icon ?? (
             positive ? (
-              <TrendUpIcon className="h-3.5 w-3.5 text-white" />
+              <TrendUpIcon className="h-5.5 w-10 text-white" />
             ) : (
-              <TrendDownIcon className="h-3.5 w-3.5 text-white" />
+              <TrendDownIcon className="h-5.5 w-10 text-white" />
             )
           )}
         </div>
       </div>
 
-      <div className="text-2xl font-semibold tracking-tight">{value}</div>
+      <div className="text-2xl font-semibold tracking-tight font-helectiva">{value}</div>
 
       {delta && (
         <div className={deltaWrap}>
           {showPill ? (
-            <span className="rounded-md bg-white/20 px-2 py-0.5 text-[12px] text-white">
+            <span className="rounded-md bg-white/20 px-2 py-0.5 text-[12px] text-white font-helectiva">
               {positive ? "+" : ""}
               {delta}
             </span>
           ) : (
-            <span className="text-white/90">
+            <span className="text-white/90 font-helectiva">
               {positive ? "+" : ""}
               {delta}
             </span>

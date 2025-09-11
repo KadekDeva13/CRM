@@ -40,71 +40,86 @@ export function ChartCard({ title, className, headerRight, children }: BaseProps
     );
 }
 
-export type LineSeries = { dataKey: string; name?: string };
+export type LineSeries = {
+  dataKey: string;
+  name: string;
+  color?: string;
+};
 
 export type LineChartCardProps = {
-    title: string;
-    data: Array<Record<string, number | string>>;
-    xKey: string;
-    series: LineSeries[];
-    headerRight?: React.ReactNode;
-    className?: string;
+  title: string;
+  data: Array<Record<string, number | string>>;
+  xKey: string;
+  series: LineSeries[];
+  headerRight?: React.ReactNode;
+  className?: string;
+
+  yDomain?: [number | "auto", number | "auto"];
+  yTicks?: number[];
+  yTickFormatter?: (v: number) => string;
 };
 
 export function LineChartCard({
-    title,
-    data,
-    xKey,
-    series,
-    headerRight,
-    className,
+  title,
+  data,
+  xKey,
+  series,
+  headerRight,
+  className,
+  yDomain,
+  yTicks,
+  yTickFormatter,
 }: LineChartCardProps) {
-    return (
-        <ChartCard title={title} headerRight={headerRight} className={className}>
-            <ResponsiveContainer>
-                <LineChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
-                    <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
-                    <XAxis
-                        dataKey={xKey}
-                        tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
-                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-                    />
-                    <YAxis
-                        tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
-                        axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
-                        tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
-                        tickFormatter={(v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`)}
-                        domain={[0, 40000]}
-                        ticks={[0, 10000, 20000, 30000, 40000]} 
-                    />
+  const defaultFormatter = (v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`);
+  const domain = yDomain ?? [0, 30000];
+  const ticks = yTicks ?? [0, 10000, 20000, 30000];
 
-                    <Tooltip
-                        contentStyle={{
-                            background: "#1f1f1f",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: 10,
-                            color: "#fff",
-                        }}
-
-                    />
-                    {series.map((s, i) => (
-                        <Line
-                            key={s.dataKey}
-                            type="monotone"
-                            dataKey={s.dataKey}
-                            name={s.name}
-                            stroke={LINE_COLORS[i % LINE_COLORS.length]}
-                            strokeWidth={2}
-                            dot={{ r: 3, strokeWidth: 2 }}
-                            activeDot={{ r: 5 }}
-                        />
-                    ))}
-                </LineChart>
-            </ResponsiveContainer>
-        </ChartCard>
-    );
+  return (
+    <ChartCard title={title} headerRight={headerRight} className={className}>
+      <ResponsiveContainer>
+        <LineChart data={data} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
+          <CartesianGrid stroke="rgba(255,255,255,0.06)" strokeDasharray="3 3" />
+          <XAxis
+            dataKey={xKey}
+            tick={{ fill: "rgba(255,255,255,0.5)", fontSize: 12 }}
+            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+          />
+          <YAxis
+            tick={{ fill: "rgba(255,255,255,0.6)", fontSize: 12 }}
+            axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
+            tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
+            tickFormatter={yTickFormatter ?? defaultFormatter}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            domain={domain as any}
+            ticks={ticks}
+          />
+          <Tooltip
+            contentStyle={{
+              background: "#1f1f1f",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 10,
+              color: "#fff",
+            }}
+          />
+          {series.map((s, i) => (
+            <Line
+              key={s.dataKey}
+              type="monotone"
+              dataKey={s.dataKey}
+              name={s.name}
+              stroke={s.color ?? LINE_COLORS[i % LINE_COLORS.length]}
+              strokeWidth={2}
+              dot={{ r: 3, strokeWidth: 2 }}
+              activeDot={{ r: 5 }}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </ChartCard>
+  );
 }
+
 export type BarChartCardProps = {
     title: string;
     data: Array<Record<string, number | string>>;
@@ -143,8 +158,8 @@ export function BarChartCard({
                         axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickFormatter={(v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`)}
-                        domain={[0, 40000]}
-                        ticks={[0, 10000, 20000, 30000, 40000]}
+                        domain={[0, 30000]}
+                        ticks={[0, 10000, 20000, 30000]}
                     />
 
                     <Tooltip
@@ -195,7 +210,7 @@ export function DonutChartCard({
 
     return (
         <ChartCard title={title} headerRight={headerRight} className={className}>
-            <div className="h-full flex items-center gap-6 md:gap-10">
+            <div className="h-full flex items-center gap-6 md:gap-10 text-helectiva">
                 <div className="h-[150px] w-[150px] md:h-[170px] md:w-[170px]">
                     <ResponsiveContainer>
                         <PieChart>
@@ -238,7 +253,7 @@ export function DonutChartCard({
                     {data.map((d, i) => {
                         const pct = total ? (d.value / total) * 100 : 0;
                         return (
-                            <li key={d.name} className="flex items-center justify-between text-xl">
+                            <li key={d.name} className="flex items-center justify-between text-1xl">
                                 <span className="flex items-center gap-2">
                                     <span
                                         className="inline-block h-2.5 w-2.5 rounded-full"
@@ -336,8 +351,8 @@ export function DeviceBarChartCard({
                         axisLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickLine={{ stroke: "rgba(255,255,255,0.08)" }}
                         tickFormatter={(v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`)}
-                        domain={[0, 40000]}
-                        ticks={[0, 10000, 20000, 30000, 40000]}
+                        domain={[0, 30000]}
+                        ticks={[0, 10000, 20000, 30000]}
                     />
 
                     <Tooltip
