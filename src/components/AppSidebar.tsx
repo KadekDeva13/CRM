@@ -1,428 +1,207 @@
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
 type SidebarProps = {
-    collapsed?: boolean;
-    openMobile?: boolean;
-    onCloseMobile?: () => void;
+  collapsed?: boolean;
+  openMobile?: boolean;
+  onCloseMobile?: () => void;
 };
 
 export default function AppSidebar({
-    collapsed = false,
-    openMobile = false,
-    onCloseMobile,
+  collapsed = false,
+  openMobile = false,
+  onCloseMobile,
 }: SidebarProps) {
-    const [openPages, setOpenPages] = useState(false);
-    const [openAccount, setOpenAccount] = useState(false);
-    const [openCorporate, setOpenCorporate] = useState(false);
-    const [openBlog, setOpenBlog] = useState(false);
-    const [openSocial, setOpenSocial] = useState(false);
+  return (
+    <>
+      <div
+        className={[
+          "fixed inset-0 z-40 bg-black/40 transition-opacity md:hidden",
+          openMobile ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+        ].join(" ")}
+        onClick={onCloseMobile}
+      />
 
-    return (
-        <>
-            <div
-                className={[
-                    "fixed inset-0 z-40 bg-black/40 transition-opacity md:hidden",
-                    openMobile ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
-                ].join(" ")}
-                onClick={onCloseMobile}
-            />
+      <aside
+        className={[
+          "fixed left-0 top-0 z-50 h-svh",
+          "bg-[#1a1a1a] border-r border-white/5",
+          "transition-[transform,width]",
+          openMobile ? "translate-x-0" : "-translate-x-full", 
+          "md:translate-x-0",                                 
+          collapsed ? "w-[76px]" : "w-64",
+        ].join(" ")}
+        role="complementary"
+        aria-label="Sidebar"
+      >
+        
+        <div className="pt-16 h-full flex flex-col">
+            <div className="flex items-center gap-3 font-helectiva mb-5">
+              <img
+                src="/image/Guirez.png"
+                alt="guirez"
+                className={collapsed ? "h-6 w-auto" : "h-7 w-auto"}
+                draggable={false}
+              />
+              {!collapsed && (
+                <>
+                  <span className="text-white/50 text-lg leading-none">|</span>
+                  <span className="tracking-[0.18em] text-sm">CRM</span>
+                </>
+              )}
+            </div>
+          <div className="px-3 py-4 text-sm text-white/70">
+   
 
-            <aside
-                className={[
-                    "fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] border-r border-white/5 bg-[#1a1a1a] transition-[transform,width]",
-                    openMobile ? "translate-x-0" : "-translate-x-full",
-                    "md:translate-x-0",
-                    collapsed ? "w-[76px]" : "w-64",
-                ].join(" ")}
-                role="complementary"
-                aria-label="Sidebar"
-            >
-                <div className="h-full flex flex-col">
-                    <div className="px-3 py-4 text-sm text-white/70">
-                        <div className="mb-5 flex items-center gap-2 px-1">
-                            <img
-                                src="https://i.pravatar.cc/32"
-                                alt="logo"
-                                className="h-7 w-7 rounded-full border border-white/10"
-                            />
-                            {!collapsed && (
-                                <span className="truncate text-[13px] font-semibold text-white">
-                                    MindiMedia
-                                </span>
-                            )}
-                        </div>
+            {!collapsed && (
+              <div className="mb-4 grid grid-cols-2 px-1 text-[12px] text-white/30">
+                <div>Favorites</div>
+                <div className="text-right">Recently</div>
+              </div>
+            )}
+          </div>
 
-                        {!collapsed && (
-                            <div className="mb-4 grid grid-cols-2 px-1 text-[12px] text-white/30">
-                                <div>Favorites</div>
-                                <div className="text-right">Recently</div>
-                            </div>
-                        )}
-                    </div>
 
-                    <div className="flex-1 overflow-y-auto px-3 text-sm text-white/70">
-                        <div className="mb-5 space-y-1">
-                            <NavItem to="/fav-overview" collapsed={collapsed} onClick={onCloseMobile}>
-                                <span className="mr-2 inline-flex">
-                                    <Dot6 />
-                                </span>
-                                {!collapsed && <span>Overview</span>}
-                            </NavItem>
+          <div className="flex-1 overflow-y-auto px-3 text-sm text-white/70">
+            <div className="mb-5 space-y-1">
+              <NavItem to="/overeview" collapsed={collapsed} onClick={onCloseMobile}>
+                <span className="mr-2 inline-flex">
+                  <Dot6 />
+                </span>
+                {!collapsed && <span>Overview</span>}
+              </NavItem>
 
-                            <NavItem to="/fav-projects" collapsed={collapsed} onClick={onCloseMobile}>
-                                <span className="mr-2 inline-flex">
-                                    <Dot6 />
-                                </span>
-                                {!collapsed && <span>Projects</span>}
-                            </NavItem>
-                        </div>
+              <NavItem to="/leads" collapsed={collapsed} onClick={onCloseMobile}>
+                <span className="mr-2 inline-flex">
+                  <Dot6 />
+                </span>
+                {!collapsed && <span>Leads</span>}
+              </NavItem>
+            </div>
 
-                        <SectionHeader hidden={collapsed}>Dashboards</SectionHeader>
+            <SectionHeader hidden={collapsed}>Dashboards</SectionHeader>
 
-                        <div className="mb-5 space-y-1">
-                            <NavItem to="/overview" collapsed={collapsed} onClick={onCloseMobile}>
-                                <span className="mr-3 inline-flex">
-                                    <IconOverview />
-                                </span>
-                                {!collapsed && <span>Overview</span>}
-                            </NavItem>
+            <div className="mb-5 space-y-1">
+              <NavItem to="/overeview" collapsed={collapsed} onClick={onCloseMobile}>
+                <span className="mr-3 inline-flex">
+                  <IconOverview />
+                </span>
+                {!collapsed && <span>Overview</span>}
+              </NavItem>
 
-                            <NavItem to="/ecommerce" collapsed={collapsed} onClick={onCloseMobile}>
-                                <span className="mr-3 inline-flex">
-                                    <IconEcom />
-                                </span>
-                                {!collapsed && <span>eCommerce</span>}
-                            </NavItem>
+              <NavItem to="/projects" collapsed={collapsed} onClick={onCloseMobile}>
+                <span className="mr-3 inline-flex">
+                  <IconProjects />
+                </span>
+                {!collapsed && <span>Projects</span>}
+              </NavItem>
 
-                            <NavItem to="/projects" collapsed={collapsed} onClick={onCloseMobile}>
-                                <span className="mr-3 inline-flex">
-                                    <IconProjects />
-                                </span>
-                                {!collapsed && <span>Projects</span>}
-                            </NavItem>
-                        </div>
-                        <SectionHeader hidden={collapsed}>Pages</SectionHeader>
+              <NavItem to="/leads" collapsed={collapsed} onClick={onCloseMobile}>
+                <span className="mr-3 inline-flex">
+                  <IconLeads />
+                </span>
+                {!collapsed && <span>Leads</span>}
+              </NavItem>
 
-                        <div className="mb-2">
-                            <button
-                                onClick={() => setOpenPages((v) => !v)}
-                                className={[
-                                    "flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-white/5 relative",
-                                    collapsed && "justify-center",
-                                ].join(" ")}
-                            >
-                                {!collapsed && (
-                                    <span className={["inline-flex transition-transform", openPages ? "rotate-90" : ""].join(" ")}>
-                                        <Caret />
-                                    </span>
-                                )}
+              <NavItem to="/guests" collapsed={collapsed} onClick={onCloseMobile}>
+                <span className="mr-3 inline-flex">
+                  <IconGuest />
+                </span>
+                {!collapsed && <span>Guests</span>}
+              </NavItem>
 
-                                <span className="inline-flex">
-                                    <IconPages />
-                                </span>
-                                {!collapsed && <span>User Profile</span>}
-                            </button>
-
-                            {openPages && (
-                                <div className={["ml-9", collapsed && "hidden"].join(" ")}>
-                                    <SubLink to="/pages/overview" onClick={onCloseMobile}>Overview</SubLink>
-                                    <SubLink to="/pages/projects" onClick={onCloseMobile}>Projects</SubLink>
-                                    <SubLink to="/pages/campaigns" onClick={onCloseMobile}>Campaigns</SubLink>
-                                    <SubLink to="/pages/documents" onClick={onCloseMobile}>Documents</SubLink>
-                                    <SubLink to="/pages/followers" onClick={onCloseMobile}>Followers</SubLink>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="mb-2">
-                            <button
-                                onClick={() => setOpenAccount((v) => !v)}
-                                className={[
-                                    "flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-white/5",
-                                    collapsed && "justify-center",
-                                ].join(" ")}
-                            >
-                                {!collapsed && (
-                                    <span
-                                        className={[
-                                            "inline-flex transition-transform",
-                                            openAccount ? "rotate-90" : "",
-                                        ].join(" ")}
-                                    >
-                                        <Caret />
-                                    </span>
-                                )}
-
-                                <span className="inline-flex">
-                                    <IconAccount />
-                                </span>
-                                {!collapsed && <span>Account</span>}
-                            </button>
-
-                            {openAccount && (
-                                <div className={["ml-9", collapsed && "hidden"].join(" ")}>
-                                    <SubLink to="/account/profile" onClick={onCloseMobile}>Profile</SubLink>
-                                    <SubLink to="/account/settings" onClick={onCloseMobile}>Settings</SubLink>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="mb-2">
-                            <button
-                                onClick={() => setOpenCorporate((v) => !v)}
-                                className={[
-                                    "flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-white/5",
-                                    collapsed && "justify-center",
-                                ].join(" ")}
-                            >
-                                {!collapsed && (
-                                    <span
-                                        className={[
-                                            "inline-flex transition-transform",
-                                            openCorporate ? "rotate-90" : "",
-                                        ].join(" ")}
-                                    >
-                                        <Caret />
-                                    </span>
-                                )}
-
-                                <span className="inline-flex">
-                                    <IconCorporate />
-                                </span>
-                                {!collapsed && <span>Corporate</span>}
-                            </button>
-
-                            {openCorporate && (
-                                <div className={["ml-9", collapsed && "hidden"].join(" ")}>
-                                    <SubLink to="/corporate/team" onClick={onCloseMobile}>Team</SubLink>
-                                    <SubLink to="/corporate/events" onClick={onCloseMobile}>Events</SubLink>
-                                </div>
-                            )}
-                        </div>
-                        <div className="mb-2">
-                            <button
-                                onClick={() => setOpenBlog((v) => !v)}
-                                className={[
-                                    "flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-white/5",
-                                    collapsed && "justify-center",
-                                ].join(" ")}
-                            >
-                                {!collapsed && (
-                                    <span
-                                        className={[
-                                            "inline-flex transition-transform",
-                                            openBlog ? "rotate-90" : "",
-                                        ].join(" ")}
-                                    >
-                                        <Caret />
-                                    </span>
-                                )}
-
-                                <span className="inline-flex">
-                                    <IconBlog />
-                                </span>
-                                {!collapsed && <span>Blog</span>}
-                            </button>
-
-                            {openBlog && (
-                                <div className={["ml-9", collapsed && "hidden"].join(" ")}>
-                                    <SubLink to="/blog/posts" onClick={onCloseMobile}>Posts</SubLink>
-                                    <SubLink to="/blog/categories" onClick={onCloseMobile}>Categories</SubLink>
-                                    <SubLink to="/blog/tags" onClick={onCloseMobile}>Tags</SubLink>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="mb-2">
-                            <button
-                                onClick={() => setOpenSocial((v) => !v)}
-                                className={[
-                                    "flex w-full items-center gap-3 rounded-md px-2 py-2 hover:bg-white/5",
-                                    collapsed && "justify-center",
-                                ].join(" ")}
-                            >
-                                {!collapsed && (
-                                    <span
-                                        className={[
-                                            "inline-flex transition-transform",
-                                            openSocial ? "rotate-90" : "",
-                                        ].join(" ")}
-                                    >
-                                        <Caret />
-                                    </span>
-                                )}
-
-                                <span className="inline-flex">
-                                    <IconSocial />
-                                </span>
-                                {!collapsed && <span>Social</span>}
-                            </button>
-
-                            {openSocial && (
-                                <div className={["ml-9", collapsed && "hidden"].join(" ")}>
-                                    <SubLink to="/social/twitter" onClick={onCloseMobile}>Twitter</SubLink>
-                                    <SubLink to="/social/facebook" onClick={onCloseMobile}>Facebook</SubLink>
-                                    <SubLink to="/social/instagram" onClick={onCloseMobile}>Instagram</SubLink>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div
-                            className={[
-                                "mt-auto px-3 py-4 asbsolute bottom-0 flex w-full items-center gap-3 font-helectiva",
-
-                                collapsed ? "justify-center" : "",
-                            ].join(" ")}
-                        >
-                            <img src="/image/Guirez.png" alt="guirez" className={collapsed ? "h-8 w-auto" : "h-[40px] w-auto"} />
-                            {!collapsed && (
-                                <>
-                                    <span className="text-3xl text-white/70">|</span>
-                                    <span className="text-3xl tracking-[0.18em] font-helectiva">CRM</span>
-                                </>
-                            )}
-                        </div>
-                </div>
-            </aside>
-        </>
-    );
+              <NavItem to="/contacts" collapsed={collapsed} onClick={onCloseMobile}>
+                <span className="mr-3 inline-flex">
+                  <IconContacts />
+                </span>
+                {!collapsed && <span>Contacts</span>}
+              </NavItem>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
 }
 
-
 function SectionHeader({ hidden, children }: { hidden?: boolean; children: ReactNode }) {
-    if (hidden) return null;
-    return (
-        <div className="mb-1 px-5 text-[11px] font-medium uppercase tracking-wide text-white/30">
-            {children}
-        </div>
-    );
+  if (hidden) return null;
+  return (
+    <div className="mb-1 px-5 text-[11px] font-medium uppercase tracking-wide text-white/30">
+      {children}
+    </div>
+  );
 }
 
 type NavItemProps = {
-    to: string;
-    children: ReactNode;
-    collapsed?: boolean;
-    onClick?: () => void;
+  to: string;
+  children: ReactNode;
+  collapsed?: boolean;
+  onClick?: () => void;
 };
 
 function NavItem({ to, children, collapsed, onClick }: NavItemProps) {
-    return (
-        <NavLink
-            to={to}
-            onClick={onClick}
-            className={({ isActive }: { isActive: boolean }) =>
-                [
-                    "flex items-center rounded-md px-2 py-2",
-                    collapsed ? "justify-center" : "gap-2",
-                    isActive ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white",
-                ].join(" ")
-            }
-        >
-            {children}
-        </NavLink>
-    );
-}
-
-function SubLink({ to, children, onClick }: { to: string; children: ReactNode; onClick?: () => void }) {
-    return (
-        <NavLink
-            to={to}
-            onClick={onClick}
-            className={({ isActive }: { isActive: boolean }) =>
-                [
-                    "block rounded-md px-2 py-1.5",
-                    isActive ? "text-white bg-white/10" : "text-white/60 hover:text-white hover:bg-white/5",
-                ].join(" ")
-            }
-        >
-            {children}
-        </NavLink>
-    );
-}
-
-function Caret() {
-    return (
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5.5 3.5L11 8L5.5 12.5" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-    );
+  return (
+    <NavLink
+      to={to}
+      onClick={onClick}
+      className={({ isActive }: { isActive: boolean }) =>
+        [
+          "flex items-center rounded-md px-2 py-2",
+          collapsed ? "justify-center" : "gap-2",
+          isActive ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white",
+        ].join(" ")
+      }
+    >
+      {children}
+    </NavLink>
+  );
 }
 
 function Dot6() {
-    return (
-        <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 3C6 4.65685 4.65685 6 3 6C1.34315 6 0 4.65685 0 3C0 1.34315 1.34315 0 3 0C4.65685 0 6 1.34315 6 3Z" fill="white" fillOpacity="0.2" />
-        </svg>
-    );
+  return (
+    <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 3C6 4.65685 4.65685 6 3 6C1.34315 6 0 4.65685 0 3C0 1.34315 1.34315 0 3 0C4.65685 0 6 1.34315 6 3Z" fill="white" fillOpacity="0.2" />
+    </svg>
+  );
 }
 
 function IconOverview() {
-    return (
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.81261 8.09609C6.90765 8.04123 6.98656 7.96231 7.04142 7.86727C7.09627 7.77223 7.12514 7.66442 7.12511 7.55469V1.92969C7.12456 1.83004 7.10018 1.73198 7.05402 1.64367C7.00786 1.55536 6.94126 1.47936 6.85976 1.42202C6.77826 1.36469 6.68424 1.32766 6.58553 1.31405C6.48681 1.30043 6.38628 1.31062 6.2923 1.34375C4.46807 1.98939 2.93396 3.26457 1.96575 4.94005C0.997549 6.61554 0.658754 8.58145 1.01027 10.4844C1.02849 10.5828 1.07008 10.6754 1.13153 10.7544C1.19298 10.8333 1.27249 10.8964 1.3634 10.9383C1.44531 10.9766 1.53468 10.9963 1.62511 10.9961C1.73481 10.9961 1.84259 10.9673 1.93761 10.9125L6.81261 8.09609ZM5.87511 2.87656V7.19375L2.13449 9.35234C2.12511 9.23438 2.12511 9.11563 2.12511 9C2.12622 7.73309 2.4769 6.49106 3.13855 5.41066C3.80019 4.33025 4.74713 3.45337 5.87511 2.87656ZM17.1251 9C17.1257 10.7837 16.5394 12.518 15.4565 13.9354C14.3737 15.3528 12.8545 16.3745 11.1334 16.8428C9.41224 17.3111 7.58484 17.2 5.9331 16.5267C4.28137 15.8534 2.8971 14.6553 1.99386 13.1172C1.95176 13.0461 1.92415 12.9675 1.91263 12.8857C1.90112 12.8039 1.90592 12.7207 1.92677 12.6407C1.94762 12.5608 1.9841 12.4859 2.0341 12.4201C2.0841 12.3544 2.14664 12.2992 2.21808 12.2578L8.37511 8.67422V1.5C8.37511 1.33424 8.44096 1.17527 8.55817 1.05806C8.67538 0.940848 8.83435 0.875 9.00011 0.875C10.418 0.875723 11.811 1.24729 13.0409 1.95282C14.2707 2.65834 15.2947 3.67328 16.0111 4.89688C16.759 6.20247 17.1269 7.58916 17.1251 9Z" fill="white" />
-        </svg>
-    );
-}
-
-function IconEcom() {
-    return (
-        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15.875 0.125H2.125C1.79348 0.125 1.47554 0.256696 1.24112 0.491116C1.0067 0.725537 0.875 1.04348 0.875 1.375V12.625C0.875 12.9565 1.0067 13.2745 1.24112 13.5089C1.47554 13.7433 1.79348 13.875 2.125 13.875H15.875C16.2065 13.875 16.5245 13.7433 16.7589 13.5089C16.9933 13.2745 17.125 12.9565 17.125 12.625V1.375C17.125 1.04348 16.9933 0.725537 16.7589 0.491116C16.5245 0.256696 16.2065 0.125 15.875 0.125ZM15.875 1.375V2.625H2.125V1.375H15.875ZM15.875 12.625H2.125V3.875H15.875V12.625ZM12.75 5.75C12.75 6.74456 12.3549 7.69839 11.6517 8.40165C10.9484 9.10491 9.99456 9.5 9 9.5C8.00544 9.5 7.05161 9.10491 6.34835 8.40165C5.64509 7.69839 5.25 6.74456 5.25 5.75Z" fill="white" />
-        </svg>
-    );
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.81261 8.09609C6.90765 8.04123 6.98656 7.96231 7.04142 7.86727C7.09627 7.77223 7.12514 7.66442 7.12511 7.55469V1.92969C7.12456 1.83004 7.10018 1.73198 7.05402 1.64367C7.00786 1.55536 6.94126 1.47936 6.85976 1.42202C6.77826 1.36469 6.68424 1.32766 6.58553 1.31405C6.48681 1.30043 6.38628 1.31062 6.2923 1.34375C4.46807 1.98939 2.93396 3.26457 1.96575 4.94005C0.997549 6.61554 0.658754 8.58145 1.01027 10.4844C1.02849 10.5828 1.07008 10.6754 1.13153 10.7544C1.19298 10.8333 1.27249 10.8964 1.3634 10.9383C1.44531 10.9766 1.53468 10.9963 1.62511 10.9961C1.73481 10.9961 1.84259 10.9673 1.93761 10.9125L6.81261 8.09609ZM5.87511 2.87656V7.19375L2.13449 9.35234C2.12511 9.23438 2.12511 9.11563 2.12511 9C2.12622 7.73309 2.4769 6.49106 3.13855 5.41066C3.80019 4.33025 4.74713 3.45337 5.87511 2.87656ZM17.1251 9C17.1257 10.7837 16.5394 12.518 15.4565 13.9354C14.3737 15.3528 12.8545 16.3745 11.1334 16.8428C9.41224 17.3111 7.58484 17.2 5.9331 16.5267C4.28137 15.8534 2.8971 14.6553 1.99386 13.1172C1.95176 13.0461 1.92415 12.9675 1.91263 12.8857C1.90112 12.8039 1.90592 12.7207 1.92677 12.6407C1.94762 12.5608 1.9841 12.4859 2.0341 12.4201C2.0841 12.3544 2.14664 12.2992 2.21808 12.2578L8.37511 8.67422V1.5C8.37511 1.33424 8.44096 1.17527 8.55817 1.05806C8.67538 0.940848 8.83435 0.875 9.00011 0.875C10.418 0.875723 11.811 1.24729 13.0409 1.95282C14.2707 2.65834 15.2947 3.67328 16.0111 4.89688C16.759 6.20247 17.1269 7.58916 17.1251 9Z" fill="white" />
+    </svg>
+  );
 }
 
 function IconProjects() {
-    return (
-        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15.875 2.625H9.20859L7.04141 1C6.82472 0.838324 6.56176 0.750671 6.29141 0.75H2.125C1.79348 0.75 1.47554 0.881696 1.24112 1.11612C1.0067 1.35054 0.875 1.66848 0.875 2V12.625C0.875 12.9565 1.0067 13.2745 1.24112 13.5089C1.47554 13.7433 1.79348 13.875 2.125 13.875H15.875C16.2065 13.875 16.5245 13.7433 16.7589 13.5089C16.9933 13.2745 17.125 12.9565 17.125 12.625V3.875C17.125 3.54348 16.9933 3.22554 16.7589 2.99112C16.5245 2.7567 16.2065 2.625 15.875 2.625ZM2.125 2H6.29141L7.95859 3.25L6.29141 4.5H2.125V2ZM15.875 12.625H2.125V5.75H6.29141C6.56176 5.74933 6.82472 5.66168 7.04141 5.5L9.20859 3.875H15.875V12.625Z" fill="white" />
-        </svg>
-    );
+  return (
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.875 2.625H9.20859L7.04141 1C6.82472 0.838324 6.56176 0.750671 6.29141 0.75H2.125C1.79348 0.75 1.47554 0.881696 1.24112 1.11612C1.0067 1.35054 0.875 1.66848 0.875 2V12.625C0.875 12.9565 1.0067 13.2745 1.24112 13.5089C1.47554 13.7433 1.79348 13.875 2.125 13.875H15.875C16.2065 13.875 16.5245 13.7433 16.7589 13.5089C16.9933 13.2745 17.125 12.9565 17.125 12.625V3.875C17.125 3.54348 16.9933 3.22554 16.7589 2.99112C16.5245 2.7567 16.2065 2.625 15.875 2.625ZM2.125 2H6.29141L7.95859 3.25L6.29141 4.5H2.125V2ZM15.875 12.625H2.125V5.75H6.29141C6.56176 5.74933 6.82472 5.66168 7.04141 5.5L9.20859 3.875H15.875V12.625Z" fill="white" />
+    </svg>
+  );
 }
 
-function IconPages() {
-    return (
-        <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.87422 14.5C2.9399 14.5494 3.01468 14.5853 3.09426 14.6057C3.17385 14.6262 3.25669 14.6307 3.33803 14.6191C3.41937 14.6075 3.49763 14.58 3.56832 14.5381C3.63901 14.4962 3.70075 14.4408 3.75 14.375C4.12841 13.8705 4.61909 13.4609 5.1832 13.1789C5.7473 12.8968 6.36932 12.75 7 12.75C7.63068 12.75 8.25271 12.8968 8.81681 13.1789C9.38091 13.4609 9.87159 13.8705 10.25 14.375C10.2992 14.4407 10.3609 14.496 10.4316 14.5378C10.5022 14.5796 10.5804 14.6071 10.6616 14.6187C10.7429 14.6303 10.8256 14.6258 10.9051 14.6054C10.9846 14.5851 11.0593 14.5492 11.125 14.5C11.1907 14.4508 11.246 14.3891 11.2878 14.3184C11.3296 14.2478 11.3571 14.1696 11.3687 14.0884C11.3803 14.0071 11.3758 13.9244 11.3554 13.8449C11.3351 13.7654 11.2992 13.6907 11.25 13.625C10.6966 12.883 9.95858 12.2988 9.10938 11.9305C9.57476 11.5056 9.90081 10.9499 10.0447 10.3364C10.1887 9.72289 10.1438 9.0802 9.9159 8.49267C9.68803 7.90514 9.28787 7.40023 8.76791 7.0442C8.24796 6.68816 7.63251 6.49765 7.00234 6.49765C6.37218 6.49765 5.75673 6.68816 5.23678 7.0442C4.71682 7.40023 4.31666 7.90514 4.08879 8.49267C3.86093 9.0802 3.81602 9.72289 3.95995 10.3364C4.10388 10.9499 4.42993 11.5056 4.89531 11.9305C4.0444 12.2981 3.30472 12.8824 2.75 13.625C2.65046 13.7575 2.60763 13.9241 2.63092 14.0882C2.65422 14.2523 2.74173 14.4004 2.87422 14.5ZM7 7.75C7.37084 7.75 7.73335 7.85997 8.04169 8.06599C8.35004 8.27202 8.59036 8.56486 8.73227 8.90747C8.87419 9.25008 8.91132 9.62708 8.83897 9.9908C8.76663 10.3545 8.58805 10.6886 8.32583 10.9508C8.0636 11.213 7.72951 11.3916 7.3658 11.464C7.00208 11.5363 6.62508 11.4992 6.28247 11.3573C5.93986 11.2154 5.64702 10.975 5.44099 10.6667C5.23497 10.3584 5.125 9.99584 5.125 9.625C5.125 9.12772 5.32254 8.65081 5.67417 8.29917C6.02581 7.94754 6.50272 7.75 7 7.75ZM12.625 0.875H1.375C1.04348 0.875 0.725537 1.0067 0.491116 1.24112C0.256696 1.47554 0.125 1.79348 0.125 2.125V15.875C0.125 16.2065 0.256696 16.5245 0.491116 16.7589C0.725537 16.9933 1.04348 17.125 1.375 17.125H12.625C12.9565 17.125 13.2745 16.9933 13.5089 16.7589C13.7433 16.5245 13.875 16.2065 13.875 15.875V2.125C13.875 1.79348 13.7433 1.47554 13.5089 1.24112C13.2745 1.0067 12.9565 0.875 12.625 0.875ZM12.625 15.875H1.375V2.125H12.625V15.875ZM3.875 4C3.875 3.83424 3.94085 3.67527 4.05806 3.55806C4.17527 3.44085 4.33424 3.375 4.5 3.375H9.5C9.66576 3.375 9.82473 3.44085 9.94194 3.55806C10.0592 3.67527 10.125 3.83424 10.125 4C10.125 4.16576 10.0592 4.32473 9.94194 4.44194C9.82473 4.55915 9.66576 4.625 9.5 4.625H4.5C4.33424 4.625 4.17527 4.55915 4.05806 4.44194C3.94085 4.32473 3.875 4.16576 3.875 4Z" fill="white" />
-        </svg>
-
-    );
+function IconGuest() {
+  return (
+    <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.8751 2.2502C11.8751 2.08444 11.941 1.92547 12.0582 1.80826C12.1754 1.69105 12.3344 1.6252 12.5001 1.6252H19.3751C19.5409 1.6252 19.6998 1.69105 19.8171 1.80826C19.9343 1.92547 20.0001 2.08444 20.0001 2.2502C20.0001 2.41596 19.9343 2.57493 19.8171 2.69214C19.6998 2.80935 19.5409 2.8752 19.3751 2.8752H12.5001C12.3344 2.8752 12.1754 2.80935 12.0582 2.69214C11.941 2.57493 11.8751 2.41596 11.8751 2.2502ZM19.3751 5.3752H12.5001C12.3344 5.3752 12.1754 5.44105 12.0582 5.55826C11.941 5.67547 11.8751 5.83444 11.8751 6.0002C11.8751 6.16596 11.941 6.32493 12.0582 6.44214C12.1754 6.55935 12.3344 6.6252 12.5001 6.6252H19.3751C19.5409 6.6252 19.6998 6.55935 19.8171 6.44214C19.9343 6.32493 20.0001 6.16596 20.0001 6.0002C20.0001 5.83444 19.9343 5.67547 19.8171 5.55826C19.6998 5.44105 19.5409 5.3752 19.3751 5.3752ZM19.3751 9.1252H14.3751C14.2094 9.1252 14.0504 9.19105 13.9332 9.30826C13.816 9.42547 13.7501 9.58444 13.7501 9.7502C13.7501 9.91596 13.816 10.0749 13.9332 10.1921C14.0504 10.3094 14.2094 10.3752 14.3751 10.3752H19.3751C19.5409 10.3752 19.6998 10.3094 19.8171 10.1921C19.9343 10.0749 20.0001 9.91596 20.0001 9.7502C20.0001 9.58444 19.9343 9.42547 19.8171 9.30826C19.6998 9.19105 19.5409 9.1252 19.3751 9.1252ZM11.8556 10.844C11.876 10.9235 11.8806 11.0062 11.869 11.0875C11.8575 11.1688 11.83 11.247 11.7882 11.3176C11.7464 11.3883 11.6911 11.45 11.6255 11.4993C11.5598 11.5486 11.4851 11.5845 11.4056 11.6049C11.3546 11.6186 11.3021 11.6254 11.2493 11.6252C11.1107 11.6253 10.976 11.5793 10.8664 11.4944C10.7568 11.4095 10.6785 11.2907 10.6439 11.1565C10.1626 9.28614 8.27355 7.8752 6.24933 7.8752C4.22511 7.8752 2.33605 9.28536 1.8548 11.1565C1.81336 11.317 1.70983 11.4546 1.56698 11.5388C1.42413 11.6231 1.25366 11.6471 1.09308 11.6057C0.9325 11.5642 0.794959 11.4607 0.710714 11.3178C0.626469 11.175 0.602421 11.0045 0.643862 10.844C1.08058 9.14786 2.35011 7.77442 3.96105 7.09395C3.34076 6.61619 2.88557 5.95625 2.65932 5.2067C2.43306 4.45715 2.4471 3.65558 2.69944 2.91441C2.95179 2.17324 3.4298 1.52964 4.06643 1.07388C4.70306 0.618113 5.46638 0.373047 6.24933 0.373047C7.03228 0.373047 7.7956 0.618113 8.43223 1.07388C9.06886 1.52964 9.54687 2.17324 9.79922 2.91441C10.0516 3.65558 10.0656 4.45715 9.83934 5.2067C9.61309 5.95625 9.1579 6.61619 8.53761 7.09395C10.1493 7.77442 11.4189 9.14786 11.8556 10.844ZM6.25011 6.6252C6.74457 6.6252 7.22791 6.47858 7.63904 6.20387C8.05016 5.92917 8.37059 5.53872 8.55981 5.08191C8.74903 4.62509 8.79854 4.12243 8.70208 3.63748C8.60561 3.15252 8.36751 2.70706 8.01788 2.35743C7.66825 2.0078 7.22279 1.7697 6.73784 1.67324C6.25288 1.57677 5.75022 1.62628 5.2934 1.8155C4.83659 2.00472 4.44614 2.32515 4.17144 2.73628C3.89673 3.1474 3.75011 3.63075 3.75011 4.1252C3.75011 4.78824 4.0135 5.42413 4.48234 5.89297C4.95119 6.36181 5.58707 6.6252 6.25011 6.6252Z" fill="white" />
+    </svg>
+  );
 }
 
-function IconAccount() {
-    return (
-        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.625 5.75C14.625 5.91576 14.5592 6.07473 14.4419 6.19194C14.3247 6.30915 14.1658 6.375 14 6.375H10.875C10.7092 6.375 10.5503 6.30915 10.4331 6.19194C10.3158 6.07473 10.25 5.91576 10.25 5.75C10.25 5.58424 10.3158 5.42527 10.4331 5.30806C10.5503 5.19085 10.7092 5.125 10.875 5.125H14C14.1658 5.125 14.3247 5.19085 14.4419 5.30806C14.5592 5.42527 14.625 5.58424 14.625 5.75ZM14 7.625H10.875C10.7092 7.625 10.5503 7.69085 10.4331 7.80806C10.3158 7.92527 10.25 8.08424 10.25 8.25C10.25 8.41576 10.3158 8.57473 10.4331 8.69194C10.5503 8.80915 10.7092 8.875 10.875 8.875H14C14.1658 8.875 14.3247 8.80915 14.4419 8.69194C14.5592 8.57473 14.625 8.41576 14.625 8.25C14.625 8.08424 14.5592 7.92527 14.4419 7.80806C14.3247 7.69085 14.1658 7.625 14 7.625ZM17.125 1.375V12.625C17.125 12.9565 16.9933 13.2745 16.7589 13.5089C16.5245 13.7433 16.2065 13.875 15.875 13.875H2.125C1.79348 13.875 1.47554 13.7433 1.24112 13.5089C1.0067 13.2745 0.875 12.9565 0.875 12.625V1.375C0.875 1.04348 1.0067 0.725537 1.24112 0.491116C1.47554 0.256696 1.79348 0.125 2.125 0.125H15.875C16.2065 0.125 16.5245 0.256696 16.7589 0.491116C16.9933 0.725537 17.125 1.04348 17.125 1.375ZM15.875 12.625V1.375H2.125V12.625H15.875ZM9.60469 9.96875C9.64613 10.1293 9.62208 10.2998 9.53784 10.4426C9.45359 10.5855 9.31605 10.689 9.15547 10.7305C8.99489 10.7719 8.82442 10.7479 8.68157 10.6636C8.53872 10.5794 8.43519 10.4418 8.39375 10.2812C8.18828 9.47969 7.37344 8.875 6.49922 8.875C5.625 8.875 4.81094 9.47969 4.60469 10.2812C4.56325 10.4418 4.45971 10.5794 4.31686 10.6636C4.17401 10.7479 4.00355 10.7719 3.84297 10.7305C3.68239 10.689 3.54485 10.5855 3.4606 10.4426C3.37636 10.2998 3.35231 10.1293 3.39375 9.96875C3.59656 9.21387 4.07598 8.56293 4.73672 8.14531C4.3856 7.79628 4.14602 7.35085 4.04835 6.86549C3.95068 6.38013 3.99932 5.8767 4.1881 5.41902C4.37688 4.96134 4.6973 4.57001 5.10875 4.29465C5.52019 4.01929 6.00413 3.87229 6.49922 3.87229C6.99431 3.87229 7.47825 4.01929 7.88969 4.29465C8.30114 4.57001 8.62156 4.96134 8.81034 5.41902C8.99912 5.8767 9.04776 6.38013 8.95009 6.86549C8.85242 7.35085 8.61284 7.79628 8.26172 8.14531C8.92318 8.56233 9.40303 9.21347 9.60547 9.96875H9.60469ZM6.5 7.625C6.74723 7.625 6.9889 7.55169 7.19446 7.41434C7.40002 7.27699 7.56024 7.08176 7.65485 6.85335C7.74946 6.62495 7.77421 6.37361 7.72598 6.13114C7.67775 5.88866 7.5587 5.66593 7.38388 5.49112C7.20907 5.3163 6.98634 5.19725 6.74386 5.14902C6.50139 5.10079 6.25005 5.12554 6.02165 5.22015C5.79324 5.31476 5.59801 5.47498 5.46066 5.68054C5.32331 5.8861 5.25 6.12777 5.25 6.375C5.25 6.70652 5.3817 7.02446 5.61612 7.25888C5.85054 7.4933 6.16848 7.625 6.5 7.625Z" fill="white" />
-        </svg>
-
-    );
+function IconContacts() {
+  return (
+    <svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.375 0.625H1.625C1.29348 0.625 0.975537 0.756696 0.741116 0.991116C0.506696 1.22554 0.375 1.54348 0.375 1.875V13.125C0.375 13.4565 0.506696 13.7745 0.741116 14.0089C0.975537 14.2433 1.29348 14.375 1.625 14.375H15.375C15.7065 14.375 16.0245 14.2433 16.2589 14.0089C16.4933 13.7745 16.625 13.4565 16.625 13.125V1.875C16.625 1.54348 16.4933 1.22554 16.2589 0.991116C16.0245 0.756696 15.7065 0.625 15.375 0.625ZM6 6.875C6 6.38055 6.14662 5.8972 6.42133 5.48607C6.69603 5.07495 7.08648 4.75452 7.54329 4.5653C8.00011 4.37608 8.50277 4.32657 8.98773 4.42304C9.47268 4.5195 9.91814 4.7576 10.2678 5.10723C10.6174 5.45686 10.8555 5.90232 10.952 6.38727C11.0484 6.87223 10.9989 7.37489 10.8097 7.83171C10.6205 8.28852 10.3 8.67897 9.88893 8.95367C9.4778 9.22838 8.99445 9.375 8.5 9.375C7.83696 9.375 7.20107 9.11161 6.73223 8.64277C6.26339 8.17393 6 7.53804 6 6.875ZM4.16953 13.125C4.60833 12.3647 5.23954 11.7334 5.9997 11.2945C6.75987 10.8555 7.6222 10.6244 8.5 10.6244C9.3778 10.6244 10.2401 10.8555 11.0003 11.2945C11.7605 11.7334 12.3917 12.3647 12.8305 13.125H4.16953ZM15.375 13.125H14.2289C13.5692 11.6184 12.3431 10.4318 10.8156 9.82187C11.4291 9.34023 11.8772 8.67926 12.0974 7.93099C12.3177 7.18273 12.2991 6.38442 12.0443 5.64721C11.7895 4.91001 11.3111 4.27061 10.6759 3.81803C10.0406 3.36545 9.28 3.12223 8.5 3.12223C7.72 3.12223 6.95942 3.36545 6.32415 3.81803C5.68888 4.27061 5.21054 4.91001 4.95573 5.64721C4.70093 6.38442 4.68234 7.18273 4.90257 7.93099C5.12279 8.67926 5.57085 9.34023 6.18437 9.82187C4.65692 10.4318 3.43082 11.6184 2.77109 13.125H1.625V1.875H15.375V13.125Z" fill="white" />
+    </svg>
+  );
 }
 
-function IconCorporate() {
-    return (
-        <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19.125 8.7503C19.0593 8.79955 18.9846 8.83538 18.9051 8.85575C18.8256 8.87612 18.7429 8.88063 18.6616 8.86902C18.5804 8.85741 18.5022 8.82992 18.4316 8.7881C18.3609 8.74628 18.2992 8.69096 18.25 8.6253C17.8733 8.11894 17.3829 7.70811 16.8185 7.42586C16.254 7.14362 15.6311 6.99785 15 7.0003C14.8342 7.0003 14.6753 6.93445 14.558 6.81724C14.4408 6.70003 14.375 6.54106 14.375 6.3753C14.375 6.20954 14.4408 6.05057 14.558 5.93336C14.6753 5.81615 14.8342 5.7503 15 5.7503C15.3507 5.75027 15.6943 5.6519 15.9919 5.46635C16.2895 5.2808 16.529 5.01553 16.6834 4.70065C16.8378 4.38577 16.9007 4.03391 16.8652 3.68504C16.8296 3.33617 16.6969 3.00427 16.4821 2.72704C16.2673 2.44981 15.9791 2.23837 15.6502 2.11672C15.3213 1.99508 14.9649 1.96811 14.6214 2.03888C14.278 2.10966 13.9612 2.27533 13.7072 2.51709C13.4532 2.75885 13.272 3.06701 13.1844 3.40655C13.1638 3.48606 13.1279 3.56075 13.0785 3.62636C13.0291 3.69197 12.9673 3.74721 12.8965 3.78892C12.8258 3.83063 12.7476 3.85801 12.6662 3.86948C12.5849 3.88095 12.5022 3.87629 12.4226 3.85577C12.3431 3.83525 12.2684 3.79927 12.2028 3.74989C12.1372 3.7005 12.082 3.63868 12.0403 3.56795C11.9986 3.49722 11.9712 3.41896 11.9597 3.33765C11.9483 3.25634 11.9529 3.17356 11.9734 3.09405C12.0951 2.6232 12.325 2.18725 12.6448 1.82089C12.9646 1.45452 13.3656 1.16786 13.8157 0.983701C14.2658 0.799543 14.7526 0.722976 15.2375 0.760092C15.7224 0.797208 16.192 0.946983 16.6088 1.1975C17.0256 1.44802 17.3782 1.79236 17.6386 2.20313C17.8989 2.6139 18.0598 3.07976 18.1084 3.56364C18.157 4.04753 18.092 4.53608 17.9186 4.99042C17.7451 5.44476 17.468 5.85236 17.1094 6.18077C17.9592 6.54874 18.698 7.13266 19.2523 7.87452C19.3016 7.94035 19.3374 8.01524 19.3576 8.09492C19.3779 8.17459 19.3822 8.25748 19.3704 8.33883C19.3585 8.42018 19.3308 8.4984 19.2887 8.56901C19.2466 8.63962 19.1909 8.70122 19.125 8.7503ZM14.9156 13.5628C14.9593 13.6339 14.9882 13.7131 15.0007 13.7956C15.0133 13.8781 15.0092 13.9623 14.9886 14.0432C14.9681 14.1241 14.9316 14.2001 14.8812 14.2667C14.8309 14.3332 14.7677 14.389 14.6954 14.4308C14.6232 14.4725 14.5433 14.4993 14.4605 14.5097C14.3776 14.5201 14.2936 14.5138 14.2133 14.4911C14.1329 14.4685 14.0579 14.43 13.9927 14.3779C13.9275 14.3258 13.8734 14.2611 13.8336 14.1878C13.4398 13.5213 12.8791 12.969 12.2068 12.5853C11.5345 12.2016 10.7737 11.9998 9.9996 11.9998C9.22549 11.9998 8.46475 12.2016 7.79242 12.5853C7.12008 12.969 6.55938 13.5213 6.16562 14.1878C6.12655 14.2625 6.07277 14.3285 6.00752 14.3819C5.94228 14.4352 5.86691 14.4749 5.78595 14.4983C5.705 14.5218 5.62013 14.5287 5.53645 14.5185C5.45277 14.5084 5.37202 14.4814 5.29904 14.4392C5.22606 14.397 5.16237 14.3405 5.11179 14.2731C5.06122 14.2056 5.02482 14.1287 5.00476 14.0468C4.98471 13.9649 4.98142 13.8798 4.9951 13.7967C5.00878 13.7135 5.03915 13.6339 5.08437 13.5628C5.6903 12.5217 6.61421 11.7024 7.7203 11.2253C7.0979 10.7488 6.64048 10.0892 6.41234 9.33923C6.18419 8.58929 6.19679 7.7867 6.44836 7.04429C6.69994 6.30188 7.17784 5.65697 7.81489 5.20021C8.45194 4.74344 9.21611 4.4978 9.99999 4.4978C10.7839 4.4978 11.548 4.74344 12.1851 5.20021C12.8221 5.65697 13.3 6.30188 13.5516 7.04429C13.8032 7.7867 13.8158 8.58929 13.5876 9.33923C13.3595 10.0892 12.9021 10.7488 12.2797 11.2253C13.3858 11.7024 14.3097 12.5217 14.9156 13.5628ZM9.99999 10.7503C10.4944 10.7503 10.9778 10.6037 11.3889 10.329C11.8 10.0543 12.1205 9.66383 12.3097 9.20701C12.4989 8.7502 12.5484 8.24753 12.452 7.76258C12.3555 7.27762 12.1174 6.83217 11.7678 6.48254C11.4181 6.1329 10.9727 5.8948 10.4877 5.79834C10.0028 5.70188 9.5001 5.75138 9.04328 5.9406C8.58647 6.12982 8.19602 6.45025 7.92132 6.86138C7.64662 7.2725 7.49999 7.75585 7.49999 8.2503C7.49999 8.91334 7.76338 9.54923 8.23223 10.0181C8.70107 10.4869 9.33695 10.7503 9.99999 10.7503ZM5.62499 6.3753C5.62499 6.20954 5.55914 6.05057 5.44193 5.93336C5.32472 5.81615 5.16575 5.7503 4.99999 5.7503C4.64931 5.75027 4.30567 5.6519 4.00809 5.46635C3.71052 5.2808 3.47094 5.01553 3.31658 4.70065C3.16222 4.38577 3.09925 4.03391 3.13484 3.68504C3.17042 3.33617 3.30313 3.00427 3.51789 2.72704C3.73265 2.44981 4.02085 2.23837 4.34976 2.11672C4.67866 1.99508 5.03509 1.96811 5.37856 2.03888C5.72203 2.10966 6.03876 2.27533 6.29279 2.51709C6.54681 2.75885 6.72795 3.06701 6.81562 3.40655C6.85706 3.56713 6.96059 3.70467 7.10344 3.78892C7.24629 3.87316 7.41676 3.89721 7.57734 3.85577C7.73792 3.81433 7.87546 3.7108 7.9597 3.56795C8.04395 3.4251 8.06799 3.25463 8.02655 3.09405C7.90487 2.6232 7.67497 2.18725 7.35516 1.82089C7.03534 1.45452 6.63443 1.16786 6.18433 0.983701C5.73423 0.799543 5.24736 0.722976 4.76246 0.760092C4.27756 0.797208 3.80801 0.946983 3.39119 1.1975C2.97436 1.44802 2.62175 1.79236 2.36142 2.20313C2.10108 2.6139 1.94021 3.07976 1.89161 3.56364C1.843 4.04753 1.908 4.53608 2.08143 4.99042C2.25486 5.44476 2.53194 5.85236 2.89062 6.18077C2.04162 6.54909 1.30368 7.13298 0.749993 7.87452C0.650433 8.00713 0.607629 8.17386 0.630998 8.33802C0.654367 8.50219 0.741994 8.65035 0.874602 8.74991C1.00721 8.84947 1.17394 8.89228 1.33811 8.86891C1.50227 8.84554 1.65043 8.75791 1.74999 8.6253C2.1267 8.11894 2.61703 7.70811 3.18152 7.42586C3.74601 7.14362 4.36888 6.99785 4.99999 7.0003C5.16575 7.0003 5.32472 6.93445 5.44193 6.81724C5.55914 6.70003 5.62499 6.54106 5.62499 6.3753Z" fill="white" />
-        </svg>
-
-    );
-}
-
-function IconBlog() {
-    return (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.375 6.75C12.375 6.91576 12.3092 7.07473 12.1919 7.19194C12.0747 7.30915 11.9158 7.375 11.75 7.375H6.75C6.58424 7.375 6.42527 7.30915 6.30806 7.19194C6.19085 7.07473 6.125 6.91576 6.125 6.75C6.125 6.58424 6.19085 6.42527 6.30806 6.30806C6.42527 6.19085 6.58424 6.125 6.75 6.125H11.75C11.9158 6.125 12.0747 6.19085 12.1919 6.30806C12.3092 6.42527 12.375 6.58424 12.375 6.75ZM11.75 8.625H6.75C6.58424 8.625 6.42527 8.69085 6.30806 8.80806C6.19085 8.92527 6.125 9.08424 6.125 9.25C6.125 9.41576 6.19085 9.57473 6.30806 9.69194C6.42527 9.80915 6.58424 9.875 6.75 9.875H11.75C11.9158 9.875 12.0747 9.80915 12.1919 9.69194C12.3092 9.57473 12.375 9.41576 12.375 9.25C12.375 9.08424 12.3092 8.92527 12.1919 8.80806C12.0747 8.69085 11.9158 8.625 11.75 8.625ZM15.5 1.75V14.25C15.5 14.5815 15.3683 14.8995 15.1339 15.1339C14.8995 15.3683 14.5815 15.5 14.25 15.5H1.75C1.41848 15.5 1.10054 15.3683 0.866116 15.1339C0.631696 14.8995 0.5 14.5815 0.5 14.25V1.75C0.5 1.41848 0.631696 1.10054 0.866116 0.866116C1.10054 0.631696 1.41848 0.5 1.75 0.5H14.25C14.5815 0.5 14.8995 0.631696 15.1339 0.866116C15.3683 1.10054 15.5 1.41848 15.5 1.75ZM1.75 14.25H3.625V1.75H1.75V14.25ZM14.25 14.25V1.75H4.875V14.25H14.25Z" fill="white" />
-        </svg>
-
-    );
-}
-
-function IconSocial() {
-    return (
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.2477 4.671C11.682 3.34675 10.6765 2.25843 9.40101 1.59004C8.12553 0.921656 6.65839 0.714201 5.2476 1.00275C3.83682 1.2913 2.56895 2.05816 1.65834 3.17367C0.747729 4.28918 0.250248 5.68492 0.25 7.12491V12.2812C0.25 12.5712 0.365234 12.8494 0.570352 13.0546C0.77547 13.2597 1.05367 13.3749 1.34375 13.3749H5.77109C6.25882 14.4887 7.06026 15.4364 8.07758 16.1023C9.09491 16.7682 10.2841 17.1236 11.5 17.1249H16.6562C16.9463 17.1249 17.2245 17.0097 17.4296 16.8046C17.6348 16.5994 17.75 16.3212 17.75 16.0312V10.8749C17.7497 9.34699 17.1897 7.8721 16.1759 6.729C15.1621 5.5859 13.7646 4.85378 12.2477 4.671ZM1.5 7.12491C1.5 6.136 1.79324 5.1693 2.34265 4.34706C2.89206 3.52481 3.67295 2.88395 4.58658 2.50551C5.50021 2.12707 6.50555 2.02806 7.47545 2.22098C8.44536 2.41391 9.33627 2.89011 10.0355 3.58937C10.7348 4.28864 11.211 5.17955 11.4039 6.14946C11.5969 7.11936 11.4978 8.12469 11.1194 9.03833C10.741 9.95196 10.1001 10.7328 9.27785 11.2823C8.4556 11.8317 7.48891 12.1249 6.5 12.1249H1.5V7.12491ZM16.5 15.8749H11.5C10.6159 15.8739 9.74775 15.639 8.98375 15.194C8.21976 14.749 7.5871 14.1098 7.15 13.3413C8.00603 13.2525 8.83445 12.9877 9.58328 12.5635C10.3321 12.1393 10.9852 11.5649 11.5015 10.8763C12.0178 10.1878 12.3862 9.39995 12.5836 8.56226C12.7809 7.72457 12.803 6.85513 12.6484 6.0085C13.7447 6.26723 14.7216 6.88856 15.4206 7.77181C16.1197 8.65506 16.5 9.74849 16.5 10.8749V15.8749Z" fill="white" />
-        </svg>
-
-
-    );
+function IconLeads() {
+  return (
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.875 0.46875H2.125C1.79348 0.46875 1.47554 0.593861 1.24112 0.816561C1.0067 1.03926 0.875 1.34131 0.875 1.65625V12.3438C0.875 12.6587 1.0067 12.9607 1.24112 13.1834C1.47554 13.4061 1.79348 13.5312 2.125 13.5312H15.875C16.2065 13.5312 16.5245 13.4061 16.7589 13.1834C16.9933 12.9607 17.125 12.6587 17.125 12.3438V1.65625C17.125 1.34131 16.9933 1.03926 16.7589 0.816561C16.5245 0.593861 16.2065 0.46875 15.875 0.46875ZM15.875 1.65625V2.84375H2.125V1.65625H15.875ZM15.875 12.3438H2.125V4.03125H15.875V12.3438ZM12.75 5.8125C12.75 6.75733 12.3549 7.66347 11.6517 8.33157C10.9484 8.99967 9.99456 9.375 9 9.375C8.00544 9.375 7.05161 8.99967 6.34835 8.33157C5.64509 7.66347 5.25 6.75733 5.25 5.8125C5.25 5.65503 5.31585 5.504 5.43306 5.39266C5.55027 5.28131 5.70924 5.21875 5.875 5.21875C6.04076 5.21875 6.19973 5.28131 6.31694 5.39266C6.43415 5.504 6.5 5.65503 6.5 5.8125C6.5 6.44239 6.76339 7.04648 7.23223 7.49188C7.70107 7.93728 8.33696 8.1875 9 8.1875C9.66304 8.1875 10.2989 7.93728 10.7678 7.49188C11.2366 7.04648 11.5 6.44239 11.5 5.8125C11.5 5.65503 11.5658 5.504 11.6831 5.39266C11.8003 5.28131 11.9592 5.21875 12.125 5.21875C12.2908 5.21875 12.4497 5.28131 12.5669 5.39266C12.6842 5.504 12.75 5.65503 12.75 5.8125Z" fill="#FDFDFD" />
+    </svg>
+  );
 }

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export type UserRole = "admin" | "owner" | "pegawai" | "penitip" | "pembeli" | "organisasi";
+export type UserRole = "admin" | "super admin" | "pegawai";
 
 export interface LoginPayload {
   email: string;

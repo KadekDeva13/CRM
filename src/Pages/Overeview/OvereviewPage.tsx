@@ -123,7 +123,7 @@ export default function Dashboard(): React.ReactElement {
     { name: "Linux", value: 14000 },
     { name: "Mac", value: 20000 },
     { name: "iOS", value: 21000 },
-    { name: "Windows", value: 30000 },
+    { name: "Windows", value: 27000 },
     { name: "Android", value: 12000 },
     { name: "Other", value: 25000 },
   ];
@@ -161,10 +161,14 @@ export default function Dashboard(): React.ReactElement {
 
   return (
     <div className="space-y-6">
+        <div>
+            <h1 className="text-2xl font-semibold">Overeview</h1>
+        </div>
+
       <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 font-helectiva">
-        <Card title="Views"       value="7,265" delta="11.01%" positive variant="primary" />
-        <Card title="Visits"      value="3,671" delta="-0.03%" positive={false} />
-        <Card title="New Users "  value="256"   delta="15.03%" positive variant="primary" />
+        <Card title="Total People Stay"value="7,265" delta="11.01%" positive variant="primary" />
+        <Card title="Stay 1+ Night"value="3,671" delta="-0.03%" positive={false} />
+        <Card title="Re - Stay After Chekouth"  value="256"   delta="15.03%" positive variant="primary" />
         <Card title="Active Users" value="2,318" delta="6.08%" positive />
       </div>
 

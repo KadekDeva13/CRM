@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 //Landing
@@ -12,8 +12,9 @@ import AuthLayout from "../Layouts/AuthLayout/AuthLayout";
 import Login from "../Pages/Auth/Login";
 
 // Main
-import MainLayout from "../Layouts/MainLayout/MainLayout";
-import Dashboard from "../Pages/Dashboard/Dashboard";
+import MainLayout from "../Layouts/DashboardLayout/DashboardLayout";
+import Overeview from "../Pages/Overeview/OvereviewPage";
+import GuestListPage from "../Pages/Guests/GusetListPage"
 
 export default function AppRouter(): React.ReactElement {
   return (
@@ -32,10 +33,11 @@ export default function AppRouter(): React.ReactElement {
         </Route>
 
         <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/overeview" element={<Overeview />} />
+          <Route path="/guests" element={<GuestListPage />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/overeview" />} />
       </Routes>
     </BrowserRouter>
   );

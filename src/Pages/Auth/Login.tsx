@@ -22,7 +22,7 @@ export default function Login(): React.ReactElement {
       await new Promise((r) => setTimeout(r, 600));
       if (!ok) throw new Error("Email & Password Required");
       loginSuccessToast();
-      navigate("/dashboard");
+      navigate("/overeview");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       loginErrorToast(err?.message);

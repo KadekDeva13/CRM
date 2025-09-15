@@ -24,9 +24,9 @@ export default function Card({
   const surface =
     variant === "primary"
       ? 
-        "bg-[#0A84FF] relative before:absolute before:inset-0 before:rounded-2xl before:bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.40)_100%)] before:pointer-events-none"
+        "bg-[#E6F1FD] relative before:absolute before:inset-0 before:rounded-2xl before:bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.40)_100%)] before:pointer-events-none"
       : 
-        "bg-[#111111] relative before:absolute before:inset-0 before:rounded-2xl before:bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.40)_100%)] before:pointer-events-none";
+        "bg-[#E6F1FD] relative before:absolute before:inset-0 before:rounded-2xl before:bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.40)_100%)] before:pointer-events-none";
 
   const iconWrap =
     "shrink-0 rounded-full border border-white/10 bg-white/20 p-1.5";
@@ -38,30 +38,30 @@ export default function Card({
   return (
     <div className={[base, surface, className].filter(Boolean).join(" ")}>
       <div className="mb-3 flex items-start justify-between">
-        <div className="text-[13px] leading-none text-white/80 font-helectiva">{title}</div>
+        <div className="text-[13px] leading-none text-black font-helectiva">{title}</div>
 
         <div className={iconWrap}>
           {icon ?? (
             positive ? (
-              <TrendUpIcon className="h-5.5 w-10 text-white" />
+              <TrendUpIcon className="h-5.5 w-10 text-black"/>
             ) : (
-              <TrendDownIcon className="h-5.5 w-10 text-white" />
+              <TrendDownIcon className="h-5.5 w-10 text-black"/>
             )
           )}
         </div>
       </div>
 
-      <div className="text-2xl font-semibold tracking-tight font-helectiva">{value}</div>
+      <div className="text-2xl font-semibold tracking-tight text-black font-helectiva">{value}</div>
 
       {delta && (
         <div className={deltaWrap}>
           {showPill ? (
-            <span className="rounded-md bg-white/20 px-2 py-0.5 text-[12px] text-white font-helectiva">
+            <span className="rounded-md bg-white/20 px-2 py-0.5 text-[12px] text-black font-helectiva">
               {positive ? "+" : ""}
               {delta}
             </span>
           ) : (
-            <span className="text-white/90 font-helectiva">
+            <span className="text-black font-helectiva">
               {positive ? "+" : ""}
               {delta}
             </span>
