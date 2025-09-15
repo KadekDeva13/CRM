@@ -9,6 +9,10 @@ const PATH_LABELS: Record<string, string> = {
   "/contacts": "Contacts",
 };
 
+const PATH_LABELS_2: Record<string, string> = {
+    "/guests-insights": "Guests Insights",
+}
+
 function humanize(segment: string) {
   if (!segment) return "";
   return segment
@@ -41,6 +45,9 @@ export default function DashboardBreadcrumb() {
       <span className="text-black/60 dark:text-white/60">Dashboards</span>
       <span className="text-black/30 dark:text-white/25">/</span>
       <span className="text-black dark:text-white font-medium truncate">{label}</span>
+      <span className="text-black/30 dark:text-white/25">/</span>
+      <span className="text-black dark:text-white font-medium truncate">{PATH_LABELS_2[pathname] ?? ''}</span>
+
     </div>
   );
 }
