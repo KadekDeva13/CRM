@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion"; 
+import { motion } from "framer-motion";
 import Card from "../../components/UI/card";
 import {
   LineChartCard,
@@ -40,11 +40,11 @@ export default function Dashboard(): React.ReactElement {
   ];
 
   const lineDataOps = [
-    { month: "Jan", thisYear: 99.5,  lastYear: 98.9 },
-    { month: "Feb", thisYear: 99.7,  lastYear: 99.1 },
-    { month: "Mar", thisYear: 99.8,  lastYear: 99.2 },
-    { month: "Apr", thisYear: 99.6,  lastYear: 99.0 },
-    { month: "May", thisYear: 99.9,  lastYear: 99.3 },
+    { month: "Jan", thisYear: 99.5, lastYear: 98.9 },
+    { month: "Feb", thisYear: 99.7, lastYear: 99.1 },
+    { month: "Mar", thisYear: 99.8, lastYear: 99.2 },
+    { month: "Apr", thisYear: 99.6, lastYear: 99.0 },
+    { month: "May", thisYear: 99.9, lastYear: 99.3 },
     { month: "Jun", thisYear: 99.95, lastYear: 99.4 },
     { month: "Jul", thisYear: 99.93, lastYear: 99.45 },
     { month: "Aug", thisYear: 99.97, lastYear: 99.5 },
@@ -137,12 +137,12 @@ export default function Dashboard(): React.ReactElement {
   ];
 
   const websiteRows = [
-    { label: "Google",    series: [0.25, 0.28, 0.30, 0.32] },
-    { label: "YouTube",   series: [0.85, 0.62, 0.48, 0.42] },
+    { label: "Google", series: [0.25, 0.28, 0.30, 0.32] },
+    { label: "YouTube", series: [0.85, 0.62, 0.48, 0.42] },
     { label: "Instagram", series: [0.30, 0.35, 0.33, 0.36] },
     { label: "Pinterest", series: [0.88, 0.70, 0.56, 0.50] },
-    { label: "Facebook",  series: [0.24, 0.28, 0.30, 0.32] },
-    { label: "Twitter",   series: [0.80, 0.55, 0.40, 0.38] },
+    { label: "Facebook", series: [0.24, 0.28, 0.30, 0.32] },
+    { label: "Twitter", series: [0.80, 0.55, 0.40, 0.38] },
   ];
 
   const marketingBars = [
@@ -160,92 +160,113 @@ export default function Dashboard(): React.ReactElement {
     { name: "Dec", value: 27000 },
   ];
 
- return (
-  <motion.div
-    className="space-y-6"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.45 }}
-  >
-    <div>
-      <h1 className="text-2xl font-semibold">Overeview</h1>
-    </div>
+  return (
+    <motion.div
+      className="space-y-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.45 }}
+    >
+      <div>
+        <h1 className="text-2xl font-semibold">Overeview</h1>
+      </div>
 
-    <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 font-helectiva">
-      <Card title="Total People Stay" value="7,265" delta="11.01%" positive variant="primary" />
-      <Card title="Stay 1+ Night" value="3,671" delta="-0.03%" positive={false} />
-      <Card title="Re - Stay After Chekouth" value="256" delta="15.03%" positive variant="primary" />
-      <Card title="Active Users" value="2,318" delta="6.08%" positive />
-    </div>
+<div className="flex flex-wrap gap-4 font-helectiva">
+  <Card
+    title="Guest Sign Up"
+    subtitle="New User Registrations"
+    value={256}
+    delta="-0.03%"
+    positive={false}
+    variant="primary"
+  />
+  <Card
+    title="Guest Journey Open Rate"
+    subtitle="New User Registrations"
+    value={256}
+    delta="-0.03%"
+    positive={false}
+    variant ="primary"
+  />
+  <Card
+    title="Guest Journey Click-through Rate"
+    subtitle="New User Registrations"
+    value={256}
+    delta="-0.03%"
+    positive={false}
+    variant="primary"
+  />
+</div>
 
-    <div className="grid gap-4 md:gap-2 xl:grid-cols-3 font-helectiva">
-      <LineChartCard
-        className="xl:col-span-2"
-        title={current.title}
-        data={current.data}
-        xKey="month"
-        series={current.series}
-        yDomain={current.yDomain}
-        yTicks={current.yTicks}
-        yTickFormatter={current.yTickFormatter}
-        headerRight={
-          <div className="flex items-center gap-4">
-            <div className="flex rounded-md bg-white/5 p-1">
-              {(
-                [
-                  { key: "users", label: "Total Users" },
-                  { key: "projects", label: "Total Projects" },
-                  { key: "ops", label: "Operating Status" },
-                ] as { key: MetricKey; label: string }[]
-              ).map(({ key, label }) => (
-                <button
-                  key={key}
-                  onClick={() => setMetric(key)}
-                  className={[
-                    "px-3 py-1.5 rounded-md text-xs",
-                    metric === key
-                      ? "bg-white/20 text-white"
-                      : "text-white/70 hover:text-white hover:bg-white/10",
-                  ].join(" ")}
-                >
-                  {label}
-                </button>
-              ))}
+
+      <div className="grid gap-4 md:gap-2 xl:grid-cols-3 font-helectiva">
+        <LineChartCard
+          className="xl:col-span-2"
+          title={current.title}
+          data={current.data}
+          xKey="month"
+          series={current.series}
+          yDomain={current.yDomain}
+          yTicks={current.yTicks}
+          yTickFormatter={current.yTickFormatter}
+          headerRight={
+            <div className="flex items-center gap-4">
+              <div className="flex rounded-md bg-white/5 p-1">
+                {(
+                  [
+                    { key: "users", label: "Total Users" },
+                    { key: "projects", label: "Total Projects" },
+                    { key: "ops", label: "Operating Status" },
+                  ] as { key: MetricKey; label: string }[]
+                ).map(({ key, label }) => (
+                  <button
+                    key={key}
+                    onClick={() => setMetric(key)}
+                    className={[
+                      "px-3 py-1.5 rounded-md text-xs",
+                      metric === key
+                        ? "bg-white/20 text-white"
+                        : "text-white/70 hover:text-white hover:bg-white/10",
+                    ].join(" ")}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="hidden md:flex items-center gap-4 font-helectiva">
+                {current.legend.map((l) => (
+                  <div key={l.label} className="flex items-center gap-2">
+                    <span
+                      className="inline-block h-2 w-2 rounded-full"
+                      style={{ background: l.color }}
+                    />
+                    <span className="text-white/70">{l.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+          }
+        />
 
-            <div className="hidden md:flex items-center gap-4 font-helectiva">
-              {current.legend.map((l) => (
-                <div key={l.label} className="flex items-center gap-2">
-                  <span
-                    className="inline-block h-2 w-2 rounded-full"
-                    style={{ background: l.color }}
-                  />
-                  <span className="text-white/70">{l.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        }
-      />
+        <ListMeterCard title="Traffic by Website" rows={websiteRows} />
+      </div>
 
-      <ListMeterCard title="Traffic by Website" rows={websiteRows} />
-    </div>
+      <div className="grid gap-4 md:gap-2 xl:grid-cols-2 font-helectiva">
+        <DeviceBarChartCard
+          className="xl:col-span-1"
+          title="Traffic by Device"
+          data={deviceBars}
+        />
 
-    <div className="grid gap-4 md:gap-2 xl:grid-cols-2 font-helectiva">
-      <DeviceBarChartCard
-        className="xl:col-span-1"
-        title="Traffic by Device"
-        data={deviceBars}
-      />
+        <DonutChartCard title="Traffic by Location" data={locationData} />
 
-      <DonutChartCard title="Traffic by Location" data={locationData} />
-
-      <DeviceBarChartCard
-        className="xl:col-span-3 font-helectiva"
-        title="Marketing & SEO "
-        data={marketingBars}
-      />
-    </div>
-  </motion.div>
-);
+        <DeviceBarChartCard
+          className="xl:col-span-3 font-helectiva"
+          title="Marketing & SEO "
+          data={marketingBars}
+        />
+      </div>
+    </motion.div>
+  );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 //Landing
@@ -13,8 +13,18 @@ import Login from "../Pages/Auth/Login";
 
 // Main
 import MainLayout from "../Layouts/DashboardLayout/DashboardLayout";
-import Overeview from "../Pages/Overeview/OvereviewPage";
-import GuestListPage from "../Pages/Guests/GusetListPage"
+import Overview from "../Pages/Overview/OverviewPage";
+
+// Guests (baru)
+import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
+// import GuestsAnalyticsPage from "../Pages/Guests/Analytics/GuestsAnalyticsPage";
+// import GuestsSearchPage from "../Pages/Guests/Search/GuestsSearchPage";
+// import GuestSegmentsPage from "../Pages/Guests/Segments/GuestSegmentsPage";
+import GuestListPage from "../Pages/Guests/Segments/GuestListPage";
+
+//Marketing
+import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
+import EmailPage from "../Pages/Marketing/Email/EmailPage";
 
 export default function AppRouter(): React.ReactElement {
   return (
@@ -33,11 +43,18 @@ export default function AppRouter(): React.ReactElement {
         </Route>
 
         <Route element={<MainLayout />}>
-          <Route path="/overeview" element={<Overeview />} />
-          <Route path="/guests" element={<GuestListPage />} />
+          <Route path="/overview" element={<Overview />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/overeview" />} />
+          <Route path="/guests" element={<GuestsLayout />}>
+            {/* <Route index element={<GuestsAnalyticsPage />} />             
+            <Route path="search" element={<GuestsSearchPage />} />            */}
+            <Route path="guest-insights" element={<GuestListPage />} />               
+          </Route>
+
+          <Route path="/marketing" element={<MarketingLayout />}>
+          <Route path="email" element={<EmailPage />}></Route>
+          </Route>
       </Routes>
     </BrowserRouter>
   );

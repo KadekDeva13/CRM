@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AvatarName from "../../components/AvatarName/AvatarName";
-import StatusPill from "../../components/StatusPill/StatusPill";
-import { fmtDate, fmtMoney } from "../../utils/fortmat";
+import AvatarName from "../../../components/AvatarName/AvatarName";
+import StatusPill from "../../../components/StatusPill/StatusPill";
+import { fmtDate, fmtMoney } from "../../../utils/format";
 
 const dummyGuests = [
   { id: "1", name: "John Doe",    avatarUrl: "/avatars/1.png", lastStayDate: "2025-06-24", offering: 942, status: "In Progress" },

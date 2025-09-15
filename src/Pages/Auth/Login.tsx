@@ -30,7 +30,7 @@ export default function Login(): React.ReactElement {
       if (!ok) throw new Error("Email & Password Required");
       loginSuccessToast();
       await controls.start({ opacity: 0, transition: { duration: 0.4 } });
-      navigate("/overeview");
+      navigate("/overview");
     } catch (err: any) {
       loginErrorToast(err?.message);
     } finally {
