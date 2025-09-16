@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 //Landing
@@ -14,13 +14,14 @@ import Login from "../Pages/Auth/Login";
 // Main
 import MainLayout from "../Layouts/DashboardLayout/DashboardLayout";
 import Overview from "../Pages/Overview/OverviewPage";
+import ReviewPage from "../Pages/Review/ReviewPage";
 
 // Guests (baru)
 import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
 // import GuestsAnalyticsPage from "../Pages/Guests/Analytics/GuestsAnalyticsPage";
 // import GuestsSearchPage from "../Pages/Guests/Search/GuestsSearchPage";
 // import GuestSegmentsPage from "../Pages/Guests/Segments/GuestSegmentsPage";
-import GuestListPage from "../Pages/Guests/Segments/GuestListPage";
+import GuestListPage from "../Pages/Guests/Analytics/GuestListPage";
 
 //Marketing
 import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
@@ -44,17 +45,18 @@ export default function AppRouter(): React.ReactElement {
 
         <Route element={<MainLayout />}>
           <Route path="/overview" element={<Overview />} />
+          <Route path="/reviews" element={<ReviewPage />} />
         </Route>
 
-          <Route path="/guests" element={<GuestsLayout />}>
-            {/* <Route index element={<GuestsAnalyticsPage />} />             
+        <Route path="/guests" element={<GuestsLayout />}>
+          {/* <Route index element={<GuestsAnalyticsPage />} />             
             <Route path="search" element={<GuestsSearchPage />} />            */}
-            <Route path="guest-insights" element={<GuestListPage />} />               
-          </Route>
+          <Route path="guest-insights" element={<GuestListPage />} />
+        </Route>
 
-          <Route path="/marketing" element={<MarketingLayout />}>
+        <Route path="/marketing" element={<MarketingLayout />}>
           <Route path="email" element={<EmailPage />}></Route>
-          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

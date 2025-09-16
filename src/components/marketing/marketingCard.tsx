@@ -49,10 +49,11 @@ export default function MarketingCard({
                 {delta} <span className="align-middle">↗</span>
               </span>
             )}
-            <span className="text-[11px] text-black/70">{subtitle}</span>
           </div>
+            <div className="mt-1 flex items-center gap-2">
+              <span className="text-[11px] text-black/70">{subtitle}</span>
+            </div>
         </div>
-
         <Icon className="h-10 w-10 text-black" />
       </div>
     </div>

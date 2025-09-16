@@ -10,6 +10,7 @@ type CardProps = {
   icon?: ReactNode;
   className?: string;
   variant?: "primary" | "neutral";
+  children?: ReactNode;
 };
 
 export default function Card({
@@ -22,6 +23,7 @@ export default function Card({
   variant = "neutral",
   icon,
   className,
+  children,
 }: CardProps) {
   const base =
     "relative w-[296px] h-[110px] rounded-[20px] p-4 border border-white/5 overflow-hidden";
@@ -61,6 +63,8 @@ const surface =
       <div className="text-[26px] font-semibold tracking-tight text-black font-helectiva">
         {value}
       </div>
+
+      {children ? <div className="mt-2">{children}</div> : null}
 
       {delta && (
         <div className="absolute right-4 bottom-2 text-right">
