@@ -34,7 +34,7 @@ export default function AppHeader({
     <header
       className="
         fixed inset-x-0 top-0 z-50 h-16 border-b
-        bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60
+        bg-[#FFFFFF] backdrop-blur supports-[backdrop-filter]:bg-white/60
         dark:bg-[#16171a]/90 dark:supports-[backdrop-filter]:bg-[#16171a]/60
         border-black/10 dark:border-white/5
       "

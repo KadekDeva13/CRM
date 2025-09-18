@@ -21,7 +21,6 @@ export default function Card({
   deltaNote = "From Last Month",
   positive = true,
   variant = "neutral",
-  icon,
   className,
   children,
 }: CardProps) {
@@ -30,12 +29,8 @@ export default function Card({
 
 const surface =
   variant === "primary"
-    ? "bg-[#E6F1FD] before:absolute before:inset-0 before:rounded-[20px] before:bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.40)_100%)] before:pointer-events-none"
-    : "bg-[#E6F1FD] before:absolute before:inset-0 before:rounded-[20px] before:bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(255,255,255,0.40)_100%)] before:pointer-events-none";
-
-
-  const iconWrap =
-    "shrink-0 rounded-full border border-black/10 bg-white/50 p-1.5";
+    ? "bg-[#7C9EA2] before:absolute before:inset-0 before:rounded-[20px]  before:pointer-events-none"
+    : "bg-[#F5F5F5] before:absolute before:inset-0 before:rounded-[20px]  before:pointer-events-none";
 
   return (
     <div className={[base, surface, className].filter(Boolean).join(" ")}>
@@ -50,14 +45,6 @@ const surface =
             </div>
           )}
         </div>
-
-        <div className={iconWrap}>
-          {icon ?? (positive ? (
-            <TrendUpIcon className="h-4 w-4 text-black" />
-          ) : (
-            <TrendDownIcon className="h-4 w-4 text-black" />
-          ))}
-        </div>
       </div>
 
       <div className="text-[26px] font-semibold tracking-tight text-black font-helectiva">
@@ -71,11 +58,7 @@ const surface =
           <div className="text-[12px] text-black font-helectiva inline-flex items-center gap-1">
             {positive ? "+" : ""}
             {delta}
-            {positive ? (
-              <TrendUpIcon className="h-3.5 w-3.5 text-black" />
-            ) : (
-              <TrendDownIcon className="h-3.5 w-3.5 text-black" />
-            )}
+            {positive }
           </div>
           {!!deltaNote && (
             <div className="text-[10px] mt-0.5 text-black/70 font-helectiva">
@@ -85,22 +68,5 @@ const surface =
         </div>
       )}
     </div>
-  );
-}
-
-function TrendUpIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" className={className}>
-      <path d="M2.5 10.5L6.25 6.75L9.25 9.75L13.5 5.5" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M10.75 5.5H13.5V8.25" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function TrendDownIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" className={className}>
-      <path d="M2.5 5.5L6.25 9.25L9.25 6.25L13.5 10.5" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M10.75 10.5H13.5V7.75" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }

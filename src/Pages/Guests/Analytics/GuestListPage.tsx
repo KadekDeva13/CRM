@@ -4,14 +4,15 @@ import StatusPill from "../../../components/StatusPill/StatusPill";
 import { fmtDate, fmtMoney } from "../../../utils/format";
 
 const dummyGuests = [
-  { id: "1", name: "John Doe",    avatarUrl: "/avatars/1.png", lastStayDate: "2025-06-24", offering: 942, status: "In Progress" },
-  { id: "2", name: "Natali Craig",  avatarUrl: "/avatars/2.png", lastStayDate: "2025-03-10", offering: 881, status: "Complete" },
+  { id: "1", name: "John Doe",    avatarUrl: "/avatars/1.png", lastStayDate: "2025-06-24", offering: 942, status: "Active" },
+  { id: "2", name: "Natali Craig",  avatarUrl: "/avatars/2.png", lastStayDate: "2025-03-10", offering: 881, status: "Rejected" },
   { id: "3", name: "Drew Cano",     avatarUrl: "/avatars/3.png", lastStayDate: "2025-11-10", offering: 409, status: "Pending" },
-  { id: "4", name: "Orlando Diggs", avatarUrl: "/avatars/4.png", lastStayDate: "2025-12-20", offering: 953, status: "Approved" },
+  { id: "4", name: "Orlando Diggs", avatarUrl: "/avatars/4.png", lastStayDate: "2025-12-20", offering: 953, status: "Active" },
   { id: "5", name: "Andi Lane",     avatarUrl: "/avatars/5.png", lastStayDate: "2025-07-25", offering: 907, status: "Rejected" },
-  { id: "6", name: "Frankie Luna", avatarUrl: "/avatars/4.png", lastStayDate: "2025-12-20", offering: 953, status: "Complete" },
+  { id: "6", name: "Frankie Luna", avatarUrl: "/avatars/4.png", lastStayDate: "2025-12-20", offering: 953, status: "Pending" },
   { id: "7", name: "Franchis Lone",     avatarUrl: "/avatars/5.png", lastStayDate: "2025-07-25", offering: 907, status: "Rejected" },
-  { id: "8", name: "Samuel Adams", avatarUrl: "/avatars/4.png", lastStayDate: "2025-12-20", offering: 953, status: "Approved" },
+  { id: "8", name: "Samuel Adams", avatarUrl: "/avatars/4.png", lastStayDate: "2025-12-20", offering: 953, status: "Pending" },
+  { id: "9", name: "Hans Adams",     avatarUrl: "/avatars/5.png", lastStayDate: "2025-07-25", offering: 907, status: "Active" },
 ];
 
 export default function GuestPage() {

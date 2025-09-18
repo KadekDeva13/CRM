@@ -14,7 +14,6 @@ import Login from "../Pages/Auth/Login";
 // Main
 import MainLayout from "../Layouts/DashboardLayout/DashboardLayout";
 import Overview from "../Pages/Overview/OverviewPage";
-import ReviewPage from "../Pages/Review/ReviewPage";
 
 // Guests (baru)
 import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
@@ -26,6 +25,9 @@ import GuestListPage from "../Pages/Guests/Analytics/GuestListPage";
 //Marketing
 import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
 import EmailPage from "../Pages/Marketing/Email/EmailPage";
+
+//Reservation
+import ReservationLayout from "../Layouts/ReservationLayout/ReservationLayout";
 
 export default function AppRouter(): React.ReactElement {
   return (
@@ -45,7 +47,6 @@ export default function AppRouter(): React.ReactElement {
 
         <Route element={<MainLayout />}>
           <Route path="/overview" element={<Overview />} />
-          <Route path="/reviews" element={<ReviewPage />} />
         </Route>
 
         <Route path="/guests" element={<GuestsLayout />}>
@@ -56,6 +57,9 @@ export default function AppRouter(): React.ReactElement {
 
         <Route path="/marketing" element={<MarketingLayout />}>
           <Route path="email" element={<EmailPage />}></Route>
+        </Route>
+
+        <Route path="/reservation" element={<ReservationLayout />}>
         </Route>
       </Routes>
     </BrowserRouter>

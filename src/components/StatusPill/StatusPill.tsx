@@ -1,18 +1,35 @@
 import type { GuestStatus } from "../../types/guest";
 
-const map: Record<GuestStatus, { bg: string; text: string }> = {
-  "In Progress": { bg: "bg-sky-500/15", text: "text-sky-300" },
-  "Complete":    { bg: "bg-emerald-500/15", text: "text-emerald-300" },
-  "Pending":     { bg: "bg-yellow-500/15", text: "text-yellow-300" },
-  "Approved":    { bg: "bg-indigo-500/15", text: "text-indigo-300" },
-  "Rejected":    { bg: "bg-rose-500/15", text: "text-rose-300" },
+const STYLE: Record<GuestStatus, { bg: string; text: string }> = {
+  Active:   { bg: "bg-[#0AB19B]",  text: "text-[#FFFFFF]" },
+  Pending:  { bg: "bg-[#DB961736]", text: "text-[#FF9D00]" },
+  Rejected: { bg: "bg-[#FF000036]", text: "text-[#FFFDF9]" },
 };
 
-export default function StatusPill({ value }: { value: GuestStatus }) {
-  const c = map[value];
+function isGuestStatus(v: unknown): v is GuestStatus {
+  return v === "Active" || v === "Pending" || v === "Rejected";
+}
+
+function normalizeStatus(v: unknown): GuestStatus | null {
+  if (isGuestStatus(v)) return v;
+  if (typeof v === "string") {
+    const s = v.trim().toLowerCase();
+    if (s === "active") return "Active";
+    if (s === "pending") return "Pending";
+    if (s === "rejected") return "Rejected";
+  }
+  return null;
+}
+
+export default function StatusPill({ value }: { value: unknown }) {
+  const key = normalizeStatus(value) ?? "Pending";
+  const c = STYLE[key];
+
   return (
-    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${c.bg} ${c.text}`}>
-      {value}
+    <span
+      className={`inline-flex items-center justify-center rounded-full text-xs font-medium ${c.bg} ${c.text} w-[92px] h-[26px]`}
+    >
+      {key}
     </span>
   );
 }

@@ -8,7 +8,8 @@ type Color =
   | "rose"
   | "gray"
   | "teal"
-  | "danger";
+  | "danger"
+  | "zinc"; // <- tambah ini
 
 type Props = {
   children: React.ReactNode;
@@ -36,6 +37,7 @@ export default function Badge({
     gray: "bg-white/10 text-white/70",
     teal: "bg-[#0AB19B] text-white",
     danger: "bg-red-500/15 text-red-300",
+    zinc: "bg-zinc-500/15 text-zinc-300", // <- mapping baru
   };
 
   const cls = variant ? byVariant[variant] : byColor[color];
@@ -44,7 +46,7 @@ export default function Badge({
     <span
       className={[
         "inline-flex items-center justify-center rounded-full",
-        "h-[19px] px-2 text-[11px] font-medium", // w fixed -> ganti ke px supaya auto width
+        "h-[19px] px-2 text-[11px] font-medium",
         cls,
         className,
       ].join(" ")}

@@ -1,4 +1,4 @@
-export type GuestStatus = "In Progress" | "Complete" | "Pending" | "Approved" | "Rejected";
+export type GuestStatus = "Active" | "Pending" | "Rejected";
 
 export type Guest = {
   id: string;

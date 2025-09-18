@@ -4,58 +4,22 @@ import Card from "../../components/UI/card";
 import {
   LineChartCard,
   DonutChartCard,
-  ListMeterCard,
+  BarChartCard,
 } from "../../components/Charts/ChartCard";
-import { DeviceBarChartCard } from "../../components/Charts/ChartCard";
 
 export default function Dashboard(): React.ReactElement {
   const lineData = [
-    { month: "Jan", thisYear: 12000, lastYear: 8000 },
-    { month: "Feb", thisYear: 11000, lastYear: 9000 },
-    { month: "Mar", thisYear: 15000, lastYear: 12000 },
-    { month: "Apr", thisYear: 9000, lastYear: 13000 },
-    { month: "May", thisYear: 17000, lastYear: 14000 },
-    { month: "Jun", thisYear: 16000, lastYear: 20000 },
-    { month: "Jul", thisYear: 18500, lastYear: 23000 },
-    { month: "Aug", thisYear: 19000, lastYear: 25000 },
-    { month: "Sep", thisYear: 18000, lastYear: 27000 },
-    { month: "Oct", thisYear: 20000, lastYear: 25000 },
-    { month: "Nov", thisYear: 25000, lastYear: 20000 },
-    { month: "Dec", thisYear: 28000, lastYear: 17000 },
+    { month: "2025", thisYear: 12000, lastYear: 8000 },
+    { month: "2026", thisYear: 11000, lastYear: 9000 },
+    { month: "2027", thisYear: 15000, lastYear: 12000 },
+    { month: "2028", thisYear: 9000, lastYear: 13000 },
+    { month: "2029", thisYear: 17000, lastYear: 14000 },
+    { month: "2030", thisYear: 16000, lastYear: 20000 },
+    { month: "2031", thisYear: 18500, lastYear: 23000 },
   ];
 
-  const lineDataProjects = [
-    { month: "Jan", thisYear: 32, lastYear: 21 },
-    { month: "Feb", thisYear: 40, lastYear: 25 },
-    { month: "Mar", thisYear: 46, lastYear: 29 },
-    { month: "Apr", thisYear: 30, lastYear: 33 },
-    { month: "May", thisYear: 55, lastYear: 37 },
-    { month: "Jun", thisYear: 61, lastYear: 44 },
-    { month: "Jul", thisYear: 70, lastYear: 48 },
-    { month: "Aug", thisYear: 75, lastYear: 51 },
-    { month: "Sep", thisYear: 72, lastYear: 56 },
-    { month: "Oct", thisYear: 78, lastYear: 60 },
-    { month: "Nov", thisYear: 90, lastYear: 64 },
-    { month: "Dec", thisYear: 95, lastYear: 68 },
-  ];
-
-  const lineDataOps = [
-    { month: "Jan", thisYear: 99.5, lastYear: 98.9 },
-    { month: "Feb", thisYear: 99.7, lastYear: 99.1 },
-    { month: "Mar", thisYear: 99.8, lastYear: 99.2 },
-    { month: "Apr", thisYear: 99.6, lastYear: 99.0 },
-    { month: "May", thisYear: 99.9, lastYear: 99.3 },
-    { month: "Jun", thisYear: 99.95, lastYear: 99.4 },
-    { month: "Jul", thisYear: 99.93, lastYear: 99.45 },
-    { month: "Aug", thisYear: 99.97, lastYear: 99.5 },
-    { month: "Sep", thisYear: 99.92, lastYear: 99.55 },
-    { month: "Oct", thisYear: 99.98, lastYear: 99.6 },
-    { month: "Nov", thisYear: 99.99, lastYear: 99.65 },
-    { month: "Dec", thisYear: 99.97, lastYear: 99.7 },
-  ];
-
-  type MetricKey = "users" | "projects" | "ops";
-  const [metric, setMetric] = useState<MetricKey>("users");
+  type MetricKey = "users";
+  const [metric] = useState<MetricKey>("users");
 
   const METRICS: Record<
     MetricKey,
@@ -70,94 +34,38 @@ export default function Dashboard(): React.ReactElement {
     }
   > = {
     users: {
-      title: "Total Users",
+      title: "CAMPAIGN ROOM REVENUE",
       data: lineData,
       series: [
-        { dataKey: "thisYear", name: "This year", color: "#7AA2FF" },
-        { dataKey: "lastYear", name: "Last year", color: "#B59AFF" },
+        { dataKey: "thisYear", name: "This year", color: "#1F2937" },
+        { dataKey: "lastYear", name: "Last year", color: "#1F2937" },
       ],
       legend: [
-        { label: "This year", color: "#7AA2FF" },
-        { label: "Last year", color: "#B59AFF" },
+        { label: "This year", color: "#1F2937" },
+        { label: "Last year", color: "#1F2937" },
       ],
       yDomain: [0, 30000],
       yTicks: [0, 10000, 20000, 30000],
-      yTickFormatter: (v: number) => (v >= 1000 ? `${v / 1000}K` : `${v}`),
-    },
-    projects: {
-      title: "Total Projects",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      data: lineDataProjects as any,
-      series: [
-        { dataKey: "thisYear", name: "This year", color: "#7AA2FF" },
-        { dataKey: "lastYear", name: "Last year", color: "#B59AFF" },
-      ],
-      legend: [
-        { label: "This year", color: "#7AA2FF" },
-        { label: "Last year", color: "#B59AFF" },
-      ],
-      yDomain: [0, "auto"],
-      yTicks: undefined,
-      yTickFormatter: (v: number) => `${v}`,
-    },
-    ops: {
-      title: "Operating Status",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      data: lineDataOps as any,
-      series: [
-        { dataKey: "thisYear", name: "This year", color: "#7CF7C7" },
-        { dataKey: "lastYear", name: "Last year", color: "#B59AFF" },
-      ],
-      legend: [
-        { label: "This year", color: "#7CF7C7" },
-        { label: "Last year", color: "#B59AFF" },
-      ],
-      yDomain: [98.5, 100],
-      yTicks: [98.5, 99, 99.5, 100],
-      yTickFormatter: (v: number) => `${v.toFixed(2)}%`,
+      yTickFormatter: (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`),
     },
   };
 
   const current = METRICS[metric];
 
   const deviceBars = [
-    { name: "Linux", value: 14000 },
-    { name: "Mac", value: 20000 },
-    { name: "iOS", value: 21000 },
-    { name: "Windows", value: 27000 },
-    { name: "Android", value: 12000 },
-    { name: "Other", value: 25000 },
+    { name: "2025", value: 18000 },
+    { name: "2026", value: 30000 },
+    { name: "2027", value: 22000 },
+    { name: "2028", value: 34000 },
+    { name: "2029", value: 10000 },
+    { name: "2030", value: 21000 },
   ];
 
-  const locationData = [
-    { name: "United States", value: 52.1 },
-    { name: "Canada", value: 22.8 },
-    { name: "Mexico", value: 13.9 },
-    { name: "Other", value: 11.2 },
-  ];
-
-  const websiteRows = [
-    { label: "Google", series: [0.25, 0.28, 0.30, 0.32] },
-    { label: "YouTube", series: [0.85, 0.62, 0.48, 0.42] },
-    { label: "Instagram", series: [0.30, 0.35, 0.33, 0.36] },
-    { label: "Pinterest", series: [0.88, 0.70, 0.56, 0.50] },
-    { label: "Facebook", series: [0.24, 0.28, 0.30, 0.32] },
-    { label: "Twitter", series: [0.80, 0.55, 0.40, 0.38] },
-  ];
-
-  const marketingBars = [
-    { name: "Jan", value: 12000 },
-    { name: "Feb", value: 30000 },
-    { name: "Mar", value: 21000 },
-    { name: "Apr", value: 28000 },
-    { name: "May", value: 11000 },
-    { name: "Jun", value: 26000 },
-    { name: "Jul", value: 15000 },
-    { name: "Aug", value: 30000 },
-    { name: "Sep", value: 20000 },
-    { name: "Oct", value: 27000 },
-    { name: "Nov", value: 12000 },
-    { name: "Dec", value: 27000 },
+  const campaignData = [
+    { name: "Valentine 2025", value: 220 },
+    { name: "Mindimedia Anniversary", value: 300 },
+    { name: "Back To Holiday", value: 192 },
+    { name: "Quirez Grand Openig", value: 1026 },
   ];
 
   return (
@@ -168,104 +76,118 @@ export default function Dashboard(): React.ReactElement {
       transition={{ duration: 0.45 }}
     >
       <div>
-        <h1 className="text-2xl font-semibold">Overeview</h1>
+        <h1 className="text-2xl font-semibold text-[#000000]">Welcome to Quirez CRM</h1>
+        <h2 className="text-xs text-[#000000]">Your premium hospitality management platform</h2>
       </div>
 
-<div className="flex flex-wrap gap-4 font-helectiva">
-  <Card
-    title="Guest Sign Up"
-    subtitle="New User Registrations"
-    value={256}
-    delta="-0.03%"
-    positive={false}
-    variant="primary"
-  />
-  <Card
-    title="Guest Journey Open Rate"
-    subtitle="New User Registrations"
-    value={256}
-    delta="-0.03%"
-    positive={false}
-    variant ="primary"
-  />
-  <Card
-    title="Guest Journey Click-through Rate"
-    subtitle="New User Registrations"
-    value={256}
-    delta="-0.03%"
-    positive={false}
-    variant="primary"
-  />
-</div>
-
-
-      <div className="grid gap-4 md:gap-2 xl:grid-cols-3 font-helectiva">
+      <div className="grid gap-4 md:gap-6 xl:grid-cols-4 font-helectiva">
         <LineChartCard
-          className="xl:col-span-2"
-          title={current.title}
-          data={current.data}
-          xKey="month"
-          series={current.series}
-          yDomain={current.yDomain}
-          yTicks={current.yTicks}
-          yTickFormatter={current.yTickFormatter}
-          headerRight={
-            <div className="flex items-center gap-4">
-              <div className="flex rounded-md bg-white/5 p-1">
-                {(
-                  [
-                    { key: "users", label: "Total Users" },
-                    { key: "projects", label: "Total Projects" },
-                    { key: "ops", label: "Operating Status" },
-                  ] as { key: MetricKey; label: string }[]
-                ).map(({ key, label }) => (
-                  <button
-                    key={key}
-                    onClick={() => setMetric(key)}
-                    className={[
-                      "px-3 py-1.5 rounded-md text-xs",
-                      metric === key
-                        ? "bg-white/20 text-white"
-                        : "text-white/70 hover:text-white hover:bg-white/10",
-                    ].join(" ")}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="hidden md:flex items-center gap-4 font-helectiva">
-                {current.legend.map((l) => (
-                  <div key={l.label} className="flex items-center gap-2">
-                    <span
-                      className="inline-block h-2 w-2 rounded-full"
-                      style={{ background: l.color }}
-                    />
-                    <span className="text-white/70">{l.label}</span>
-                  </div>
-                ))}
+          className="xl:col-span-3"
+          variant="light"
+          height={300}
+          title={
+            <div className="flex items-start gap-3">
+              <div>
+                <div className="text-[15px] md:text-[16px] font-semibold text-[#0B0A0A]">
+                  CAMPAIGN ROOM REVENUE
+                </div>
+                <div className="text-[18px] md:text-[20px] font-semibold text-[#0AB19B]">
+                  $513.717
+                </div>
               </div>
             </div>
           }
+          headerRight={
+            <button className="px-3 py-1.5 rounded-md bg-[#2B2B2B] text-white hover:bg-white hover:text-black text-[11px] md:text-xs shadow-sm">
+              VIEW REPORT
+            </button>
+          }
+          data={current.data}
+          xKey="month"
+          series={current.series}
+          yDomain={[0, 30000]}
+          yTicks={[0, 10000, 20000, 30000]}
+          yTickFormatter={(v) => (v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`)}
         />
 
-        <ListMeterCard title="Traffic by Website" rows={websiteRows} />
+        <div className="flex flex-col gap-4 xl:col-span-1">
+          <Card
+            title="PROFILES (RAW)"
+            subtitle="Total Clean Profiles"
+            value={155.234}
+            variant="primary"
+            className="bg-[#769AA0] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
+          />
+          <Card
+            title="CLEAN PROFILES"
+            subtitle="Total Clean Profiles"
+            value={146.333}
+            variant="primary"
+            className="bg-[#769AA0] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
+          />
+          <Card
+            title="NO- EMAIL PROFILES"
+            subtitle="Total Profile With no Emails"
+            value={78.476}
+            variant="primary"
+            className="bg-[#769AA0] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
+          />
+        </div>
       </div>
 
-      <div className="grid gap-4 md:gap-2 xl:grid-cols-2 font-helectiva">
-        <DeviceBarChartCard
+      <div className="grid gap-4 md:gap-6 xl:grid-cols-2 font-helectiva">
+        <DonutChartCard
+          variant="light"
+          height={300}
+          title={
+            <div className="text-[15px] md:text-[16px] font-semibold text-[#0B0A0A]">
+              ONE-TIME CAMPAIGN REVENUE
+            </div>
+          }
+          data={campaignData}
+        />
+
+        <BarChartCard
           className="xl:col-span-1"
-          title="Traffic by Device"
+          variant="light"
+          height={300}
+          title={
+            <div className="flex items-start justify-between w-full">
+              <div className="flex flex-col">
+                <div className="text-[15px] md:text-[16px] font-semibold text-[#0B0A0A]">
+                  LIFETIME REVENUE
+                </div>
+                <div className="text-[11px] text-[#0B0A0A]/70 -mt-0.5">
+                  Total With Quirez
+                </div>
+                <div className="text-[16px] md:text-[18px] font-semibold text-[#0AB19B]">
+                  $1.513.717
+                </div>
+              </div>
+              <button
+                className="ml-72 px-3 py-1.5 rounded-md bg-[#2B2B2B] text-white hover:bg-white hover:text-black text-[11px] md:text-xs shadow-sm">
+                VIEW REPORT
+              </button>
+            </div>
+          }
           data={deviceBars}
+          xKey="name"
+          bars={[
+            {
+              dataKey: "value",
+              name: "Revenue",
+              color: "#0F5A62",
+              barRadius: [10, 10, 0, 0],
+              barSize: 28,
+            },
+          ]}
+          yDomain={[0, 30000]}
+          yTicks={[0, 10000, 20000, 30000]}
+          yTickFormatter={(v) =>
+            v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`
+          }
         />
 
-        <DonutChartCard title="Traffic by Location" data={locationData} />
-
-        <DeviceBarChartCard
-          className="xl:col-span-3 font-helectiva"
-          title="Marketing & SEO "
-          data={marketingBars}
-        />
       </div>
     </motion.div>
   );
