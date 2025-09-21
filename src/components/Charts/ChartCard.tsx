@@ -123,8 +123,6 @@ export type LineChartCardProps = {
     referenceLine?: { y: number; label?: string } | null;
 };
 
-const LINE_COLORS = ["#7AA2FF", "#B59AFF", "#7CF7C7", "#FFD580"];
-
 export function LineChartCard({
     title,
     data,
@@ -139,40 +137,40 @@ export function LineChartCard({
     yTicks,
     yTickFormatter,
     xTickProps = { fontSize: 12 },
-    margin = { top: 6, right: 8, bottom: 6, left: -8 },
+    margin = { top: 6, right: 12, bottom: 28, left: 12 },
     referenceLine = null,
 }: LineChartCardProps) {
     const t = theme(variant);
     const defaultFormatter = yTickFormatter ?? niceK;
     const domain = (yDomain ?? [0, 30000]) as [number | "auto", number | "auto"];
     const ticks = yTicks ?? [0, 10000, 20000, 30000];
-
-    // pilih key untuk area fill (thisYear)
-    const FILL_KEY = "thisYear";
+    const FILL_KEY = "ThisYear";
+    const gradId = "lineAreaFadeRev";
 
     return (
         <ChartCard title={title} headerRight={headerRight} className={className} variant={variant} height={height}>
             <ResponsiveContainer>
                 <LineChart data={data} margin={margin}>
-                    {/* gradient halus untuk area */}
                     <defs>
-                        <linearGradient id="lineAreaFade" x1="0" y1="0" x2="0" y2="1">
-                            {/* lebih pekat di dekat garis, makin pudar ke bawah */}
-                            <stop offset="0%" stopColor="#000" stopOpacity={variant === "light" ? 0.10 : 0.18} />
+                        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#000" stopOpacity={0.08} />
                             <stop offset="100%" stopColor="#000" stopOpacity={0.02} />
                         </linearGradient>
                     </defs>
 
                     <XAxis
                         dataKey={xKey}
-                        tick={{ fill: t.tickFill, fontSize: xTickProps.fontSize ?? 12, ...xTickProps }}
+                        padding={{ left: 16, right: 8 }}
+                        tick={{ fill: t.tickFill, fontSize: xTickProps.fontSize ?? 12, ...xTickProps, dy: 6 }}
                         axisLine={false}
+                        tickMargin={10}
                         tickLine={false}
                     />
                     <YAxis
                         tick={{ fill: t.tickFill, fontSize: 12 }}
                         tickLine={false}
                         axisLine={false}
+                        tickMargin={10}
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         domain={domain as any}
                         ticks={ticks}
@@ -205,39 +203,39 @@ export function LineChartCard({
                             label={{ value: referenceLine.label ?? "", position: "right", fill: t.fgMuted, fontSize: 12 }}
                         />
                     )}
-
-                    {/* AREA di bawah thisYear */}
                     {series.some(s => s.dataKey === FILL_KEY) && (
                         <Area
                             type="monotone"
                             dataKey={FILL_KEY}
                             stroke="none"
-                            fill="url(#lineAreaFade)"
+                            fill={`url(#${gradId})`}
                             isAnimationActive={false}
                         />
                     )}
 
-                    {/* Garis-garis */}
-                    {series.map((s, i) => {
-                        const color = s.color ?? LINE_COLORS[i % LINE_COLORS.length];
+                    {series.map((s) => {
                         const isLastYear = s.dataKey === "lastYear";
                         const isThisYear = s.dataKey === FILL_KEY;
 
                         return (
                             <Line
                                 key={s.dataKey}
-                                type={s.smooth ? "monotone" : "linear"}
+                                type="monotone"
                                 dataKey={s.dataKey}
                                 name={s.name}
-                                stroke={color}
-                                strokeWidth={s.strokeWidth ?? 2}
-                                strokeDasharray={isLastYear ? "6 4" : undefined}   // dashed utk lastYear
-                                dot={
+                                stroke="#0B0A0A"
+                                strokeOpacity={isLastYear ? 0.6 : 1}
+                                strokeWidth={1.5}
+                                strokeDasharray={isLastYear ? "4 4" : undefined}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                dot={false}
+                                activeDot={
                                     isThisYear
-                                        ? { r: s.dotRadius ?? 3, strokeWidth: 2, fill: "#fff" }   // titik putih seperti desain
-                                        : false                                                   // garis perbandingan tanpa dot
+                                        ? { r: (s.dotRadius ?? 3), stroke: "#0B0A0A", fill: "#fff" }
+                                        : false
                                 }
-                                activeDot={isThisYear ? { r: (s.dotRadius ?? 3) + 2 } : false}
+                                connectNulls
                                 isAnimationActive={false}
                             />
                         );
@@ -247,6 +245,7 @@ export function LineChartCard({
         </ChartCard>
     );
 }
+
 
 
 export type BarSeries = {
@@ -458,8 +457,8 @@ export function DonutChartCard({
                                 nameKey="name"
                                 startAngle={90}
                                 endAngle={-270}
-                                innerRadius="50%"
-                                outerRadius="112%"
+                                innerRadius="40%"
+                                outerRadius="100%"
                                 paddingAngle={3}
                                 cornerRadius={7}
                                 stroke={variant === "light" ? "#ffffff" : "#1a1a1a"}

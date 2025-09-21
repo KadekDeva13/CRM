@@ -12,11 +12,11 @@ export default function MainLayout(): React.ReactElement {
 
   return (
     <div
-      className="min-h-svh bg-gray-50 text-gray-900 dark:bg-[#0b0b0f] dark:text-white"
+      className="min-h-svh bg-[#D2D4D3] text-gray-900 dark:text-white"
       style={{ ["--left" as any]: `${leftWidth}px` }}
     >
 
-      <div className="sticky top-0 z-50 border-b border-white/5 bg-[#141418]/90 backdrop-blur">
+      <div className="sticky top-0 z-50 border-b border-white/5 bg-[#FFFFFF] backdrop-blur">
         <AppHeader
           onMenu={() => setOpenMobile(true)}
           collapsed={collapsed}

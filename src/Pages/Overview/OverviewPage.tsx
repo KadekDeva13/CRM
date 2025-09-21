@@ -116,21 +116,21 @@ export default function Dashboard(): React.ReactElement {
             subtitle="Total Clean Profiles"
             value={155.234}
             variant="primary"
-            className="bg-[#769AA0] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
+            className="bg-[#ffffff] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
           />
           <Card
             title="CLEAN PROFILES"
             subtitle="Total Clean Profiles"
             value={146.333}
             variant="primary"
-            className="bg-[#769AA0] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
+            className="bg-[#ffffff] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
           />
           <Card
             title="NO- EMAIL PROFILES"
             subtitle="Total Profile With no Emails"
             value={78.476}
             variant="primary"
-            className="bg-[#769AA0] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
+            className="bg-[#ffffff] text-[#0B0A0A] rounded-2xl border border-black/10 shadow-sm"
           />
         </div>
       </div>

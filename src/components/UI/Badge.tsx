@@ -9,7 +9,7 @@ type Color =
   | "gray"
   | "teal"
   | "danger"
-  | "zinc"; // <- tambah ini
+  | "zinc"; 
 
 type Props = {
   children: React.ReactNode;
@@ -37,7 +37,7 @@ export default function Badge({
     gray: "bg-white/10 text-white/70",
     teal: "bg-[#0AB19B] text-white",
     danger: "bg-red-500/15 text-red-300",
-    zinc: "bg-zinc-500/15 text-zinc-300", // <- mapping baru
+    zinc: "bg-zinc-500/15 text-zinc-300",
   };
 
   const cls = variant ? byVariant[variant] : byColor[color];
