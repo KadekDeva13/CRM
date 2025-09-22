@@ -2,8 +2,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import TemplateCard, { type CampaignTemplate } from "../../../components/Campaign/TemplateCard";
 import { IconArrowLeft, IconArrowRight, IconPageNumber } from "../../../components/Campaign/TemplateIcon";
-
-
+import UploadTemplateModal, { type UploadTemplatePayload } from "../../../components/Campaign/UploadTemplateModal";
 
 type Category = "All Category" | "Announcement" | "Welcome" | "Follow-up";
 type Sort = "Newest" | "Oldest" | "Most Used";
@@ -15,168 +14,70 @@ type Filter = {
 };
 
 const SEED: (CampaignTemplate & { category: Exclude<Category, "All Category"> })[] = [
-    {
-        id: "a1",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-    {
-        id: "a2",
-        title: "Reminder",
-        description:
-            "Reminder template for appointments, deadlines, or important events.",
-        status: "Draft",
-        usedCount: 124,
-        category: "Announcement",
-        thumbUrl:
-            "/image/reminder.png",
-    },
-    {
-        id: "a3",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-
-    {
-        id: "b1",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-    {
-        id: "b2",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-    {
-        id: "b3",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-
-    {
-        id: "c1",
-        title: "Reminder",
-        description:
-            "Reminder template for appointments, deadlines, or important events.",
-        status: "Draft",
-        usedCount: 124,
-        category: "Announcement",
-        thumbUrl:
-            "/image/reminder.png",
-    },
-    {
-        id: "c2",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-    {
-        id: "c3",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-    {
-        id: "c4",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-    {
-        id: "c5",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
-    {
-        id: "c6",
-        title: "Welcome Email",
-        description:
-            "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).",
-        status: "Active",
-        usedCount: 142,
-        category: "Welcome",
-        thumbUrl:
-            "/image/welcome.png",
-    },
+  { id: "a1", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "a2", title: "Reminder", description: "Reminder template for appointments, deadlines, or important events.", status: "Draft", usedCount: 124, category: "Announcement", thumbUrl: "/image/reminder.png" },
+  { id: "a3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "b1", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "b2", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "b3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "c1", title: "Reminder", description: "Reminder template for appointments, deadlines, or important events.", status: "Draft", usedCount: 124, category: "Announcement", thumbUrl: "/image/reminder.png" },
+  { id: "c2", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "c3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "c4", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "c5", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+  { id: "c6", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
 ];
-
 
 export default function EmailTemplatePage() {
   const [items, setItems] = React.useState(SEED);
-  const [filter, setFilter] = React.useState<Filter>({
-    q: "",
-    category: "All Category",
-    sort: "Newest",
-  });
-
+  const [filter, setFilter] = React.useState<Filter>({ q: "", category: "All Category", sort: "Newest" });
   const navigate = useNavigate();
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(9);
 
-  const q = filter.q.trim().toLowerCase();
+  // === Upload Modal state ===
+  const [openUpload, setOpenUpload] = React.useState(false);
 
+  // track blob URLs untuk di-revoke saat unmount/replace
+  const blobUrls = React.useRef<string[]>([]);
+  React.useEffect(() => {
+    return () => {
+      blobUrls.current.forEach((u) => URL.revokeObjectURL(u));
+      blobUrls.current = [];
+    };
+  }, []);
+
+  const handleUploadSubmit = (p: UploadTemplatePayload) => {
+    const isImage = p.file.type.startsWith("image/");
+    const objectUrl = isImage ? URL.createObjectURL(p.file) : "";
+    if (objectUrl) blobUrls.current.push(objectUrl);
+
+    const item: (CampaignTemplate & { category: Exclude<Category, "All Category"> }) = {
+      id: crypto.randomUUID(),
+      title: p.name,
+      description: p.description || "Imported template",
+      status: "Draft",
+      usedCount: 0,
+      category: p.category,
+      thumbUrl: isImage ? objectUrl : "/image/reminder.png",
+    };
+
+    setItems((s) => [item, ...s]);
+    setOpenUpload(false);
+    // reset ke halaman pertama agar item baru terlihat
+    setPage(1);
+  };
+
+  const q = filter.q.trim().toLowerCase();
   const filtered = React.useMemo(() => {
     let arr = items.filter(
       (t) =>
         (filter.category === "All Category" || t.category === filter.category) &&
         (t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q))
     );
-
     if (filter.sort === "Newest") arr = [...arr].reverse();
     if (filter.sort === "Oldest") arr = [...arr];
     if (filter.sort === "Most Used") arr = [...arr].sort((a, b) => b.usedCount - a.usedCount);
-
     return arr;
   }, [items, filter, q]);
 
@@ -186,22 +87,6 @@ export default function EmailTemplatePage() {
   const paged = filtered.slice(startIdx - 1, endIdx);
 
   React.useEffect(() => setPage(1), [filter.q, filter.category, filter.sort, pageSize]);
-
-  const uploadRef = React.useRef<HTMLInputElement>(null);
-  const onUpload = (f?: File) => {
-    if (!f) return;
-    const name = f.name.replace(/\.[^.]+$/, "");
-    const item: (CampaignTemplate & { category: Exclude<Category, "All Category"> }) = {
-      id: crypto.randomUUID(),
-      title: name,
-      description: "Imported template",
-      status: "Draft",
-      usedCount: 0,
-      category: "Announcement",
-      bg: "bg-gradient-to-br from-zinc-200 to-zinc-300",
-    };
-    setItems((s) => [item, ...s]);
-  };
 
   return (
     <div className="mx-auto max-w-[1200px] space-y-5 px-6">
@@ -249,16 +134,8 @@ export default function EmailTemplatePage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <input
-            ref={uploadRef}
-            type="file"
-            accept=".html,.zip"
-            className="hidden"
-            onChange={(e) => onUpload(e.target.files?.[0] ?? undefined)}
-          />
-
           <button
-            onClick={() => uploadRef.current?.click()}
+            onClick={() => setOpenUpload(true)}
             className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white hover:bg-emerald-700"
           >
             <UploadIcon className="h-4 w-4" />
@@ -266,7 +143,7 @@ export default function EmailTemplatePage() {
           </button>
 
           <button
-            onClick={() => navigate('/campaign/email-template/template-builder')}
+            onClick={() => navigate("/campaign/email-template/template-builder")}
             className="inline-flex items-center gap-2 rounded-lg bg-teal-600 px-3 py-2 text-sm font-medium text-white hover:bg-teal-700"
           >
             <PlusIcon className="h-4 w-4" />
@@ -325,9 +202,7 @@ export default function EmailTemplatePage() {
                   key={n}
                   onClick={() => setPage(n)}
                   className={`h-8 w-8 rounded-md ring-1 ring-inset ${
-                    active
-                      ? "bg-zinc-900 text-white ring-zinc-900"
-                      : "text-zinc-600 ring-zinc-300 hover:bg-zinc-50"
+                    active ? "bg-zinc-900 text-white ring-zinc-900" : "text-zinc-600 ring-zinc-300 hover:bg-zinc-50"
                   }`}
                 >
                   {n}
@@ -345,6 +220,9 @@ export default function EmailTemplatePage() {
           </div>
         </div>
       </div>
+
+      {/* Modal Upload */}
+      <UploadTemplateModal open={openUpload} onClose={() => setOpenUpload(false)} onSubmit={handleUploadSubmit} />
     </div>
   );
 }
@@ -379,17 +257,11 @@ function SearchIcon(p: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
 function UploadIcon(p: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden {...p}>
-      <path
-        d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

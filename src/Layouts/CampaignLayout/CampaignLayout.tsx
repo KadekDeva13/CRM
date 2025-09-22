@@ -23,7 +23,6 @@ export default function CampaignLayout({ hideHeader = false, children }: Props):
 
       <main className="min-w-0 w-auto md:pl-[var(--left)]">
         <div className={`w-full px-4 py-6 lg:px-6 ${hideHeader ? "" : "mt-12"}`}>
-          {/* ⬇️ render children kalau ada, kalau tidak gunakan Outlet */}
           {children ? children : <Outlet />}
         </div>
       </main>

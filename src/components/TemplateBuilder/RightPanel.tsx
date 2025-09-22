@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import * as React from "react";
 import { useDraggable } from "@dnd-kit/core";
-import { prettyKind, type BlockKind } from "./Blocks";
+import { prettyKind, type BlockKind, type TemplateBlock } from "./Blocks";
 
-/** ====== ICONS (pakai SVG yang kamu berikan) ====== */
 export function getIcon(kind: BlockKind): React.ReactNode {
   switch (kind) {
     case "columns":
@@ -39,7 +39,7 @@ export function getIcon(kind: BlockKind): React.ReactNode {
     case "image":
       return (
         <svg width="19" height="17" viewBox="0 0 19 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0.25 2.625C0.25 1.38398 1.25898 0.375 2.5 0.375H16C17.241 0.375 18.25 1.38398 18.25 2.625V13.875C18.25 15.116 17.241 16.125 16 16.125H2.5C1.25898 16.125 0.25 15.116 0.25 13.875V2.625ZM11.6336 6.36914C11.4754 6.13711 11.2152 6 10.9375 6C10.6598 6 10.3961 6.13711 10.2414 6.36914L7.18281 10.8551L6.25117 9.69141C6.08945 9.49102 5.84688 9.375 5.59375 9.375C5.34062 9.375 5.09453 9.49102 4.93633 9.69141L2.68633 12.5039C2.48242 12.757 2.44375 13.1051 2.58438 13.3969C2.725 13.6887 3.02031 13.875 3.34375 13.875H6.71875H7.84375H15.1562C15.4691 13.875 15.7574 13.7027 15.9016 13.425C16.0457 13.1473 16.0281 12.8133 15.8523 12.5566L11.6336 6.36914ZM4.1875 6C4.63505 6 5.06428 5.82221 5.38074 5.50574C5.69721 5.18928 5.875 4.76005 5.875 4.3125C5.875 3.86495 5.69721 3.43572 5.38074 3.11926C5.06428 2.80279 4.63505 2.625 4.1875 2.625C3.73995 2.625 3.31072 2.80279 2.99426 3.11926C2.67779 3.43572 2.5 3.86495 2.5 4.3125C2.5 4.76005 2.67779 5.18928 2.99426 5.50574C3.31072 5.82221 3.73995 6 4.1875 6Z" fill="#4B5563"/>
+          <path d="M0.25 2.625C0.25 1.38398 1.25898 0.375 2.5 0.375H16C17.241 0.375 18.25 1.38398 18.25 2.625V13.875C18.25 15.116 17.241 16.125 16 16.125H2.5C1.25898 16.125 0.25 15.116 0.25 13.875V2.625ZM11.6336 6.36914C11.4754 6.13711 11.2152 6 10.9375 6C10.6598 6 10.3961 6.13711 10.2414 6.36914L7.18281 10.8551L6.25117 9.69141C6.08945 9.49102 5.84688 9.375 5.59375 9.375C5.34062 9.375 5.09453 9.49102 4.93633 9.69141L2.68633 12.5039C2.48242 12.757 2.44375 13.1051 2.58438 13.3969C2.725 13.6887 3.02031 13.875 3.34375 13.875H15.1562C15.4691 13.875 15.7574 13.7027 15.9016 13.425C16.0457 13.1473 16.0281 12.8133 15.8523 12.5566L11.6336 6.36914ZM4.1875 6C4.63505 6 5.06428 5.82221 5.38074 5.50574C5.69721 5.18928 5.875 4.76005 5.875 4.3125C5.875 3.86495 5.69721 3.43572 5.38074 3.11926C5.06428 2.80279 4.63505 2.625 4.1875 2.625C3.73995 2.625 3.31072 2.80279 2.99426 3.11926C2.67779 3.43572 2.5 3.86495 2.5 4.3125C2.5 4.76005 2.67779 5.18928 2.99426 5.50574C3.31072 5.82221 3.73995 6 4.1875 6Z" fill="#4B5563"/>
         </svg>
       );
     case "video":
@@ -79,69 +79,137 @@ type Props = {
   email: { fromName: string; fromEmail: string; replyTo: string; subject: string; previewText: string };
   setEmail: (v: any) => void;
   onAddFromPalette: (k: BlockKind) => void;
+  selected: TemplateBlock | null;
+  onChangeSelected: (update: (prev: any) => any) => void;
+  onDeleteSelected: () => void;
 };
 
-export default function RightPanel({ email, setEmail, onAddFromPalette }: Props) {
+export default function RightPanel({ email, setEmail, onAddFromPalette, selected, onChangeSelected, onDeleteSelected }: Props) {
   return (
     <aside className="w-full md:w-[320px]">
       <div className="sticky top-4 space-y-4">
         {/* Email Settings */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-4">
+        <section className="rounded-xl border border-zinc-200 bg-white p-4">
           <h4 className="mb-3 text-[14px] font-semibold text-zinc-800">Email Settings</h4>
           <div className="space-y-3">
             <Input label="From Name" placeholder="Your Company" value={email.fromName} onChange={(v) => setEmail({ ...email, fromName: v })} />
             <Input label="From Email" placeholder="hello@company.com" value={email.fromEmail} onChange={(v) => setEmail({ ...email, fromEmail: v })} />
             <Input label="Reply To Email" placeholder="support@company.com" value={email.replyTo} onChange={(v) => setEmail({ ...email, replyTo: v })} />
             <Input label="Subject" placeholder="Email Subject" value={email.subject} onChange={(v) => setEmail({ ...email, subject: v })} />
-            <Input label="Preview Text" placeholder="Pre-header text that appears in email preview" value={email.previewText} onChange={(v) => setEmail({ ...email, previewText: v })} />
+            <Input label="Preview Text" placeholder="Pre-header" value={email.previewText} onChange={(v) => setEmail({ ...email, previewText: v })} />
           </div>
-        </div>
+        </section>
 
         {/* Elements Palette */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-4">
+        <section className="rounded-xl border border-zinc-200 bg-white p-4">
           <h4 className="mb-2 text-[14px] font-semibold text-zinc-800">Elements</h4>
           <div className="grid grid-cols-2 gap-3">
             {(["columns","button","divider","heading","text","image","video","social","menu","html","timer"] as BlockKind[]).map((k) => (
               <PaletteItem key={k} kind={k} label={prettyKind[k]} icon={getIcon(k)} onClick={() => onAddFromPalette(k)} />
             ))}
           </div>
-        </div>
+        </section>
+
+        {/* Properties */}
+        <section className="rounded-xl border border-zinc-200 bg-white p-4">
+          <div className="mb-2 flex items-center justify-between">
+            <h4 className="text-[14px] font-semibold text-zinc-800">Properties</h4>
+            <button
+              type="button"
+              onClick={onDeleteSelected}
+              className="rounded-md border border-zinc-200 px-2 py-1 text-[12px] text-zinc-600 hover:bg-zinc-50 disabled:opacity-50"
+              disabled={!selected}
+              title={selected ? "Delete (Del/Backspace)" : "Select an element"}
+            >
+              Delete
+            </button>
+          </div>
+
+          {!selected ? (
+            <p className="text-[12px] text-zinc-500">Pilih elemen di canvas untuk mengedit propertinya.</p>
+          ) : (
+            <ElementEditor selected={selected} onChangeSelected={onChangeSelected} />
+          )}
+        </section>
       </div>
     </aside>
   );
 }
 
-/** Draggable tile (sesuai docs: useDraggable) */
-function PaletteItem({
-  kind,
-  label,
-  icon,
-  onClick,
-}: {
-  kind: BlockKind;
-  label: string;
-  icon: React.ReactNode;
-  onClick: () => void;
-}) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: `palette-${kind}`,
-    data: { kind },
-  });
+function ElementEditor({ selected, onChangeSelected }: { selected: TemplateBlock; onChangeSelected: (updater: (prev: any) => any) => void }) {
+  switch (selected.kind) {
+    case "heading":
+      return (
+        <div className="space-y-3">
+          <Input label="Text" value={selected.props.text} onChange={(v) => onChangeSelected((p) => ({ ...p, text: v }))} />
+          <NumberInput label="Size" value={Number(selected.props.size ?? 24)} min={10} max={64} onChange={(v) => onChangeSelected((p) => ({ ...p, size: v }))} />
+          <Select label="Align" value={selected.props.align ?? "left"} onChange={(v) => onChangeSelected((p) => ({ ...p, align: v }))} options={[{value:"left",label:"Left"},{value:"center",label:"Center"},{value:"right",label:"Right"}]} />
+        </div>
+      );
+    case "text":
+      return (
+        <div className="space-y-3">
+          <Textarea label="Content" value={selected.props.text} onChange={(v) => onChangeSelected((p) => ({ ...p, text: v }))} />
+          <Select label="Align" value={selected.props.align ?? "left"} onChange={(v) => onChangeSelected((p) => ({ ...p, align: v }))} options={[{value:"left",label:"Left"},{value:"center",label:"Center"},{value:"right",label:"Right"}]} />
+        </div>
+      );
+    case "image":
+      return (
+        <div className="space-y-3">
+          <Input label="Source URL" value={selected.props.src} onChange={(v) => onChangeSelected((p) => ({ ...p, src: v }))} />
+          <Input label="Alt" value={selected.props.alt} onChange={(v) => onChangeSelected((p) => ({ ...p, alt: v }))} />
+          <NumberInput label="Width" value={Number(selected.props.width ?? 600)} min={100} max={800} onChange={(v) => onChangeSelected((p) => ({ ...p, width: v }))} />
+        </div>
+      );
+    case "button":
+      return (
+        <div className="space-y-3">
+          <Input label="Label" value={selected.props.label} onChange={(v) => onChangeSelected((p) => ({ ...p, label: v }))} />
+          <Input label="Href" value={selected.props.href} onChange={(v) => onChangeSelected((p) => ({ ...p, href: v }))} />
+        </div>
+      );
+    case "divider":
+      return (
+        <div className="space-y-3">
+          <NumberInput label="Thickness" value={Number(selected.props.thickness ?? 1)} min={1} max={12} onChange={(v) => onChangeSelected((p) => ({ ...p, thickness: v }))} />
+          <ColorInput label="Color" value={selected.props.color ?? "#E5E7EB"} onChange={(v) => onChangeSelected((p) => ({ ...p, color: v }))} />
+        </div>
+      );
+    case "columns":
+      return (
+        <div className="space-y-3">
+          <div className="grid grid-cols-3 gap-2">
+            {(["2x1","3x1","2x2","3x3","4x4","5x5","6x6"] as const).map((p) => {
+              const [c, r] = p.split("x").map(Number);
+              return (
+                <button key={p} type="button" onClick={() => onChangeSelected((prev) => ({ ...prev, cols: c, rows: r }))} className="rounded border border-zinc-200 px-2 py-1 text-[12px] text-zinc-700 hover:bg-zinc-50">
+                  {p}
+                </button>
+              );
+            })}
+          </div>
+          <NumberInput label="# Columns" value={Number(selected.props.cols ?? 2)} min={1} max={6} onChange={(v) => onChangeSelected((p) => ({ ...p, cols: clamp(v) }))} />
+          <NumberInput label="# Rows" value={Number(selected.props.rows ?? 1)} min={1} max={6} onChange={(v) => onChangeSelected((p) => ({ ...p, rows: clamp(v) }))} />
+          <NumberInput label="Gap (px)" value={Number(selected.props.gap ?? 16)} min={0} max={48} onChange={(v) => onChangeSelected((p) => ({ ...p, gap: clampGap(v) }))} />
+        </div>
+      );
+    case "html":
+      return <Textarea label="HTML" value={selected.props.html} onChange={(v) => onChangeSelected((p) => ({ ...p, html: v }))} />;
+    default:
+      return <p className="text-[12px] text-zinc-500">Belum ada editor untuk jenis "{prettyKind[selected.kind]}".</p>;
+  }
+}
 
-  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined;
-
+function PaletteItem({ kind, label, icon, onClick }: { kind: BlockKind; label: string; icon: React.ReactNode; onClick: () => void }) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: `palette-${kind}`, data: { type: "new", kind } });
   return (
     <button
       ref={setNodeRef}
-      {...listeners}
       {...attributes}
+      {...listeners}
       type="button"
       onClick={onClick}
-      style={style}
-      className={`flex h-[64px] w-full flex-col items-center justify-center gap-1.5
-                  rounded-lg border border-dashed border-zinc-300 bg-white
-                  text-[12px] font-medium text-zinc-600 hover:bg-zinc-50
-                  cursor-grab active:cursor-grabbing ${isDragging ? "opacity-60" : ""}`}
+      className={`flex h-[64px] w-full flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-zinc-300 bg-white text-[12px] font-medium text-zinc-600 hover:bg-zinc-50 cursor-grab active:cursor-grabbing ${isDragging ? "opacity-60" : ""}`}
     >
       <span className="text-zinc-500">{icon}</span>
       {label}
@@ -149,30 +217,49 @@ function PaletteItem({
   );
 }
 
-/* ---------- Inputs ---------- */
-function Input({
-  label,
-  value,
-  onChange,
-  type = "text",
-  placeholder,
-}: {
-  label: string;
-  value: any;
-  onChange: (v: string) => void;
-  type?: string;
-  placeholder?: string;
-}) {
+function Input({ label, value, onChange, type = "text", placeholder }: { label: string; value: any; onChange: (v: string) => void; type?: string; placeholder?: string }) {
   return (
     <label className="block">
       <span className="text-[12px] text-zinc-600">{label}</span>
-      <input
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) => onChange(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-[13px] text-zinc-700 outline-none placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-300"
-      />
+      <input type={type} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-[13px] text-zinc-800 outline-none placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-300" />
     </label>
   );
 }
+function Textarea({ label, value, onChange, placeholder }: { label: string; value: any; onChange: (v: string) => void; placeholder?: string }) {
+  return (
+    <label className="block">
+      <span className="text-[12px] text-zinc-600">{label}</span>
+      <textarea value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-[13px] text-zinc-800 outline-none placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-300" rows={4} />
+    </label>
+  );
+}
+function NumberInput({ label, value, onChange, min, max }: { label: string; value: number; onChange: (v: number) => void; min?: number; max?: number }) {
+  return (
+    <label className="block">
+      <span className="text-[12px] text-zinc-600">{label}</span>
+      <input type="number" value={value} min={min} max={max} onChange={(e) => onChange(Number(e.target.value))} className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-[13px] text-zinc-800 outline-none focus:ring-2 focus:ring-zinc-300" />
+    </label>
+  );
+}
+function ColorInput({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <label className="block">
+      <span className="text-[12px] text-zinc-600">{label}</span>
+      <input type="color" value={value} onChange={(e) => onChange(e.target.value)} className="mt-1 h-9 w-full cursor-pointer rounded-lg border border-zinc-300 bg-white" />
+    </label>
+  );
+}
+function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
+  return (
+    <label className="block">
+      <span className="text-[12px] text-zinc-600">{label}</span>
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-[13px] text-zinc-800 outline-none focus:ring-2 focus:ring-zinc-300">
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>{o.label}</option>
+        ))}
+      </select>
+    </label>
+  );
+}
+function clamp(n: number) { const v = Math.round(Number(n || 1)); return Math.max(1, Math.min(6, v)); }
+function clampGap(n: number) { const v = Math.round(Number(n || 0)); return Math.max(0, Math.min(48, v)); }
