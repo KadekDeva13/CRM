@@ -134,11 +134,15 @@ export default function TemplateBuilderPage() {
     setActivePageId(targetPageId);
   };
 
-  const deleteSelected = React.useCallback(() => {
-    if (!selected) return;
-    updatePageById(activePageId, (p) => ({ ...p, blocks: p.blocks.filter((b) => b.id !== selected.id) }));
-    setSelectedId(null);
-  });
+const deleteSelected = React.useCallback(() => {
+  if (!selected) return;
+  updatePageById(activePageId, (p) => ({
+    ...p,
+    blocks: p.blocks.filter((b) => b.id !== selected.id),
+  }));
+  setSelectedId(null);
+}, [activePageId, selected]);
+
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

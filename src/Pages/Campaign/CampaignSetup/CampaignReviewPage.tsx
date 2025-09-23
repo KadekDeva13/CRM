@@ -45,7 +45,6 @@ export default function CampaignReviewPage() {
 
     return (
         <div className="mx-auto max-w-[1100px] px-2 py-2 md:px-6 md:py-6">
-            {/* Title + Stepper */}
             <div className="mb-3">
                 <h1 className="text-[22px] font-semibold text-zinc-800">Setup Your Campaign</h1>
                 <p className="text-[13px] text-zinc-500">
@@ -58,64 +57,51 @@ export default function CampaignReviewPage() {
                 <div className="text-xs text-zinc-500">Step 4 of {steps.length}</div>
             </div>
 
-            {/* ===== Campaign Review */}
-            {/* ===== Campaign Review (match screenshot) */}
             <section className="mb-4 rounded-2xl border border-zinc-200 bg-white p-4 md:p-6 shadow-sm">
                 <h3 className="text-[18px] font-semibold text-zinc-900">Campaign Review</h3>
 
-                <div className="mt-4 grid gap-6 lg:grid-cols-2">
-                    {/* DESKTOP */}
+                <div className="mt-4 grid gap-6 md:grid-cols-2">
                     <div>
                         <div className="mb-2 text-sm font-medium text-zinc-700">Desktop Preview</div>
-
-                        {/* 1x dashed frame, big light gray canvas */}
-                        <div className="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 pt-4 pb-8">
-                            {/* white card on top area */}
-                            <div className="mx-auto w-full rounded-lg border border-zinc-200 bg-white px-6 py-6 md:px-8 md:py-8 text-center shadow-sm">
-                                <h4 className="text-[22px] md:text-[24px] font-semibold text-zinc-900">
-                                    {chosen?.title ?? "Summer Sale Campaign"}
-                                </h4>
-                                <p className="mt-2 text-sm text-zinc-600">Get up to 50% off on selected items</p>
-                                <div className="mt-5 flex justify-center">
-                                    <button className="rounded-md bg-[#0F5A62] px-5 py-2 text-sm font-semibold text-white hover:brightness-110">
+                        <div className="mx-auto w-full max-w-[720px] rounded-xl border border-dashed border-zinc-300/80 bg-zinc-50 p-4">
+                            <div className="aspect-[16/9] w-full rounded-xl border border-dashed border-zinc-300/60 bg-white/40 flex flex-col">
+                                <div className="mx-auto mt-6 w-[92%] max-w-[640px] rounded-lg border border-zinc-200 bg-white px-5 py-5 text-center shadow-sm">
+                                    <h4 className="text-[18px] md:text-[20px] font-semibold text-zinc-900">
+                                        {chosen?.title ?? "Summer Sale Campaign"}
+                                    </h4>
+                                    <p className="mt-2 text-sm text-zinc-600">
+                                        Get up to 50% off on selected items
+                                    </p>
+                                    <div className="mt-4 flex justify-center">
+                                        <button className="rounded-md bg-[#0F5A62] px-4 py-2 text-sm font-semibold text-white hover:brightness-110">
+                                            Shop Now
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="flex-1 mt-6 rounded-lg bg-zinc-50" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div className="mb-2 text-sm font-medium text-zinc-700">Mobile Preview</div>
+                        <div className="mx-auto w-[260px] sm:w-[280px] rounded-xl border border-dashed border-zinc-300/80 bg-zinc-50 p-4">
+                            <div className="aspect-[9/16] w-full rounded-xl border border-dashed border-zinc-300/60 bg-white/40 flex flex-col">
+                                <div className="mx-auto mt-6 w-full max-w-[240px] rounded-lg border border-zinc-200 bg-white px-5 py-5 text-center shadow-sm">
+                                    <h5 className="text-[15px] md:text-[16px] font-semibold text-zinc-900">
+                                        {(chosen?.title?.split(' ')[0] ?? 'Summer')} Sale
+                                    </h5>
+                                    <p className="mt-2 text-xs text-zinc-600">Up to 50% off</p>
+                                    <button className="mx-auto mt-4 w-full rounded-md bg-[#0F5A62] px-4 py-2 text-sm font-semibold text-white hover:brightness-110">
                                         Shop Now
                                     </button>
                                 </div>
+                                <div className="flex-1 mt-6 rounded-lg bg-zinc-50" />
                             </div>
-
-                            {/* empty gray area below – height like screenshot */}
-                            <div className="mt-6 h-[360px]" />
-                        </div>
-                    </div>
-
-                    {/* MOBILE */}
-                    <div>
-                        <div className="mb-2 text-sm font-medium text-zinc-700">Mobile Preview</div>
-
-                        {/* 1x dashed frame, fixed column width */}
-                        <div className="rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-4 pt-4 pb-8">
-                            {/* narrow white card */}
-                            <div className="mx-auto w-full max-w-[420px] rounded-lg border border-zinc-200 bg-white px-5 py-6 text-center shadow-sm">
-                                <h5 className="text-[18px] font-semibold text-zinc-900">
-                                    {(chosen?.title?.split(' ')[0] ?? 'Summer')} Sale
-                                </h5>
-                                <p className="mt-2 text-xs text-zinc-600">Up to 50% off</p>
-                                <button className="mx-auto mt-4 w-full max-w-[320px] rounded-md bg-[#0F5A62] px-4 py-2 text-sm font-semibold text-white hover:brightness-110">
-                                    Shop Now
-                                </button>
-                            </div>
-
-                            {/* empty gray area below */}
-                            <div className="mt-6 h-[360px]" />
                         </div>
                     </div>
                 </div>
             </section>
-
-
-            {/* ===== Grid bawah: Segments + Right Panel */}
             <div className="grid gap-4 md:grid-cols-[1fr_340px]">
-                {/* Segments */}
                 <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
                     <div className="mb-3 text-[15px] font-medium text-zinc-800">Select Target Segment</div>
                     <div className="grid gap-3 md:grid-cols-2">
@@ -143,9 +129,7 @@ export default function CampaignReviewPage() {
                     </div>
                 </div>
 
-                {/* Right column */}
                 <div className="space-y-4">
-                    {/* Additional Options */}
                     <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
                         <div className="mb-3 text-[15px] font-medium text-zinc-800">Additional Options</div>
                         <div className="mb-2 text-[12px] font-medium text-zinc-700">Skip individuals who have…</div>
@@ -197,7 +181,6 @@ export default function CampaignReviewPage() {
                         </div>
                     </div>
 
-                    {/* Summary */}
                     <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
                         <div className="mb-3 text-[15px] font-medium text-zinc-800">Campaign Summary</div>
                         <div className="space-y-2 text-[13px]">
@@ -210,7 +193,6 @@ export default function CampaignReviewPage() {
                 </div>
             </div>
 
-            {/* Footer actions */}
             <div className="mt-6 flex items-center justify-between">
                 <button
                     onClick={handleBack}

@@ -34,6 +34,7 @@ import CampaignSetupPage from "../Pages/Campaign/CampaignSetup/CampaignSetupPage
 import CampaignTemplatePage from "../Pages/Campaign/CampaignSetup/CampaignTemplatePage";
 import CampaignCustomizePage from "../Pages/Campaign/CampaignSetup/CampaignCustomizePage";
 import CampaignReviewPage from "../Pages/Campaign/CampaignSetup/CampaignReviewPage";
+import CampaignSchedulePage from "../Pages/Campaign/CampaignSetup/CampaignSchedule";
 
 // Reservation
 import ReservationLayout from "../Layouts/ReservationLayout/ReservationLayout";
@@ -73,6 +74,7 @@ export default function AppRouter(): React.ReactElement {
             {/* daftar template (di dalam layout setup) */}
             <Route path="email-template" element={<EmailTemplatePage />} />
             <Route path="review" element={<CampaignReviewPage />} />
+            <Route path="schedule" element={<CampaignSchedulePage />} />
             {/* HALAMAN CUSTOMIZE (bukan child dari email-template) */}
           </Route>
         </Route>
