@@ -7,6 +7,10 @@ type Props = {
   onSave: () => void;
   onContinue: () => void;
   onBack: () => void;
+  onMenu?: () => void; 
+   collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+   leftWidth: number;
 };
 
 export default function BuilderToolbar({

@@ -4,7 +4,6 @@ import StepProgress from "../../../components/Campaign/StepProgress";
 import TemplateCard, { type CampaignTemplate } from "../../../components/Campaign/TemplateCard";
 import { IconArrowLeft, IconArrowRight, IconPageNumber } from "../../../components/Campaign/TemplateIcon";
 
-/* ===== Types & Seed (sama seperti EmailTemplatePage) ===== */
 type CategorySeed = "All Category" | "Announcement" | "Welcome" | "Follow-up";
 
 const SEED: (CampaignTemplate & { category: Exclude<CategorySeed, "All Category"> })[] = [
@@ -22,11 +21,9 @@ const SEED: (CampaignTemplate & { category: Exclude<CategorySeed, "All Category"
   { id: "c6", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
 ];
 
-/* ===== Page ===== */
 export default function CampaignTemplatePage() {
   const navigate = useNavigate();
 
-  // Stepper
   const steps = [
     { id: 1, label: "Campaign Type" },
     { id: 2, label: "Campaign Details" },
@@ -35,26 +32,22 @@ export default function CampaignTemplatePage() {
     { id: 5, label: "Schedule" },
   ] as const;
 
-  // Data
   const [items] = React.useState(SEED);
 
-  // UI filter sesuai screenshot
   const [roomType, setRoomType] = React.useState<string>("Hotel Room");
   const [categoryUi, setCategoryUi] = React.useState<"All Templates" | "Welcome" | "Reminder" | "Promotion">(
     "All Templates"
   );
 
-  // Mapping kategori UI → kategori SEED
   const seedCategory: CategorySeed =
     categoryUi === "All Templates"
       ? "All Category"
       : categoryUi === "Welcome"
-      ? "Welcome"
-      : categoryUi === "Reminder"
-      ? "Announcement"
-      : "Announcement"; // Promotion diarahkan ke Announcement (seed tidak punya Promotion)
+        ? "Welcome"
+        : categoryUi === "Reminder"
+          ? "Announcement"
+          : "Announcement";
 
-  // Filter (roomType hanya kontrol UI; dataset seed tidak punya field roomType)
   const filtered = React.useMemo(() => {
     let arr = [...items];
     if (seedCategory !== "All Category") {
@@ -63,7 +56,6 @@ export default function CampaignTemplatePage() {
     return arr;
   }, [items, seedCategory]);
 
-  // Paging
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(9);
   React.useEffect(() => setPage(1), [seedCategory, pageSize]);
@@ -73,14 +65,15 @@ export default function CampaignTemplatePage() {
   const endIdx = Math.min(filtered.length, page * pageSize);
   const paged = filtered.slice(startIdx - 1, endIdx);
 
-  // Pilih template → ke customize/editor
-  const handleChoose = (t: CampaignTemplate) => {
-    navigate(`/campaign/customize?template=${encodeURIComponent(t.id)}`);
-  };
+const handleChoose = (t: CampaignTemplate) => {
+  navigate(
+    "/campaign/customize-template?back=/campaign/create-template",
+    { state: { template: t } }
+  );
+};
 
   return (
     <div className="mx-auto max-w-[1100px] px-2 py-2 md:px-6 md:py-6">
-      {/* Header + Stepper */}
       <div className="mb-3">
         <h1 className="text-[22px] font-semibold text-[#111827]">Setup Your Campaign</h1>
         <p className="mt-1 text-sm text-[#4B5563]">
@@ -93,7 +86,6 @@ export default function CampaignTemplatePage() {
         <div className="text-xs text-zinc-500">Step 3 of {steps.length}</div>
       </div>
 
-      {/* Toolbar: sekarang dibungkus border putih */}
       <div className="mb-3 flex items-center justify-between rounded-xl border border-white bg-white px-4 py-3">
         <div className="text-[15px] font-medium text-zinc-800">Choose Template</div>
         <div className="flex flex-wrap items-center gap-4 text-sm">
@@ -127,7 +119,6 @@ export default function CampaignTemplatePage() {
         </div>
       </div>
 
-      {/* Grid */}
       <div className="grid gap-4 md:grid-cols-3">
         {paged.map((t) => (
           <TemplateCard
@@ -135,12 +126,11 @@ export default function CampaignTemplatePage() {
             item={t}
             onOpen={() => handleChoose(t)}
             onEdit={() => handleChoose(t)}
-            onDelete={() => {}}
+            onDelete={() => { }}
           />
         ))}
       </div>
 
-      {/* Pager + meta: juga dibungkus border putih */}
       <div className="mt-4 flex flex-col items-center justify-between gap-3 rounded-xl border border-white bg-white p-3 md:flex-row">
         <div className="flex items-center gap-2 text-sm text-zinc-600">
           <span>Showing</span>
@@ -177,9 +167,8 @@ export default function CampaignTemplatePage() {
                 <button
                   key={n}
                   onClick={() => setPage(n)}
-                  className={`h-8 w-8 rounded-md ring-1 ring-inset ${
-                    active ? "bg-zinc-900 text-white ring-zinc-900" : "text-zinc-600 ring-zinc-300 hover:bg-zinc-50"
-                  }`}
+                  className={`h-8 w-8 rounded-md ring-1 ring-inset ${active ? "bg-zinc-900 text-white ring-zinc-900" : "text-zinc-600 ring-zinc-300 hover:bg-zinc-50"
+                    }`}
                 >
                   {n}
                 </button>
@@ -197,7 +186,6 @@ export default function CampaignTemplatePage() {
         </div>
       </div>
 
-      {/* Footer nav */}
       <div className="mt-6 flex items-center justify-between">
         <button
           onClick={() => navigate("/campaign/setup?step=2")}
@@ -205,18 +193,21 @@ export default function CampaignTemplatePage() {
         >
           ← Back to Details
         </button>
-        <button
-          onClick={() => navigate("/campaign/customize")}
-          className="rounded-md bg-[#0F5A62] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
-        >
-          Continue to Customize →
-        </button>
+<button
+  onClick={() =>
+    navigate("/campaign/customize-template?back=/campaign/create-template")
+  }
+  className="rounded-md bg-[#0F5A62] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
+>
+  Continue to Customize →
+</button>
+
       </div>
     </div>
   );
 }
 
-/* ==== Utilities ==== */
+
 function PagerBtn({
   children,
   onClick,

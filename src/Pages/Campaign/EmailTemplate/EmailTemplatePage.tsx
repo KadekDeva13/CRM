@@ -163,7 +163,7 @@ export default function EmailTemplatePage() {
         ))}
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
+      <div className="mt-4 flex flex-col items-center justify-between gap-3 rounded-xl border border-white bg-white p-3 md:flex-row">
         <div className="flex items-center gap-2 text-sm text-zinc-600">
           <span>Showing</span>
           <div className="relative">

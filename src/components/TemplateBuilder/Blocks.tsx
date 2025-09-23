@@ -47,11 +47,11 @@ export const blockDefaults: Record<BlockKind, () => any> = {
   timer: () => ({ until: "2025-12-31" }),
 };
 
-export function renderBlock(b: TemplateBlock) {
+export function renderBlock(b: TemplateBlock, p0: { readonly: boolean; }) {
   switch (b.kind) {
     case "heading":
       return (
-        <h2 style={{ fontSize: b.props.size ?? 24, textAlign: b.props.align ?? "left" }} className="font-semibold">
+        <h2 style={{ fontSize: b.props.size ?? 24, textAlign: b.props.align ?? "left" }} className="font-semibold text-zinc-700">
           {b.props.text}
         </h2>
       );

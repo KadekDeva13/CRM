@@ -5,10 +5,10 @@ import StepProgress from "../../../components/Campaign/StepProgress";
 import FeatureToggleCard, {
     IconAudience, IconClick, IconConversion, IconDrip, IconOpenRate, IconSchedule, IconTracking,
 } from "../../../components/Campaign/FeatureToggleCard";
-import DraftSuccessModal from "../../../components/Campaign/DraftSuccessModal";
+import DraftSuccessModal from "../../../components/Campaign/Modal/DraftSuccessModal";
 
 export default function CampaignSetupPage() {
-   const [_sp] = useSearchParams();
+    const [_sp] = useSearchParams();
     const navigate = useNavigate();
 
     const [name, setName] = React.useState("");
@@ -102,13 +102,13 @@ export default function CampaignSetupPage() {
                         >
                             Save as Draft
                         </button>
-<button
-  type="button"
-  className="rounded-md bg-[#0F5A62] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
-  onClick={() => navigate(`/campaign/template?name=${encodeURIComponent(name)}`)}
->
-  Continue →
-</button>
+                        <button
+                            type="button"
+                            className="rounded-md bg-[#0F5A62] px-4 py-2 text-sm font-semibold text-white hover:brightness-110"
+                            onClick={() => navigate(`/campaign/create-template?name=${encodeURIComponent(name)}`)}
+                        >
+                            Continue →
+                        </button>
                     </div>
                 </div>
             </div>
@@ -117,8 +117,8 @@ export default function CampaignSetupPage() {
             <DraftSuccessModal
                 open={showDraftModal}
                 onClose={() => setShowDraftModal(false)}
-                onViewAll={() => navigate("/campaign/all-campaign")}             
-                onContinueEditing={() => setShowDraftModal(false)}    
+                onViewAll={() => navigate("/campaign/all-campaign")}
+                onContinueEditing={() => setShowDraftModal(false)}
             />
         </div>
     );

@@ -33,7 +33,7 @@ export default function TemplateBuilderPage() {
     previewText: "",
   });
 
-  // ==== multi-page ====
+
   const [pages, setPages] = React.useState<Page[]>(() => [
     { id: uid(), name: "Page 1", blocks: [] },
   ]);
@@ -58,7 +58,7 @@ export default function TemplateBuilderPage() {
     if (!activePage.blocks.some((b) => b.id === selectedId)) setSelectedId(null);
   }, [activePage.blocks, activePageId, pages, selectedId]);
 
-  // utils
+
   const createBlock = (kind: BlockKind): TemplateBlock => ({
     id: uid(),
     kind,
@@ -83,7 +83,7 @@ export default function TemplateBuilderPage() {
   const deletePage = (pageId: string) => {
     setPages((prev) => {
       const next = prev.filter((p) => p.id !== pageId);
-      if (next.length === 0) return prev; // cegah kosong total
+      if (next.length === 0) return prev;
       if (activePageId === pageId) {
         setActivePageId(next[0].id);
         setSelectedId(null);
@@ -92,13 +92,11 @@ export default function TemplateBuilderPage() {
     });
   };
 
-  // klik palette → append ke active page
   const addBlockBottom = (kind: BlockKind) => {
     updatePageById(activePageId, (p) => ({ ...p, blocks: [...p.blocks, createBlock(kind)] }));
     setSelectedId(null);
   };
 
-  // insert/move ke index tertentu di target page
   const insertAt = (
     targetPageId: string,
     payload: { type: "new"; kind: BlockKind } | { type: "move"; from: number; fromPageId: string },
@@ -142,7 +140,6 @@ export default function TemplateBuilderPage() {
     setSelectedId(null);
   });
 
-  // keyboard delete (kecuali sedang mengetik)
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!selected) return;
@@ -158,7 +155,6 @@ export default function TemplateBuilderPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, [deleteSelected, selected]);
 
-  // DnD handlers
   const onDragOver = (e: DragOverEvent) => {
     const id = e.over?.id as string | undefined;
     if (id && id.includes("::hint-")) {
@@ -198,16 +194,20 @@ export default function TemplateBuilderPage() {
     setOverIndex(null);
   };
 
-  // Toolbar handlers (dummy)
   const handlePreview = () => alert("Preview");
   const handleSave = () => { console.log("Save", { pages, email }); alert("Saved!"); };
   const handleContinue = () => alert("Continue");
   const handleBack = () => { if (history.length > 1) history.back(); };
 
   return (
-    <div className="min-h-screen bg-zinc-100">
-      <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white">
-        <div className="mx-auto max-w-[1200px] px-4">
+    <div className="min-h-screen -mt-6">
+      <header
+        className="
+    sticky top-0 z-[70] bg-white border-b border-zinc-200
+    -mx-4 lg:-mx-6
+  "
+      >
+        <div className="max-w-[1200px] px-4 lg:px-6">
           <BuilderToolbar
             title="Template Builder by Quirez"
             viewport={viewport}
@@ -216,6 +216,9 @@ export default function TemplateBuilderPage() {
             onSave={handleSave}
             onContinue={handleContinue}
             onBack={handleBack}
+            collapsed={false}
+            setCollapsed={() => { }}
+            leftWidth={0}
           />
         </div>
       </header>
@@ -226,16 +229,15 @@ export default function TemplateBuilderPage() {
         onDragOver={onDragOver}
         onDragEnd={onDragEnd}
       >
-        <main className="mx-auto max-w-[1200px] px-4 py-5">
+        <main className="mx-auto max-w-[1200px] px-4 py-5 mt-6">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_320px]">
-            {/* LEFT: semua canvas vertikal */}
             <div className="space-y-6">
               {pages.map((p, idx) => (
                 <div key={p.id}>
                   <Canvas
                     pageId={p.id}
                     pageName={p.name}
-                    viewport={viewport}               // ⬅️ Canvas yang atur ukuran fixed berdasar ini
+                    viewport={viewport}
                     blocks={p.blocks}
                     selectedId={activePageId === p.id ? selectedId : null}
                     setSelectedId={(id) => { setActivePageId(p.id); setSelectedId(id); }}
@@ -243,7 +245,6 @@ export default function TemplateBuilderPage() {
                     overIndex={overPageId === p.id ? overIndex : null}
                     onDeletePage={deletePage}
                   />
-                  {/* Tombol + Add Page Below SELALU di luar Canvas */}
                   <div className="mt-3 flex justify-center">
                     <button
                       type="button"
@@ -259,7 +260,6 @@ export default function TemplateBuilderPage() {
               ))}
             </div>
 
-            {/* RIGHT: palette + properties */}
             <RightPanel
               email={email}
               setEmail={setEmail}

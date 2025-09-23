@@ -17,7 +17,6 @@ import Overview from "../Pages/Overview/OverviewPage";
 
 // Guests
 import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
-// import GuestListPage from "../Pages/Guests/Database/GuestDatabase";
 
 // Marketing
 import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
@@ -25,12 +24,16 @@ import EmailPage from "../Pages/Marketing/Email/EmailPage";
 
 // Campaign
 import CampaignLayout from "../Layouts/CampaignLayout/CampaignLayout";
+import CampaignSetupLayout from "../Layouts/CampaignSetupLayout/CampaignSetupLayout";
+import TemplateBuilderLayout from "../Layouts/TemplateBuilderLayout/TemplateBuilderLayout";
 import CampaignPage from "../Pages/Campaign/CampaignPage";
 import CreateCampaignPage from "../Pages/Campaign/CreateCampaign";
 import EmailTemplatePage from "../Pages/Campaign/EmailTemplate/EmailTemplatePage";
 import TemplateBuilder from "../Pages/Campaign/EmailTemplate/TemplateBuilder";
-import CampaignSetupPage from "../Pages/Campaign/CampaignSetup/CampaignSetup";
+import CampaignSetupPage from "../Pages/Campaign/CampaignSetup/CampaignSetupPage";
 import CampaignTemplatePage from "../Pages/Campaign/CampaignSetup/CampaignTemplatePage";
+import CampaignCustomizePage from "../Pages/Campaign/CampaignSetup/CampaignCustomizePage";
+import CampaignReviewPage from "../Pages/Campaign/CampaignSetup/CampaignReviewPage";
 
 // Reservation
 import ReservationLayout from "../Layouts/ReservationLayout/ReservationLayout";
@@ -63,26 +66,28 @@ export default function AppRouter(): React.ReactElement {
           <Route path="all-campaign" element={<CampaignPage />} />
           <Route path="create-new-campaign" element={<CreateCampaignPage />} />
 
-          {/* NEW FLOW */}
-          <Route path="setup" element={<CampaignSetupPage />} />
-          <Route path="template" element={<CampaignTemplatePage />} />  
-          <Route path="email-template" element={<EmailTemplatePage />} />
+          {/* SETUP FLOW (breadcrumb & quick menu konsisten) */}
+          <Route element={<CampaignSetupLayout />}>
+            <Route path="setup" element={<CampaignSetupPage />} />
+            <Route path="create-template" element={<CampaignTemplatePage />} />
+            {/* daftar template (di dalam layout setup) */}
+            <Route path="email-template" element={<EmailTemplatePage />} />
+            <Route path="review" element={<CampaignReviewPage />} />
+            {/* HALAMAN CUSTOMIZE (bukan child dari email-template) */}
+          </Route>
         </Route>
 
-        {/* Campaign Template Builder (tanpa header) */}
-        <Route
-          path="/campaign/email-template/template-builder"
-          element={
-            <CampaignLayout hideHeader>
-              <TemplateBuilder />
-            </CampaignLayout>
-          }
-        />
+        <Route path="/campaign/customize-template" element={<TemplateBuilderLayout />}>
+          <Route index element={<CampaignCustomizePage />} />
+        </Route>
+
+        {/* Template Builder standalone (tanpa header/sidebar dashboard) */}
+        <Route path="/campaign/email-template" element={<TemplateBuilderLayout />}>
+          <Route path="template-builder" element={<TemplateBuilder />} />
+        </Route>
 
         {/* Guests */}
-        <Route path="/guests" element={<GuestsLayout />}>
-          {/* <Route path="guest-insights" element={<GuestListPage />} /> */}
-        </Route>
+        <Route path="/guests" element={<GuestsLayout />} />
 
         {/* Marketing */}
         <Route path="/marketing" element={<MarketingLayout />}>
