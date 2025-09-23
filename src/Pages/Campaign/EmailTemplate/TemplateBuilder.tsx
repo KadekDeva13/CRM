@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import {
@@ -55,7 +56,7 @@ export default function TemplateBuilderPage() {
 
   React.useEffect(() => {
     if (!activePage.blocks.some((b) => b.id === selectedId)) setSelectedId(null);
-  }, [activePageId, pages]);
+  }, [activePage.blocks, activePageId, pages, selectedId]);
 
   // utils
   const createBlock = (kind: BlockKind): TemplateBlock => ({
@@ -135,11 +136,11 @@ export default function TemplateBuilderPage() {
     setActivePageId(targetPageId);
   };
 
-  const deleteSelected = () => {
+  const deleteSelected = React.useCallback(() => {
     if (!selected) return;
     updatePageById(activePageId, (p) => ({ ...p, blocks: p.blocks.filter((b) => b.id !== selected.id) }));
     setSelectedId(null);
-  };
+  });
 
   // keyboard delete (kecuali sedang mengetik)
   React.useEffect(() => {
@@ -155,7 +156,7 @@ export default function TemplateBuilderPage() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected]);
+  }, [deleteSelected, selected]);
 
   // DnD handlers
   const onDragOver = (e: DragOverEvent) => {

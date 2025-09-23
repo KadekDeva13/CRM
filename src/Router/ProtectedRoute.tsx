@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-//Landing
+// Landing
 import LandingLayout from "../Layouts/LandingLayout/LandingLayout";
 import LandingPage from "../Pages/Landing/LandingPage";
 import LoadingPage from "../Pages/Loading/LoadingPage";
@@ -17,23 +17,22 @@ import Overview from "../Pages/Overview/OverviewPage";
 
 // Guests
 import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
-// import GuestsAnalyticsPage from "../Pages/Guests/Analytics/GuestsAnalyticsPage";
-// import GuestsSearchPage from "../Pages/Guests/Search/GuestsSearchPage";
-// import GuestSegmentsPage from "../Pages/Guests/Segments/GuestSegmentsPage";
-import GuestListPage from "../Pages/Guests/Analytics/GuestListPage";
+// import GuestListPage from "../Pages/Guests/Database/GuestDatabase";
 
-//Marketing
+// Marketing
 import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
 import EmailPage from "../Pages/Marketing/Email/EmailPage";
 
-//Campaign
+// Campaign
 import CampaignLayout from "../Layouts/CampaignLayout/CampaignLayout";
 import CampaignPage from "../Pages/Campaign/CampaignPage";
 import CreateCampaignPage from "../Pages/Campaign/CreateCampaign";
 import EmailTemplatePage from "../Pages/Campaign/EmailTemplate/EmailTemplatePage";
 import TemplateBuilder from "../Pages/Campaign/EmailTemplate/TemplateBuilder";
+import CampaignSetupPage from "../Pages/Campaign/CampaignSetup/CampaignSetup";
+import CampaignTemplatePage from "../Pages/Campaign/CampaignSetup/CampaignTemplatePage";
 
-//Reservation
+// Reservation
 import ReservationLayout from "../Layouts/ReservationLayout/ReservationLayout";
 
 export default function AppRouter(): React.ReactElement {
@@ -63,6 +62,10 @@ export default function AppRouter(): React.ReactElement {
           <Route index element={<CampaignPage />} />
           <Route path="all-campaign" element={<CampaignPage />} />
           <Route path="create-new-campaign" element={<CreateCampaignPage />} />
+
+          {/* NEW FLOW */}
+          <Route path="setup" element={<CampaignSetupPage />} />
+          <Route path="template" element={<CampaignTemplatePage />} />  
           <Route path="email-template" element={<EmailTemplatePage />} />
         </Route>
 
@@ -78,9 +81,7 @@ export default function AppRouter(): React.ReactElement {
 
         {/* Guests */}
         <Route path="/guests" element={<GuestsLayout />}>
-          {/* <Route index element={<GuestsAnalyticsPage />} />
-          <Route path="search" element={<GuestsSearchPage />} /> */}
-          <Route path="guest-insights" element={<GuestListPage />} />
+          {/* <Route path="guest-insights" element={<GuestListPage />} /> */}
         </Route>
 
         {/* Marketing */}

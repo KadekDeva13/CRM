@@ -58,13 +58,12 @@ export default function EmailTemplatePage() {
       description: p.description || "Imported template",
       status: "Draft",
       usedCount: 0,
-      category: p.category,
+      category: p.category as Exclude<Category, "All Category">,
       thumbUrl: isImage ? objectUrl : "/image/reminder.png",
     };
 
     setItems((s) => [item, ...s]);
     setOpenUpload(false);
-    // reset ke halaman pertama agar item baru terlihat
     setPage(1);
   };
 

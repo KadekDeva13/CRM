@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from "react";
 
 export type BlockKind =
   | "columns"
