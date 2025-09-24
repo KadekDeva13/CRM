@@ -62,7 +62,7 @@ export default function AppSidebar({
       icon: <IconGuest />,
       to: "/guests/guest-database",
       children: [
-        { label: "Guest Database", to: "/guests/geust-database" },
+        { label: "Guest Database", to: "/guests/guest-database" },
         { label: "Reference Settings", to: "/guests/segments" },
       ],
     },
