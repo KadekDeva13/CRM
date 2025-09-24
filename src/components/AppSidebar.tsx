@@ -29,7 +29,7 @@ export default function AppSidebar({
   const GROUPS: MenuGroup[] = [
     { key: "overview", label: "Overview", icon: <IconOverview />, to: "/overview" },
     {
-      key: "campaign", label: "Campaign", icon: <IconCampaign />, to: "/campaign",
+      key: "campaign", label: "Campaign", icon: <IconCampaign />, to: "/campaign/all-campaign",
       children: [
         { label: "All Campign's", to: "/campaign/all-campaign" },
         { label: "Email Template", to: "/campaign/email-template" }
@@ -39,7 +39,7 @@ export default function AppSidebar({
       key: "property",
       label: "Property",
       icon: <IconProperty />,
-      to: "/properties",
+      to: "/properties/hotel",
       children: [
         { label: "Hotel", to: "/properties/hotel" },
         { label: "Facilities", to: "/properties/facilities" },
@@ -50,7 +50,7 @@ export default function AppSidebar({
       key: "reservations",
       label: "Reservations",
       icon: <IconReservation />,
-      to: "/reservations",
+      to: "/reservations/list",
       children: [
         { label: "List", to: "/reservations/list" },
         { label: "Room Mapping", to: "/reservations/room-mapping" },

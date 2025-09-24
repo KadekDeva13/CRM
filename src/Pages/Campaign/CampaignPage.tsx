@@ -17,7 +17,7 @@ const TRIGGERS = [
 type TriggerFilter = (typeof TRIGGERS)[number];
 
 const TAGS: Array<CampaignTag | "All Tags"> = ["All Tags", "Email Marketing", "Holiday Campaign", "Promo", "Other"];
-const STATUSES: Array<CampaignStatus | "All Status"> = ["All Status", "Active", "Pending", "Completed"];
+const STATUSES: Array<CampaignStatus | "All Status"> = ["All Status", "Active", "Pending", "Completed", "Draft"];
 
 export default function CampaignPage() {
   const navigate = useNavigate();
@@ -29,13 +29,38 @@ export default function CampaignPage() {
   const [status, setStatus] = useState<CampaignStatus | "All Status">("All Status");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [rows, setRows] = useState<Campaign[]>([]);
+
+  const mergeUniqueById = (a: Campaign[], b: Campaign[]) => {
+    const map = new Map<string, Campaign>();
+    [...a, ...b].forEach((item) => map.set(item.id, item));
+    return Array.from(map.values());
+  };
+
+  useEffect(() => {
+    const stored = localStorage.getItem("campaigns");
+    const fromStorage: Campaign[] = stored ? JSON.parse(stored) : [];
+    setRows(mergeUniqueById(campaignsSeed, fromStorage));
+  }, []);
+
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === "visible") {
+        const stored = localStorage.getItem("campaigns");
+        const fromStorage: Campaign[] = stored ? JSON.parse(stored) : [];
+        setRows(mergeUniqueById(campaignsSeed, fromStorage));
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
 
   const filtered = useMemo(() => {
-    let rows: Campaign[] = campaignsSeed;
+    let arr: Campaign[] = rows;
 
     if (q.trim()) {
       const s = q.toLowerCase();
-      rows = rows.filter(
+      arr = arr.filter(
         (r) =>
           r.name.toLowerCase().includes(s) ||
           r.delivery.toLowerCase().includes(s) ||
@@ -43,19 +68,19 @@ export default function CampaignPage() {
       );
     }
 
-    if (status !== "All Status") rows = rows.filter((r) => r.status === status);
+    if (status !== "All Status") arr = arr.filter((r) => r.status === status);
 
     if (tab === "one-time") {
-      if (tag !== "All Tags") rows = rows.filter((r) => r.tag === tag);
+      if (tag !== "All Tags") arr = arr.filter((r) => r.tag === tag);
     } else {
       if (trigger !== "All Triggers") {
         const t = trigger.toLowerCase();
-        rows = rows.filter((r) => r.delivery.toLowerCase().includes(t));
+        arr = arr.filter((r) => r.delivery.toLowerCase().includes(t));
       }
     }
 
-    return rows;
-  }, [q, tag, status, trigger, tab]);
+    return arr;
+  }, [rows, q, tag, status, trigger, tab]);
 
   useEffect(() => {
     setPage(1);

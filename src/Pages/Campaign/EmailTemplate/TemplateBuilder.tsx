@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   DndContext,
   PointerSensor,
@@ -23,21 +23,39 @@ import {
 import TemplateModalsave from "../../../components/Campaign/Modal/TemplateModalSave";
 
 type Page = { id: string; name: string; blocks: TemplateBlock[] };
+type StoredTemplate = {
+  id: string;
+  title: string;
+  description?: string;
+  status?: "Active" | "Draft";
+  usedCount?: number;
+  category?: string;
+  thumbUrl?: string;
+  pages?: Page[];
+  email?: any;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+const LS_KEY = "emailTemplates";
 
 export default function TemplateBuilderPage() {
   const navigate = useNavigate();
+  const { state } = useLocation() as { state?: { template?: StoredTemplate } };
+  const chosen = state?.template; 
 
   const [previewOpen, setPreviewOpen] = React.useState(false);
   const handlePreview = () => setPreviewOpen(true);
   const handleClosePreview = () => setPreviewOpen(false);
   const [openModal, setOpenModal] = React.useState(false);
 
+
   const [viewport, setViewport] = React.useState<"desktop" | "mobile">("desktop");
   const [email, setEmail] = React.useState({
     fromName: "",
     fromEmail: "",
     replyTo: "",
-    subject: "",
+    subject: chosen?.title ?? "", 
     previewText: "",
   });
 
@@ -201,10 +219,93 @@ export default function TemplateBuilderPage() {
     setOverIndex(null);
   };
 
+  React.useEffect(() => {
+    if (!chosen) return;
+
+    if (chosen.pages && chosen.pages.length > 0) {
+      setPages(chosen.pages);
+      setActivePageId(chosen.pages[0].id);
+    } else {
+      const initialBlocks: TemplateBlock[] = [
+        {
+          id: uid(),
+          kind: "image" as BlockKind,
+          props: {
+            ...(blockDefaults.image ? blockDefaults.image() : {}),
+            src: chosen.thumbUrl,
+            alt: chosen.title,
+            align: "center",
+          },
+        },
+        {
+          id: uid(),
+          kind: "heading" as BlockKind,
+          props: {
+            ...(blockDefaults.heading ? blockDefaults.heading() : {}),
+            text: chosen.title,
+            align: "center",
+            level: 1,
+          },
+        },
+        {
+          id: uid(),
+          kind: "text" as BlockKind,
+          props: {
+            ...(blockDefaults.text ? blockDefaults.text() : {}),
+            html: "<p>Start editing this template…</p>",
+            align: "center",
+          },
+        },
+      ];
+      const hydrated: Page[] = [{ id: uid(), name: "Page 1", blocks: initialBlocks }];
+      setPages(hydrated);
+      setActivePageId(hydrated[0].id);
+    }
+
+    setEmail((prev) => ({ ...prev, subject: chosen.title || prev.subject }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chosen?.id]);
+
   const handleSave = () => {
-    console.log("Save", { pages, email });
+    const stored = localStorage.getItem(LS_KEY);
+    const templates: StoredTemplate[] = stored ? JSON.parse(stored) : [];
+
+    if (chosen?.id) {
+      const idx = templates.findIndex((t) => t.id === chosen.id);
+      const payload: StoredTemplate = {
+        ...(idx >= 0 ? templates[idx] : (chosen as StoredTemplate)),
+        id: chosen.id,
+        title: email.subject || chosen.title || "Untitled Template",
+        pages,
+        email,
+        updatedAt: new Date().toISOString(),
+      };
+      if (idx >= 0) {
+        templates[idx] = payload;
+      } else {
+        payload.createdAt = new Date().toISOString();
+        templates.push(payload);
+      }
+    } else {
+      const newItem: StoredTemplate = {
+        id: uid(),
+        title: email.subject || "Untitled Template",
+        description: "Custom template",
+        status: "Draft",
+        usedCount: 0,
+        category: "Welcome",
+        thumbUrl: chosen?.thumbUrl || "/image/welcome.png",
+        pages,
+        email,
+        createdAt: new Date().toISOString(),
+      };
+      templates.push(newItem);
+    }
+
+    localStorage.setItem(LS_KEY, JSON.stringify(templates));
     setOpenModal(true);
   };
+
   const handleBack = () => navigate("/campaign/email-template");
 
   return (
@@ -213,7 +314,7 @@ export default function TemplateBuilderPage() {
         <div className="px-4 lg:px-6">
           <BuilderToolbar
             mode="builder"
-            title="Template Builder"
+            title={chosen?.title ? `Template Builder — ${chosen.title}` : "Template Builder"}
             viewport={viewport}
             onViewport={setViewport}
             onPreview={handlePreview}
@@ -289,6 +390,7 @@ export default function TemplateBuilderPage() {
       </DndContext>
 
       <PreviewOverlay open={previewOpen} onClose={handleClosePreview} pages={pages} />
+
       <TemplateModalsave
         open={openModal}
         onClose={() => setOpenModal(false)}
