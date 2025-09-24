@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import TemplateCard, { type CampaignTemplate } from "../../../components/Campaign/TemplateCard";
@@ -13,32 +14,67 @@ type Filter = {
   sort: Sort;
 };
 
-const SEED: (CampaignTemplate & { category: Exclude<Category, "All Category"> })[] = [
-  { id: "a1", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "a2", title: "Reminder", description: "Reminder template for appointments, deadlines, or important events.", status: "Draft", usedCount: 124, category: "Announcement", thumbUrl: "/image/reminder.png" },
-  { id: "a3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "b1", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "b2", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "b3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "c1", title: "Reminder", description: "Reminder template for appointments, deadlines, or important events.", status: "Draft", usedCount: 124, category: "Announcement", thumbUrl: "/image/reminder.png" },
-  { id: "c2", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "c3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "c4", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "c5", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
-  { id: "c6", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome", thumbUrl: "/image/welcome.png" },
+type StoredTemplate = CampaignTemplate & {
+  category: Exclude<Category, "All Category">;
+  pages?: any[];          // struktur blok dari TemplateBuilder
+  email?: any;            // metadata email (subject, previewText, dll)
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+const SEED: StoredTemplate[] = [
+  { id: "a1", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "a2", title: "Reminder",      description: "Reminder template for appointments, deadlines, or important events.",                         status: "Draft",  usedCount: 124, category: "Announcement", thumbUrl: "/image/reminder.png" },
+  { id: "a3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "b1", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "b2", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "b3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "c1", title: "Reminder",      description: "Reminder template for appointments, deadlines, or important events.",                         status: "Draft",  usedCount: 124, category: "Announcement", thumbUrl: "/image/reminder.png" },
+  { id: "c2", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "c3", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "c4", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "c5", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
+  { id: "c6", title: "Welcome Email", description: "Clean visual (for example, a modern illustration or lifestyle photo aligned with your brand).", status: "Active", usedCount: 142, category: "Welcome",  thumbUrl: "/image/welcome.png" },
 ];
 
 export default function EmailTemplatePage() {
-  const [items, setItems] = React.useState(SEED);
-  const [filter, setFilter] = React.useState<Filter>({ q: "", category: "All Category", sort: "Newest" });
   const navigate = useNavigate();
+
+  const [items, setItems] = React.useState<StoredTemplate[]>([]);
+  const [filter, setFilter] = React.useState<Filter>({ q: "", category: "All Category", sort: "Newest" });
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(9);
-
-  // === Upload Modal state ===
   const [openUpload, setOpenUpload] = React.useState(false);
 
-  // track blob URLs untuk di-revoke saat unmount/replace
+  // initial load
+  React.useEffect(() => {
+    const stored = localStorage.getItem("emailTemplates");
+    if (stored) {
+      setItems(JSON.parse(stored));
+    } else {
+      setItems(SEED);
+      localStorage.setItem("emailTemplates", JSON.stringify(SEED));
+    }
+  }, []);
+
+  // re-sync ketika kembali dari builder (tab focus lagi)
+  React.useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === "visible") {
+        const stored = localStorage.getItem("emailTemplates");
+        if (stored) setItems(JSON.parse(stored));
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
+
+  const syncToStorage = (next: StoredTemplate[]) => {
+    setItems(next);
+    localStorage.setItem("emailTemplates", JSON.stringify(next));
+  };
+
+  // upload image preview cleanup
   const blobUrls = React.useRef<string[]>([]);
   React.useEffect(() => {
     return () => {
@@ -52,32 +88,36 @@ export default function EmailTemplatePage() {
     const objectUrl = isImage ? URL.createObjectURL(p.file) : "";
     if (objectUrl) blobUrls.current.push(objectUrl);
 
-    const item: (CampaignTemplate & { category: Exclude<Category, "All Category"> }) = {
+    const item: StoredTemplate = {
       id: crypto.randomUUID(),
       title: p.name,
       description: p.description || "Imported template",
       status: "Draft",
       usedCount: 0,
-      category: p.category,
+      category: p.category as Exclude<Category, "All Category">,
       thumbUrl: isImage ? objectUrl : "/image/reminder.png",
+      pages: [],
+      email: { subject: p.name },
+      createdAt: new Date().toISOString(),
     };
 
-    setItems((s) => [item, ...s]);
+    const next = [item, ...items];
+    syncToStorage(next);
     setOpenUpload(false);
-    // reset ke halaman pertama agar item baru terlihat
     setPage(1);
   };
 
+  // filter & paging
   const q = filter.q.trim().toLowerCase();
   const filtered = React.useMemo(() => {
     let arr = items.filter(
       (t) =>
         (filter.category === "All Category" || t.category === filter.category) &&
-        (t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q))
+        (t.title.toLowerCase().includes(q) || (t.description || "").toLowerCase().includes(q))
     );
-    if (filter.sort === "Newest") arr = [...arr].reverse();
-    if (filter.sort === "Oldest") arr = [...arr];
-    if (filter.sort === "Most Used") arr = [...arr].sort((a, b) => b.usedCount - a.usedCount);
+    if (filter.sort === "Newest") arr = [...arr].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+    if (filter.sort === "Oldest") arr = [...arr].sort((a, b) => (a.createdAt || "").localeCompare(b.createdAt || ""));
+    if (filter.sort === "Most Used") arr = [...arr].sort((a, b) => (b.usedCount || 0) - (a.usedCount || 0));
     return arr;
   }, [items, filter, q]);
 
@@ -119,7 +159,6 @@ export default function EmailTemplatePage() {
             <option>Welcome</option>
             <option>Follow-up</option>
           </select>
-
           <div className="relative">
             <select
               value={filter.sort}
@@ -132,7 +171,6 @@ export default function EmailTemplatePage() {
             </select>
           </div>
         </div>
-
         <div className="flex items-center gap-2">
           <button
             onClick={() => setOpenUpload(true)}
@@ -157,14 +195,17 @@ export default function EmailTemplatePage() {
           <TemplateCard
             key={t.id}
             item={t}
-            onOpen={() => alert(`Open: ${t.title}`)}
-            onEdit={() => alert(`Edit: ${t.title}`)}
-            onDelete={() => setItems((s) => s.filter((x) => x.id !== t.id))}
+            onOpen={() => navigate("/campaign/email-template/template-builder", { state: { template: t } })}
+            onEdit={() => navigate("/campaign/email-template/template-builder", { state: { template: t } })}
+            onDelete={() => {
+              const next = items.filter((x) => x.id !== t.id);
+              syncToStorage(next);
+            }}
           />
         ))}
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
+      <div className="mt-4 flex flex-col items-center justify-between gap-3 rounded-xl border border-white bg-white p-3 md:flex-row">
         <div className="flex items-center gap-2 text-sm text-zinc-600">
           <span>Showing</span>
           <div className="relative">
@@ -210,39 +251,26 @@ export default function EmailTemplatePage() {
               );
             })}
 
-            <PagerBtn
-              aria-label="Next"
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            >
+            <PagerBtn aria-label="Next" disabled={page === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>
               <IconArrowRight className="h-3.5 w-3.5" />
             </PagerBtn>
           </div>
         </div>
       </div>
-
-      {/* Modal Upload */}
       <UploadTemplateModal open={openUpload} onClose={() => setOpenUpload(false)} onSubmit={handleUploadSubmit} />
     </div>
   );
 }
 
-function PagerBtn({
-  children,
-  onClick,
-  disabled,
-  ...rest
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+function PagerBtn({ children, onClick, disabled, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       {...rest}
       disabled={disabled}
       onClick={onClick}
-      className="
-        inline-flex h-8 w-8 items-center justify-center rounded-md
+      className="inline-flex h-8 w-8 items-center justify-center rounded-md
         text-zinc-600 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-300
-      "
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-300"
     >
       {children}
     </button>
@@ -260,8 +288,13 @@ function SearchIcon(p: React.SVGProps<SVGSVGElement>) {
 function UploadIcon(p: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden {...p}>
-      <path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
-        stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

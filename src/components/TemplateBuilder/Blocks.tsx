@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as React from "react";
 
 export type BlockKind =
   | "columns"
@@ -48,30 +47,76 @@ export const blockDefaults: Record<BlockKind, () => any> = {
   timer: () => ({ until: "2025-12-31" }),
 };
 
-export function renderBlock(b: TemplateBlock) {
+/** Opsi render opsional untuk mode preview/readonly */
+export type RenderOptions = {
+  readonly?: boolean;
+};
+
+/** Tambahkan parameter kedua opsional `opts` supaya bisa dipanggil renderBlock(b, { readonly: true }) */
+export function renderBlock(b: TemplateBlock, opts?: RenderOptions) {
+  const ro = !!opts?.readonly; // readonly flag
+
   switch (b.kind) {
     case "heading":
       return (
-        <h2 style={{ fontSize: b.props.size ?? 24, textAlign: b.props.align ?? "left" }} className="font-semibold">
+        <h2
+          style={{ fontSize: b.props.size ?? 24, textAlign: b.props.align ?? "left" }}
+          className="font-semibold text-zinc-700"
+        >
           {b.props.text}
         </h2>
       );
+
     case "text":
       return (
-        <p style={{ textAlign: b.props.align ?? "left" }} className="text-sm leading-6 text-zinc-700">
+        <p
+          style={{ textAlign: b.props.align ?? "left" }}
+          className="text-sm leading-6 text-zinc-700"
+        >
           {b.props.text}
         </p>
       );
+
     case "image":
-      return <img src={b.props.src} alt={b.props.alt} style={{ width: b.props.width || 600 }} className="block" />;
-    case "button":
       return (
-        <a href={b.props.href} className="inline-block rounded bg-emerald-600 px-4 py-2 text-white text-sm">
+        <img
+          src={b.props.src}
+          alt={b.props.alt}
+          style={{ width: b.props.width || 600 }}
+          className={ro ? "block pointer-events-none select-none" : "block"}
+          draggable={false}
+        />
+      );
+
+    case "button": {
+      const className =
+        "inline-block rounded bg-emerald-600 px-4 py-2 text-white text-sm";
+      // Saat readonly, jangan navigasi/klik: render span yg tampak seperti tombol
+      if (ro) {
+        return (
+          <span
+            className={`${className} pointer-events-none select-none`}
+            aria-disabled="true"
+          >
+            {b.props.label}
+          </span>
+        );
+      }
+      return (
+        <a href={b.props.href} className={className}>
           {b.props.label}
         </a>
       );
+    }
+
     case "divider":
-      return <hr style={{ height: b.props.thickness ?? 1, backgroundColor: b.props.color ?? "#E5E7EB" }} className="border-0" />;
+      return (
+        <hr
+          style={{ height: b.props.thickness ?? 1, backgroundColor: b.props.color ?? "#E5E7EB" }}
+          className="border-0"
+        />
+      );
+
     case "columns": {
       const rows = clamp(b.props.rows ?? 1, 1, 6);
       const cols = clamp(b.props.cols ?? 2, 1, 6);
@@ -86,13 +131,27 @@ export function renderBlock(b: TemplateBlock) {
           }}
         >
           {Array.from({ length: rows * cols }).map((_, i) => (
-            <div key={i} className="rounded border border-dashed border-zinc-300 p-4 text-center text-sm text-zinc-500">
+            <div
+              key={i}
+              className="rounded border border-dashed border-zinc-300 p-4 text-center text-sm text-zinc-500"
+            >
               Cell {Math.floor(i / cols) + 1},{(i % cols) + 1}
             </div>
           ))}
         </div>
       );
     }
+
+    case "html":
+      return (
+        <div
+          className={ro ? "pointer-events-none select-none" : ""}
+          // NOTE: pastikan konten sudah disanitasi jika berasal dari user
+          dangerouslySetInnerHTML={{ __html: b.props.html ?? "" }}
+        />
+      );
+
+    // Untuk jenis lain yg belum diimplementasikan spesifik, tampilkan placeholder
     default:
       return (
         <div className="rounded border border-dashed border-zinc-300 p-4 text-sm text-zinc-500">

@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-//Landing
+// Landing
 import LandingLayout from "../Layouts/LandingLayout/LandingLayout";
 import LandingPage from "../Pages/Landing/LandingPage";
 import LoadingPage from "../Pages/Loading/LoadingPage";
@@ -23,18 +23,25 @@ import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
 import GuestDatabasePage from "../Pages/Guests/GuestDatabasePage";
 import GuestProfilePage from "../Pages/Guests/GuestProfilePage";
 
-//Marketing
+// Marketing
 import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
 import EmailPage from "../Pages/Marketing/Email/EmailPage";
 
-//Campaign
+// Campaign
 import CampaignLayout from "../Layouts/CampaignLayout/CampaignLayout";
+import CampaignSetupLayout from "../Layouts/CampaignSetupLayout/CampaignSetupLayout";
+import TemplateBuilderLayout from "../Layouts/TemplateBuilderLayout/TemplateBuilderLayout";
 import CampaignPage from "../Pages/Campaign/CampaignPage";
 import CreateCampaignPage from "../Pages/Campaign/CreateCampaign";
 import EmailTemplatePage from "../Pages/Campaign/EmailTemplate/EmailTemplatePage";
 import TemplateBuilder from "../Pages/Campaign/EmailTemplate/TemplateBuilder";
+import CampaignSetupPage from "../Pages/Campaign/CampaignSetup/CampaignSetupPage";
+import CampaignTemplatePage from "../Pages/Campaign/CampaignSetup/CampaignTemplatePage";
+import CampaignCustomizePage from "../Pages/Campaign/CampaignSetup/CampaignCustomizePage";
+import CampaignReviewPage from "../Pages/Campaign/CampaignSetup/CampaignReviewPage";
+import CampaignSchedulePage from "../Pages/Campaign/CampaignSetup/CampaignSchedule";
 
-//Reservation
+// Reservation
 import ReservationLayout from "../Layouts/ReservationLayout/ReservationLayout";
 
 export default function AppRouter(): React.ReactElement {
@@ -65,18 +72,22 @@ export default function AppRouter(): React.ReactElement {
           <Route path="all-campaign" element={<CampaignPage />} />
           <Route path="create-new-campaign" element={<CreateCampaignPage />} />
           <Route path="email-template" element={<EmailTemplatePage />} />
-          <Route path="email-template" element={<EmailTemplatePage />} />
+
+          <Route element={<CampaignSetupLayout />}>
+            <Route path="setup" element={<CampaignSetupPage />} />
+            <Route path="create-template" element={<CampaignTemplatePage />} />
+            <Route path="review" element={<CampaignReviewPage />} />
+            <Route path="schedule" element={<CampaignSchedulePage />} />
+          </Route>
         </Route>
 
-        {/* Campaign Template Builder (tanpa header) */}
-        <Route
-          path="/campaign/email-template/template-builder"
-          element={
-            <CampaignLayout hideHeader>
-              <TemplateBuilder />
-            </CampaignLayout>
-          }
-        />
+        <Route path="/campaign/customize-template" element={<TemplateBuilderLayout />}>
+          <Route index element={<CampaignCustomizePage />} />
+        </Route>
+
+        <Route path="/campaign/email-template" element={<TemplateBuilderLayout />}>
+          <Route path="template-builder" element={<TemplateBuilder />} />
+        </Route>
 
         {/* Guests */}
         <Route path="/guests" element={<GuestsLayout />}>

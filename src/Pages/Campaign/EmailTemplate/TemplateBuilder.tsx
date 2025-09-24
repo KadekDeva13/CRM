@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   DndContext,
   PointerSensor,
@@ -19,20 +20,45 @@ import {
   type TemplateBlock,
   type BlockKind,
 } from "../../../components/TemplateBuilder/Blocks";
+import TemplateModalsave from "../../../components/Campaign/Modal/TemplateModalSave";
 
 type Page = { id: string; name: string; blocks: TemplateBlock[] };
+type StoredTemplate = {
+  id: string;
+  title: string;
+  description?: string;
+  status?: "Active" | "Draft";
+  usedCount?: number;
+  category?: string;
+  thumbUrl?: string;
+  pages?: Page[];
+  email?: any;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+const LS_KEY = "emailTemplates";
 
 export default function TemplateBuilderPage() {
+  const navigate = useNavigate();
+  const { state } = useLocation() as { state?: { template?: StoredTemplate } };
+  const chosen = state?.template; 
+
+  const [previewOpen, setPreviewOpen] = React.useState(false);
+  const handlePreview = () => setPreviewOpen(true);
+  const handleClosePreview = () => setPreviewOpen(false);
+  const [openModal, setOpenModal] = React.useState(false);
+
+
   const [viewport, setViewport] = React.useState<"desktop" | "mobile">("desktop");
   const [email, setEmail] = React.useState({
     fromName: "",
     fromEmail: "",
     replyTo: "",
-    subject: "",
+    subject: chosen?.title ?? "", 
     previewText: "",
   });
 
-  // ==== multi-page ====
   const [pages, setPages] = React.useState<Page[]>(() => [
     { id: uid(), name: "Page 1", blocks: [] },
   ]);
@@ -48,16 +74,16 @@ export default function TemplateBuilderPage() {
     [activePage.blocks, selectedId]
   );
 
-  // DnD
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
   const [overPageId, setOverPageId] = React.useState<string | null>(null);
   const [overIndex, setOverIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     if (!activePage.blocks.some((b) => b.id === selectedId)) setSelectedId(null);
-  }, [activePageId, pages]);
+  }, [activePage.blocks, activePageId, pages, selectedId]);
 
-  // utils
   const createBlock = (kind: BlockKind): TemplateBlock => ({
     id: uid(),
     kind,
@@ -82,7 +108,7 @@ export default function TemplateBuilderPage() {
   const deletePage = (pageId: string) => {
     setPages((prev) => {
       const next = prev.filter((p) => p.id !== pageId);
-      if (next.length === 0) return prev; // cegah kosong total
+      if (next.length === 0) return prev;
       if (activePageId === pageId) {
         setActivePageId(next[0].id);
         setSelectedId(null);
@@ -91,16 +117,19 @@ export default function TemplateBuilderPage() {
     });
   };
 
-  // klik palette → append ke active page
   const addBlockBottom = (kind: BlockKind) => {
-    updatePageById(activePageId, (p) => ({ ...p, blocks: [...p.blocks, createBlock(kind)] }));
+    updatePageById(activePageId, (p) => ({
+      ...p,
+      blocks: [...p.blocks, createBlock(kind)],
+    }));
     setSelectedId(null);
   };
 
-  // insert/move ke index tertentu di target page
   const insertAt = (
     targetPageId: string,
-    payload: { type: "new"; kind: BlockKind } | { type: "move"; from: number; fromPageId: string },
+    payload:
+      | { type: "new"; kind: BlockKind }
+      | { type: "move"; from: number; fromPageId: string },
     index: number
   ) => {
     setPages((prev) => {
@@ -123,7 +152,9 @@ export default function TemplateBuilderPage() {
           blocks.splice(index, 0, createBlock(payload.kind));
         } else if (moving) {
           const safeIndex =
-            payload.fromPageId === targetPageId && payload.from < index ? index - 1 : index;
+            payload.fromPageId === targetPageId && payload.from < index
+              ? index - 1
+              : index;
           blocks.splice(safeIndex, 0, moving);
         }
         return { ...p, blocks };
@@ -135,29 +166,15 @@ export default function TemplateBuilderPage() {
     setActivePageId(targetPageId);
   };
 
-  const deleteSelected = () => {
+  const deleteSelected = React.useCallback(() => {
     if (!selected) return;
-    updatePageById(activePageId, (p) => ({ ...p, blocks: p.blocks.filter((b) => b.id !== selected.id) }));
+    updatePageById(activePageId, (p) => ({
+      ...p,
+      blocks: p.blocks.filter((b) => b.id !== selected.id),
+    }));
     setSelectedId(null);
-  };
+  }, [activePageId, selected]);
 
-  // keyboard delete (kecuali sedang mengetik)
-  React.useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!selected) return;
-      const tag = (e.target as HTMLElement)?.tagName;
-      const isTyping = tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable;
-      if (isTyping) return;
-      if (e.key === "Delete" || e.key === "Backspace") {
-        e.preventDefault();
-        deleteSelected();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [selected]);
-
-  // DnD handlers
   const onDragOver = (e: DragOverEvent) => {
     const id = e.over?.id as string | undefined;
     if (id && id.includes("::hint-")) {
@@ -188,33 +205,124 @@ export default function TemplateBuilderPage() {
     }
 
     const data = active.data.current as any;
-    if (data?.type === "new" && data?.kind) insertAt(targetPageId, { type: "new", kind: data.kind }, index);
+    if (data?.type === "new" && data?.kind)
+      insertAt(targetPageId, { type: "new", kind: data.kind }, index);
     if (data?.type === "move" && Number.isFinite(data?.from) && data?.pageId) {
-      insertAt(targetPageId, { type: "move", from: data.from, fromPageId: data.pageId }, index);
+      insertAt(
+        targetPageId,
+        { type: "move", from: data.from, fromPageId: data.pageId },
+        index
+      );
     }
 
     setOverPageId(null);
     setOverIndex(null);
   };
 
-  // Toolbar handlers (dummy)
-  const handlePreview = () => alert("Preview");
-  const handleSave = () => { console.log("Save", { pages, email }); alert("Saved!"); };
-  const handleContinue = () => alert("Continue");
-  const handleBack = () => { if (history.length > 1) history.back(); };
+  React.useEffect(() => {
+    if (!chosen) return;
+
+    if (chosen.pages && chosen.pages.length > 0) {
+      setPages(chosen.pages);
+      setActivePageId(chosen.pages[0].id);
+    } else {
+      const initialBlocks: TemplateBlock[] = [
+        {
+          id: uid(),
+          kind: "image" as BlockKind,
+          props: {
+            ...(blockDefaults.image ? blockDefaults.image() : {}),
+            src: chosen.thumbUrl,
+            alt: chosen.title,
+            align: "center",
+          },
+        },
+        {
+          id: uid(),
+          kind: "heading" as BlockKind,
+          props: {
+            ...(blockDefaults.heading ? blockDefaults.heading() : {}),
+            text: chosen.title,
+            align: "center",
+            level: 1,
+          },
+        },
+        {
+          id: uid(),
+          kind: "text" as BlockKind,
+          props: {
+            ...(blockDefaults.text ? blockDefaults.text() : {}),
+            html: "<p>Start editing this template…</p>",
+            align: "center",
+          },
+        },
+      ];
+      const hydrated: Page[] = [{ id: uid(), name: "Page 1", blocks: initialBlocks }];
+      setPages(hydrated);
+      setActivePageId(hydrated[0].id);
+    }
+
+    setEmail((prev) => ({ ...prev, subject: chosen.title || prev.subject }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chosen?.id]);
+
+  const handleSave = () => {
+    const stored = localStorage.getItem(LS_KEY);
+    const templates: StoredTemplate[] = stored ? JSON.parse(stored) : [];
+
+    if (chosen?.id) {
+      const idx = templates.findIndex((t) => t.id === chosen.id);
+      const payload: StoredTemplate = {
+        ...(idx >= 0 ? templates[idx] : (chosen as StoredTemplate)),
+        id: chosen.id,
+        title: email.subject || chosen.title || "Untitled Template",
+        pages,
+        email,
+        updatedAt: new Date().toISOString(),
+      };
+      if (idx >= 0) {
+        templates[idx] = payload;
+      } else {
+        payload.createdAt = new Date().toISOString();
+        templates.push(payload);
+      }
+    } else {
+      const newItem: StoredTemplate = {
+        id: uid(),
+        title: email.subject || "Untitled Template",
+        description: "Custom template",
+        status: "Draft",
+        usedCount: 0,
+        category: "Welcome",
+        thumbUrl: chosen?.thumbUrl || "/image/welcome.png",
+        pages,
+        email,
+        createdAt: new Date().toISOString(),
+      };
+      templates.push(newItem);
+    }
+
+    localStorage.setItem(LS_KEY, JSON.stringify(templates));
+    setOpenModal(true);
+  };
+
+  const handleBack = () => navigate("/campaign/email-template");
 
   return (
-    <div className="min-h-screen bg-zinc-100">
-      <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white">
-        <div className="mx-auto max-w-[1200px] px-4">
+    <div className="min-h-screen bg-zinc-100 -mt-6">
+      <header className="sticky top-0 z-[70] bg-white border-b border-zinc-200 -mx-4 lg:-mx-6">
+        <div className="px-4 lg:px-6">
           <BuilderToolbar
-            title="Template Builder by Quirez"
+            mode="builder"
+            title={chosen?.title ? `Template Builder — ${chosen.title}` : "Template Builder"}
             viewport={viewport}
             onViewport={setViewport}
             onPreview={handlePreview}
             onSave={handleSave}
-            onContinue={handleContinue}
             onBack={handleBack}
+            collapsed={false}
+            setCollapsed={() => {}}
+            leftWidth={0}
           />
         </div>
       </header>
@@ -227,22 +335,23 @@ export default function TemplateBuilderPage() {
       >
         <main className="mx-auto max-w-[1200px] px-4 py-5">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-[1fr_320px]">
-            {/* LEFT: semua canvas vertikal */}
             <div className="space-y-6">
               {pages.map((p, idx) => (
                 <div key={p.id}>
                   <Canvas
                     pageId={p.id}
                     pageName={p.name}
-                    viewport={viewport}               // ⬅️ Canvas yang atur ukuran fixed berdasar ini
+                    viewport={viewport}
                     blocks={p.blocks}
                     selectedId={activePageId === p.id ? selectedId : null}
-                    setSelectedId={(id) => { setActivePageId(p.id); setSelectedId(id); }}
+                    setSelectedId={(id) => {
+                      setActivePageId(p.id);
+                      setSelectedId(id);
+                    }}
                     renderBlock={renderBlock}
                     overIndex={overPageId === p.id ? overIndex : null}
                     onDeletePage={deletePage}
                   />
-                  {/* Tombol + Add Page Below SELALU di luar Canvas */}
                   <div className="mt-3 flex justify-center">
                     <button
                       type="button"
@@ -252,13 +361,13 @@ export default function TemplateBuilderPage() {
                       + Add Page Below
                     </button>
                   </div>
-
-                  {idx < pages.length - 1 && <div className="my-4 border-t border-dashed border-zinc-300" />}
+                  {idx < pages.length - 1 && (
+                    <div className="my-4 border-t border-dashed border-zinc-300" />
+                  )}
                 </div>
               ))}
             </div>
 
-            {/* RIGHT: palette + properties */}
             <RightPanel
               email={email}
               setEmail={setEmail}
@@ -268,7 +377,9 @@ export default function TemplateBuilderPage() {
                 updatePageById(activePageId, (p) => ({
                   ...p,
                   blocks: p.blocks.map((b) =>
-                    b.id === selected?.id ? { ...b, props: updater(b.props) } : b
+                    b.id === selected?.id
+                      ? { ...b, props: updater(b.props) }
+                      : b
                   ),
                 }))
               }
@@ -277,10 +388,94 @@ export default function TemplateBuilderPage() {
           </div>
         </main>
       </DndContext>
+
+      <PreviewOverlay open={previewOpen} onClose={handleClosePreview} pages={pages} />
+
+      <TemplateModalsave
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onContinueEditing={() => setOpenModal(false)}
+        onViewAll={() => {
+          setOpenModal(false);
+          navigate("/campaign/email-template");
+        }}
+      />
     </div>
   );
 }
 
 function uid() {
   return Math.random().toString(36).slice(2, 10);
+}
+
+function PreviewOverlay({
+  open,
+  onClose,
+  pages,
+}: {
+  open: boolean;
+  onClose: () => void;
+  pages: Page[];
+}) {
+  if (!open) return null;
+
+  const MOBILE_W = 475;
+  const DESKTOP_W = 946;
+  const PREVIEW_H = 825;
+
+  return (
+    <div className="fixed inset-0 z-[90]">
+      <div className="absolute inset-0 bg-black/70" onClick={onClose} />
+      <div className="absolute inset-0 flex flex-col">
+        <div className="shrink-0 flex items-center justify-between bg-zinc-800 px-4 py-2 text-white">
+          <div className="flex items-center gap-10">
+            <span className="text-lg font-extrabold tracking-wide">MOBILE</span>
+            <span className="text-lg font-extrabold tracking-wide">DESKTOP</span>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-md bg-white/10 px-3 py-1 text-sm hover:bg-white/20"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-auto bg-zinc-900/60">
+          <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6 p-4 md:flex-row md:items-start md:justify-center">
+            <div className="flex justify-center md:justify-start">
+              <div
+                className="rounded-md bg-white shadow"
+                style={{ width: MOBILE_W, height: PREVIEW_H }}
+              >
+                <ReadonlyPageList pages={pages} />
+              </div>
+            </div>
+            <div className="flex justify-center md:justify-start">
+              <div
+                className="rounded-md bg-white shadow"
+                style={{ width: DESKTOP_W, height: PREVIEW_H }}
+              >
+                <ReadonlyPageList pages={pages} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReadonlyPageList({ pages }: { pages: Page[] }) {
+  return (
+    <div className="h-full w-full overflow-auto">
+      {pages.map((p) => (
+        <div key={p.id} className="p-8">
+          {p.blocks.length > 0 &&
+            p.blocks.map((b) => (
+              <div key={b.id}>{renderBlock(b, { readonly: true })}</div>
+            ))}
+        </div>
+      ))}
+    </div>
+  );
 }

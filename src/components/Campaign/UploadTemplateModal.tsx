@@ -37,7 +37,7 @@ export default function UploadTemplateModal({ open, onClose, onSubmit }: Props) 
         setPreviewUrl(url);
         if (!name) setName(file.name.replace(/\.[^.]+$/, ""));
         return () => URL.revokeObjectURL(url);
-    }, [file]);
+    }, [file, name]);
 
     if (!open) return null;
 

@@ -1,4 +1,4 @@
-export type CampaignStatus = "Active" | "Pending" | "Completed";
+export type CampaignStatus = "Active" | "Pending" | "Completed"| "Draft";
 export type CampaignTag = "Email Marketing" | "Holiday Campaign" | "Promo" | "Other";
 export type Campaign = {
   id: string;
