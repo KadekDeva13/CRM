@@ -1,4 +1,3 @@
-// src/Pages/Campaign/CreateCampaign.tsx
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -219,7 +218,6 @@ export default function CreateCampaignPage() {
 
   const templates = tab === "one-time" ? ONE_TIME_TEMPLATES : AUTOMATED_TEMPLATES;
 
-  // ⬇️ NAVIGATE KE HALAMAN SETUP (page detail) DENGAN QUERY PARAM
   const handleSelect = (t: TemplateCard) => {
     navigate(`/campaign/setup?template=${encodeURIComponent(t.key)}&type=${encodeURIComponent(tab)}`);
   };

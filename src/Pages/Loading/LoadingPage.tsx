@@ -10,7 +10,7 @@ export default function LoadingPage(): React.ReactElement {
     setPlayExit(true);
     setTimeout(() => {
       navigate("/login");
-    }, 500); // durasi fade out
+    }, 500);
   };
 
   return (

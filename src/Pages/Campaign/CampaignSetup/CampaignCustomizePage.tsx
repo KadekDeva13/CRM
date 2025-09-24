@@ -265,15 +265,19 @@ export default function CampaignCustomizePage() {
             >
                 <div className="px-4 lg:px-6">
                     <BuilderToolbar
+                        mode="setup" 
                         title={chosen?.title ?? "Customized Template"}
                         viewport={viewport}
                         onViewport={setViewport}
                         onPreview={handlePreview}
                         onSave={handleSave}
                         onContinue={handleContinue}
-                        onBack={handleBack} collapsed={false} setCollapsed={function (): void {
-                            throw new Error("Function not implemented.");
-                        }} leftWidth={0} />
+                        onBack={handleBack}
+                        collapsed={false}
+                        setCollapsed={() => { }}
+                        leftWidth={0}
+                    />
+
                 </div>
             </header>
 
@@ -373,10 +377,8 @@ function PreviewOverlay({
 
     return (
         <div className="fixed inset-0 z-[90]">
-            {/* backdrop */}
             <div className="absolute inset-0 bg-black/70" onClick={onClose} />
 
-            {/* overlay */}
             <div className="absolute inset-0 flex flex-col">
                 <div className="shrink-0 flex items-center justify-between bg-zinc-800 px-4 py-2 text-white">
                     <div className="flex items-center gap-10">
@@ -393,7 +395,6 @@ function PreviewOverlay({
 
                 <div className="flex-1 overflow-auto bg-zinc-900/60">
                     <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6 p-4 md:flex-row md:items-start md:justify-center">
-                        {/* MOBILE 475x825 */}
                         <div className="flex justify-center md:justify-start">
                             <div
                                 className="rounded-md bg-white shadow"
@@ -403,7 +404,6 @@ function PreviewOverlay({
                             </div>
                         </div>
 
-                        {/* DESKTOP 946x825 */}
                         <div className="flex justify-center md:justify-start">
                             <div
                                 className="rounded-md bg-white shadow"
@@ -424,7 +424,6 @@ function ReadonlyPageList({ pages }: { pages: Page[] }) {
         <div className="h-full w-full overflow-auto">
             {pages.map((p) => (
                 <div key={p.id} className="p-8">
-                    {/* jika kosong: jangan render placeholder apa pun */}
                     {p.blocks.length > 0 &&
                         p.blocks.map((b) => (
                             <div key={b.id}>{renderBlock(b, { readonly: true })}</div>

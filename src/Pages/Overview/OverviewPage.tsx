@@ -46,7 +46,8 @@ export default function Dashboard(): React.ReactElement {
       ],
       yDomain: [0, 30000],
       yTicks: [0, 10000, 20000, 30000],
-      yTickFormatter: (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`),
+      yTickFormatter: (v: number) =>
+        v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`,
     },
   };
 
@@ -70,14 +71,30 @@ export default function Dashboard(): React.ReactElement {
 
   return (
     <motion.div
-      className="space-y-6"
+      className="relative space-y-6 pt-6 sm:pt-8 md:pt-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.45 }}
     >
-      <div>
-        <h1 className="text-2xl font-semibold text-[#000000]">Welcome to Quirez CRM</h1>
-        <h2 className="text-xs text-[#000000]">Your premium hospitality management platform</h2>
+      <img
+        src="/image/mindimedia.png"
+        alt="Mindimedia Logo"
+        className="
+    absolute right-5 top-3
+    h-8 w-auto sm:h-10 md:h-12 lg:h-14
+    object-contain select-none pointer-events-none
+    block
+  "
+        draggable={false}
+      />
+
+      <div className="pr-20 sm:pr-24 md:pr-40">
+        <h1 className="text-2xl font-semibold text-[#000000]">
+          Welcome to Quirez CRM, Mindimedia
+        </h1>
+        <h2 className="text-xs text-[#000000]">
+          Your premium hospitality management platform
+        </h2>
       </div>
 
       <div className="grid gap-4 md:gap-6 xl:grid-cols-4 font-helectiva">
@@ -107,7 +124,9 @@ export default function Dashboard(): React.ReactElement {
           series={current.series}
           yDomain={[0, 30000]}
           yTicks={[0, 10000, 20000, 30000]}
-          yTickFormatter={(v) => (v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`)}
+          yTickFormatter={(v) =>
+            v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`
+          }
         />
 
         <div className="flex flex-col gap-4 xl:col-span-1">
@@ -164,8 +183,7 @@ export default function Dashboard(): React.ReactElement {
                   $1.513.717
                 </div>
               </div>
-              <button
-                className="ml-72 px-3 py-1.5 rounded-md bg-[#2B2B2B] text-white hover:bg-white hover:text-black text-[11px] md:text-xs shadow-sm">
+              <button className="ml-72 px-3 py-1.5 rounded-md bg-[#2B2B2B] text-white hover:bg-white hover:text-black text-[11px] md:text-xs shadow-sm">
                 VIEW REPORT
               </button>
             </div>
@@ -187,7 +205,6 @@ export default function Dashboard(): React.ReactElement {
             v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}K` : `${v}`
           }
         />
-
       </div>
     </motion.div>
   );

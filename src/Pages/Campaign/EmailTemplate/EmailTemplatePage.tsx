@@ -35,10 +35,8 @@ export default function EmailTemplatePage() {
   const [page, setPage] = React.useState(1);
   const [pageSize, setPageSize] = React.useState(9);
 
-  // === Upload Modal state ===
   const [openUpload, setOpenUpload] = React.useState(false);
 
-  // track blob URLs untuk di-revoke saat unmount/replace
   const blobUrls = React.useRef<string[]>([]);
   React.useEffect(() => {
     return () => {

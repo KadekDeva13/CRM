@@ -66,16 +66,13 @@ export default function AppRouter(): React.ReactElement {
           <Route index element={<CampaignPage />} />
           <Route path="all-campaign" element={<CampaignPage />} />
           <Route path="create-new-campaign" element={<CreateCampaignPage />} />
+          <Route path="email-template" element={<EmailTemplatePage />} />
 
-          {/* SETUP FLOW (breadcrumb & quick menu konsisten) */}
           <Route element={<CampaignSetupLayout />}>
             <Route path="setup" element={<CampaignSetupPage />} />
             <Route path="create-template" element={<CampaignTemplatePage />} />
-            {/* daftar template (di dalam layout setup) */}
-            <Route path="email-template" element={<EmailTemplatePage />} />
             <Route path="review" element={<CampaignReviewPage />} />
             <Route path="schedule" element={<CampaignSchedulePage />} />
-            {/* HALAMAN CUSTOMIZE (bukan child dari email-template) */}
           </Route>
         </Route>
 
@@ -83,7 +80,6 @@ export default function AppRouter(): React.ReactElement {
           <Route index element={<CampaignCustomizePage />} />
         </Route>
 
-        {/* Template Builder standalone (tanpa header/sidebar dashboard) */}
         <Route path="/campaign/email-template" element={<TemplateBuilderLayout />}>
           <Route path="template-builder" element={<TemplateBuilder />} />
         </Route>
