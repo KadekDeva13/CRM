@@ -74,7 +74,6 @@ export default function DashboardBreadcrumb() {
       <svg className="text-black/60 dark:text-black" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M17.6875 6.60063...Z" fill="#050505" />
       </svg>
-      <span className="text-black/60 dark:text-black">Dashboards</span>
       {crumbs.map((c, idx) => (
         <div key={c.to} className="flex items-center gap-2">
           <svg width="5" height="13" viewBox="0 0 5 13" fill="none" xmlns="http://www.w3.org/2000/svg">

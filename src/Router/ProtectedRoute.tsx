@@ -41,8 +41,8 @@ import CampaignCustomizePage from "../Pages/Campaign/CampaignSetup/CampaignCusto
 import CampaignReviewPage from "../Pages/Campaign/CampaignSetup/CampaignReviewPage";
 import CampaignSchedulePage from "../Pages/Campaign/CampaignSetup/CampaignSchedule";
 
-// Reservation
-import ReservationLayout from "../Layouts/ReservationLayout/ReservationLayout";
+//Segments
+import SegmentsLayout from "../Layouts/SegmentsLayout/SegmentsLayout";
 
 export default function AppRouter(): React.ReactElement {
   return (
@@ -102,8 +102,9 @@ export default function AppRouter(): React.ReactElement {
           <Route path="email" element={<EmailPage />} />
         </Route>
 
-        {/* Reservation */}
-        <Route path="/reservation" element={<ReservationLayout />} />
+        <Route path="/segments" element={<SegmentsLayout />}>
+          <Route index element={<CampaignPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
