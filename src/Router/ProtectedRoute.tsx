@@ -20,7 +20,8 @@ import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
 // import GuestsAnalyticsPage from "../Pages/Guests/Analytics/GuestsAnalyticsPage";
 // import GuestsSearchPage from "../Pages/Guests/Search/GuestsSearchPage";
 // import GuestSegmentsPage from "../Pages/Guests/Segments/GuestSegmentsPage";
-import GuestListPage from "../Pages/Guests/Analytics/GuestListPage";
+import GuestDatabasePage from "../Pages/Guests/GuestDatabasePage";
+import GuestProfilePage from "../Pages/Guests/GuestProfilePage";
 
 //Marketing
 import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
@@ -64,6 +65,7 @@ export default function AppRouter(): React.ReactElement {
           <Route path="all-campaign" element={<CampaignPage />} />
           <Route path="create-new-campaign" element={<CreateCampaignPage />} />
           <Route path="email-template" element={<EmailTemplatePage />} />
+          <Route path="email-template" element={<EmailTemplatePage />} />
         </Route>
 
         {/* Campaign Template Builder (tanpa header) */}
@@ -80,7 +82,8 @@ export default function AppRouter(): React.ReactElement {
         <Route path="/guests" element={<GuestsLayout />}>
           {/* <Route index element={<GuestsAnalyticsPage />} />
           <Route path="search" element={<GuestsSearchPage />} /> */}
-          <Route path="guest-insights" element={<GuestListPage />} />
+          <Route path="guest-database" element={<GuestDatabasePage />} />
+          <Route path="guest-database/:guestId" element={<GuestProfilePage />} />
         </Route>
 
         {/* Marketing */}

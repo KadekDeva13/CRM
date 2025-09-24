@@ -61,11 +61,10 @@ export default function AppSidebar({
       key: "guest",
       label: "Guest",
       icon: <IconGuest />,
-      to: "/guests",
+      to: "/guests/guest-database",
       children: [
-        { label: "Analytics", to: "/guests/guest-insights" },
-        { label: "Search", to: "/guests/search" },
-        { label: "Segments", to: "/guests/segments" },
+        { label: "Guest Database", to: "/guests/geust-database" },
+        { label: "Reference Settings", to: "/guests/segments" },
       ],
     },
     {
