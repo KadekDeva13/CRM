@@ -23,10 +23,6 @@ import GuestsLayout from "../Layouts/GuestsLayout/GuestLayout";
 import GuestDatabasePage from "../Pages/Guests/GuestDatabasePage";
 import GuestProfilePage from "../Pages/Guests/GuestProfilePage";
 
-// Marketing
-import MarketingLayout from "../Layouts/MarketingLayout/MarketingLayout";
-import EmailPage from "../Pages/Marketing/Email/EmailPage";
-
 // Campaign
 import CampaignLayout from "../Layouts/CampaignLayout/CampaignLayout";
 import CampaignSetupLayout from "../Layouts/CampaignSetupLayout/CampaignSetupLayout";
@@ -43,6 +39,10 @@ import CampaignSchedulePage from "../Pages/Campaign/CampaignSetup/CampaignSchedu
 
 //Segments
 import SegmentsLayout from "../Layouts/SegmentsLayout/SegmentsLayout";
+
+//Reprots
+import ReportsLayout from "../Layouts/ReprotsLayout/ReportLayout";
+import ReportsPage from "../Pages/Report/ReportPage";
 
 export default function AppRouter(): React.ReactElement {
   return (
@@ -97,9 +97,10 @@ export default function AppRouter(): React.ReactElement {
           <Route path="guest-database/:guestId" element={<GuestProfilePage />} />
         </Route>
 
-        {/* Marketing */}
-        <Route path="/marketing" element={<MarketingLayout />}>
-          <Route path="email" element={<EmailPage />} />
+        {/* Reports */}
+        <Route path="/Reports" element={<ReportsLayout />}>
+          <Route index element={<ReportsPage />} />
+          <Route path="campaign-report" element={<ReportsPage />} />
         </Route>
 
         <Route path="/segments" element={<SegmentsLayout />}>

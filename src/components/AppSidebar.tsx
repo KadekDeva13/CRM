@@ -58,10 +58,10 @@ export default function AppSidebar({
     {
       key: "Reports",
       label: "Reports",
-      icon: <IconEngagement />,
-      to: "/reports",
+      icon: <IconReport />,
+      to: "/reports/campaign-report",
       children: [
-        { label: "Reports", to: "/reports/reports" },
+        { label: "Campaign Report", to: "/reports/campaign-report" },
       ],
     },
     {
@@ -152,7 +152,7 @@ export default function AppSidebar({
           </NavLink>
 
 
-          <SectionHeader hidden={collapsed}>Dashboards</SectionHeader>
+          <SectionHeader hidden={collapsed}>.</SectionHeader>
 
           <div className="mb-5 space-y-1 flex-1">
             {GROUPS.map((group) => (
@@ -362,7 +362,7 @@ function IconProperty() {
   );
 }
 
-function IconEngagement() {
+function IconReport() {
   return (
     <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M18.75 12.5H18.125V10.625C18.125 10.4592 18.0592 10.3003 17.9419 10.1831C17.8247 10.0658 17.6658 10 17.5 10H12.5C12.3342 10 12.1753 10.0658 12.0581 10.1831C11.9408 10.3003 11.875 10.4592 11.875 10.625V12.5H3.125V1.875H16.875V8.125C16.875 8.29076 16.9408 8.44973 17.0581 8.56694C17.1753 8.68415 17.3342 8.75 17.5 8.75C17.6658 8.75 17.8247 8.68415 17.9419 8.56694C18.0592 8.44973 18.125 8.29076 18.125 8.125V1.875C18.125 1.54348 17.9933 1.22554 17.7589 0.991116C17.5245 0.756696 17.2065 0.625 16.875 0.625H3.125C2.79348 0.625 2.47554 0.756696 2.24112 0.991116C2.0067 1.22554 1.875 1.54348 1.875 1.875V12.5H1.25C1.08424 12.5 0.925268 12.5658 0.808058 12.6831C0.690848 12.8003 0.625 12.9592 0.625 13.125C0.625 13.2908 0.690848 13.4497 0.808058 13.5669C0.925268 13.6842 1.08424 13.75 1.25 13.75H18.75C18.9158 13.75 19.0747 13.6842 19.1919 13.5669C19.3092 13.4497 19.375 13.2908 19.375 13.125C19.375 12.9592 19.3092 12.8003 19.1919 12.6831C19.0747 12.5658 18.9158 12.5 18.75 12.5ZM13.125 11.25H16.875V12.5H13.125V11.25Z" fill="white" />

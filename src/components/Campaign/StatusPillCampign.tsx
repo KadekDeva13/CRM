@@ -1,8 +1,12 @@
 import type { CampaignStatus } from "../../types/Campaigns";
 const STYLE: Record<CampaignStatus, { bg: string; text: string }> = {
-  Active:    { bg: "bg-[#0AB19B]",   text: "text-white" },
-  Pending:   { bg: "bg-[#B93B00C7]", text: "text-[#FFDBCB]" },
-  Completed: { bg: "bg-[#16A34A]",   text: "text-white" },
+  Active: { bg: "bg-[#0AB19B]", text: "text-white" },
+  Pending: { bg: "bg-[#B93B00C7]", text: "text-[#FFDBCB]" },
+  Completed: { bg: "bg-[#16A34A]", text: "text-white" },
+  Draft: {
+    bg: "",
+    text: ""
+  }
 };
 
 function isCampaignStatus(v: unknown): v is CampaignStatus {

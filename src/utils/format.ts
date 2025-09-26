@@ -40,4 +40,8 @@ export const paginate = <T,>(arr: T[], page: number, perPage: number) => {
   return { data: arr.slice(start, start + perPage), total: arr.length };
 };
 
+export const fmtNum = (n: number) => n.toLocaleString("en-US");
+
+export const fmtPct = (v: number, digits = 1) =>
+  `${(v * 100).toFixed(digits)}%`;
 
